@@ -1,0 +1,1 @@
+@extends('BS.layouts.app')

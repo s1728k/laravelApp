@@ -1,0 +1,26 @@
+1,4,app1,0,"2018-07-18 12:39:31","2018-07-22 07:08:42","{""c"":{""app1_userusers"":""true""},""r"":{""app1_userguest"":""true"",""app1_userusers"":""true""},""u"":{""app1_userusers"":""true""},""d"":{""app1_userusers"":""true""}}","[""users""]"
+2,4,rentree,0,"2018-07-18 12:47:12","2018-07-18 12:47:12",,
+3,4,tta,0,"2018-07-18 12:47:20","2018-07-18 12:47:20",,
+4,4,tio,0,"2018-07-18 12:47:27","2018-07-18 12:47:27",,
+5,4,portfolio1,0,"2018-07-18 12:47:51","2018-07-18 12:47:51",,
+6,4,portfolio2,0,"2018-07-18 12:48:10","2018-07-18 12:48:10",,
+7,4,portfolio3,0,"2018-07-18 12:48:21","2018-07-18 12:48:21",,
+8,4,cloud,0,"2018-07-18 12:48:29","2018-07-18 12:48:29",,
+9,4,cblms,0,"2018-07-18 12:48:36","2018-07-18 12:48:36",,
+10,4,"excel mass",0,"2018-07-18 12:48:46","2018-07-18 12:48:46",,
+11,4,"ym app",0,"2018-07-18 12:49:04","2018-07-18 12:49:04",,
+12,4,carnia,0,"2018-07-18 12:49:12","2018-07-18 12:49:12",,
+13,4,carnia,0,"2018-07-18 12:49:12","2018-07-18 12:49:12",,
+14,4,"angular cblms",0,"2018-07-18 12:50:54","2018-07-18 12:50:54",,
+15,4,"excel cblms",0,"2018-07-18 12:51:02","2018-07-18 12:51:02",,
+16,4,"excel cblms",0,"2018-07-18 12:51:02","2018-07-18 12:51:02",,
+17,4,abcd,0,"2018-07-18 16:24:56","2018-07-18 16:24:56",,
+18,4,"flexiple demo",0,"2018-07-19 07:16:01","2018-07-19 07:16:01",,
+19,4,mangal,0,"2018-07-22 07:12:34","2018-07-22 07:12:34","{""c"":"""",""r"":"""",""u"":"""",""d"":""""}","[""users""]"
+20,4,one,0,"2018-07-22 07:13:54","2018-07-22 07:13:54","{""c"":"""",""r"":"""",""u"":"""",""d"":""""}","[""users""]"
+21,4,next,0,"2018-07-22 07:17:15","2018-07-22 07:17:15","{""c"":"""",""r"":"""",""u"":"""",""d"":""""}","[""users""]"
+22,4,"once more",0,"2018-07-22 07:19:08","2018-07-22 08:51:34","{""c"":{""app22_usersguest"":""true"",""app22_usersusers"":""true""},""r"":{""app22_usersguest"":""true"",""app22_usersusers"":""true""},""u"":{""app22_usersguest"":""true"",""app22_usersusers"":""true""},""d"":{""app22_usersguest"":""true"",""app22_usersusers"":""true""}}","[""users"",""admin4"",""admins"",""admins"",""admins""]"
+23,5,"My App",0,"2018-07-22 09:43:04","2018-07-24 21:26:34","{""c"":"""",""r"":"""",""u"":"""",""d"":""""}","[""users""]"
+24,5,"My App",0,"2018-07-22 09:44:00","2018-07-22 09:44:00","{""c"":"""",""r"":"""",""u"":"""",""d"":""""}","[""users""]"
+25,5,"My App",0,"2018-07-22 09:44:42","2018-07-22 09:44:42","{""c"":"""",""r"":"""",""u"":"""",""d"":""""}","[""users""]"
+26,5,Flexiple,0,"2018-07-22 09:46:09","2018-07-23 13:46:46","{""c"":{""app26_companycompany"":""true"",""app26_content_writercontent_writer"":""true"",""app26_designerdesigner"":""true"",""app26_developerdeveloper"":""true""},""r"":{""app26_companycompany"":""true"",""app26_content_writerguest"":""true"",""app26_content_writercontent_writer"":""true"",""app26_designerguest"":""true"",""app26_designerdesigner"":""true"",""app26_developerguest"":""true"",""app26_developerdeveloper"":""true"",""app26_usersguest"":""true"",""app26_companyguest"":""true""},""u"":{""app26_companycompany"":""true"",""app26_content_writercontent_writer"":""true"",""app26_designerdesigner"":""true"",""app26_developerdeveloper"":""true""},""d"":{""app26_companycompany"":""true"",""app26_content_writercontent_writer"":""true"",""app26_designerdesigner"":""true"",""app26_developerdeveloper"":""true""}}","{""1"":""designer"",""2"":""developer"",""3"":""content_writer"",""4"":""company""}"
