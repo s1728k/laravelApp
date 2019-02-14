@@ -7,7 +7,6 @@
     "require": {
         "php": ">=7.0.0",
         "cboden/ratchet": "^0.4.1",
-        "doctrine/dbal": "^2.8",
         "fideloper/proxy": "~3.3",
         "hoa/websocket": "^3.17",
         "laravel-notification-channels/webpush": "^3.0",
