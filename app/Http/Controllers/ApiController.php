@@ -244,15 +244,21 @@ class ApiController extends Controller
         $arr = json_decode($app->auth_providers,true)??[];
 
         if(strpos($auth_provider, '|')){
-            $ar = explode("|", $auth_provider);
+            $ap = explode("|", $auth_provider);
 
-            if( in_array( $ar[1], $arr[$ar[0]] ) ){
+            if( !in_array( $ap[1], $arr[$ap[0]] ) ){
                 return ['status' => 'failed'];
             }
         }else{
             if( $arr[$auth_provider] !== "All Users"){
                 return ['status' => 'failed'];
             }
+        }
+
+        $p = json_decode($app->permissions,true)??[];
+
+        if(! $p['guest']['All Users'][$ap[0]]['p']){
+            return ['status' => 'failed'];
         }
     }
 
