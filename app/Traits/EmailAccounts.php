@@ -23,7 +23,6 @@ trait EmailAccounts
 
 	public function addNewUser(Request $request)
 	{
-		\Log::Info(request()->ip()." added email user for domain ".$domain->name." for app id ".$this->app_id);
 		$domain = VirtualDomain::findOrFail($request->domain_id);
 		if($domain->user_id != \Auth::user()->id || $domain->verified != 'done'){
 			return redirect()->route('c.email.list.view');
@@ -54,6 +53,7 @@ trait EmailAccounts
 			'password' => $ssha,
 			'mailbox' => $domain->name.'/'.$request->name.'/Maildir/',
 		]);
+		\Log::Info(request()->ip()." added email user for domain ".$domain->name." for app id ".$this->app_id);
 		return redirect()->route('c.email.list.view');
 		// SELECT a.columname1 AS 1, a.columname1 AS 2 FROM tablename a
 	}
