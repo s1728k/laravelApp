@@ -20,11 +20,6 @@ trait AuthenticatesUsers
         return view('c.auth.login');
     }
 
-    public function showAdminLoginForm()
-    {
-        return view('c.admin_login');
-    }
-
     /**
      * Handle a login request to the application.
      *
@@ -33,7 +28,7 @@ trait AuthenticatesUsers
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function login(Request $request, $rtype = "")
+    public function login(Request $request)
     {
         $this->validateLogin($request);
 
@@ -46,25 +41,18 @@ trait AuthenticatesUsers
             return $this->sendLockoutResponse($request);
         }
 
-        if($rtype == "admin"){
-            if($this->checkForNoUserEntries()){
-                if($request->email == 'admin' && $request->password == 'admin'){
-                    $this->create($request->all());
-                }
-            }
-        }else{
-            if ($this->emailNotVerified($request, $rtype)){
-                return redirect('/email_verification_sent');
-            }
-            if($this->blockedUser($request, $rtype)){
-                return redirect('/blocked_user');
-            }
+
+        if ($this->emailNotVerified($request)){
+            return redirect('/email_verification_sent');
+        }
+        if($this->blockedUser($request)){
+            return redirect('/blocked_user');
         }
 
-        if ($this->attemptLogin($request, $rtype)) {
+        if ($this->attemptLogin($request)) {
             \Log::Info("attempt to login success");
-            \Log::Info($this->sendLoginResponse($request, $rtype));
-            return $this->sendLoginResponse($request, $rtype);
+            \Log::Info($this->sendLoginResponse($request));
+            return $this->sendLoginResponse($request);
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
@@ -73,11 +61,6 @@ trait AuthenticatesUsers
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
-    }
-
-    public function adminLogin(Request $request)
-    {
-        return $this->login($request, 'admin');
     }
 
     /**
@@ -100,9 +83,9 @@ trait AuthenticatesUsers
      * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
-    protected function attemptLogin(Request $request, $rtype = "")
+    protected function attemptLogin(Request $request)
     {
-        return $this->guard($rtype)->attempt(
+        return $this->guard()->attempt(
             $this->credentials($request), $request->filled('remember')
         );
     }
@@ -124,14 +107,14 @@ trait AuthenticatesUsers
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    protected function sendLoginResponse(Request $request, $rtype = "")
+    protected function sendLoginResponse(Request $request)
     {
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
         
-        return $this->authenticated($request, $this->guard($rtype)->user())
-                ?: redirect()->intended($this->redirectPath($rtype));
+        return $this->authenticated($request, $this->guard()->user())
+                ?: redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -177,9 +160,9 @@ trait AuthenticatesUsers
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function logout(Request $request, $rtype = "")
+    public function logout(Request $request)
     {
-        $this->guard($rtype)->logout();
+        $this->guard()->logout();
 
         $request->session()->invalidate();
 
@@ -191,12 +174,8 @@ trait AuthenticatesUsers
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected function guard($rtype = "")
+    protected function guard()
     {
-        if ($rtype === ""){
-            return Auth::guard();
-        }else{
-            return Auth::guard($rtype);
-        }
+        return Auth::guard();
     }
 }

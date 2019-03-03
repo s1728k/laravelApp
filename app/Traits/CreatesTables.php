@@ -32,11 +32,9 @@ trait CreatesTables
         \Log::Info(request()->ip()." created new table ".$request->name." for app id ".$this->app_id);
         $this->validateCreateTableRequest($request);
         $this->createTableSchema($request, $request->name);
-        $this->createModelClass($request->name, $request->model == "authenticatable");
+        // $this->createModelClass($request->name, $request->model == "authenticatable");
         if($request->model == "authenticatable"){
             $this->addUserTypeToApp($request->name);
-        }else{
-            $this->addTableFilersToApp($request->name);
         }
         return redirect()->route('c.table.list.view');
     }
@@ -53,7 +51,7 @@ trait CreatesTables
         \Log::Info(request()->ip()." added columns for the table ".$request->table." for app id ".$this->app_id);
         $this->validateAddColumnsRequest($request);
         $this->addColumnsSchema($request, $request->name);
-        $this->createModelClass($request->name);
+        // $this->createModelClass($request->name);
         return redirect()->route('c.table.list.view');
     }
 
@@ -67,7 +65,7 @@ trait CreatesTables
     {
         \Log::Info(request()->ip()." renamed column ".$request->old_field_name." to ".$request->new_field_name." for the table ".$request->table." for app id ".$this->app_id);
         $this->renameSchemaColumn($request->table, $request->old_field_name, $request->new_field_name);
-        $this->createModelClass($request->table);
+        // $this->createModelClass($request->table);
         return ['status' => 'success'];
     }
 
@@ -75,7 +73,7 @@ trait CreatesTables
     {
         \Log::Info(request()->ip()." deleted column ".$request->field_name." for the table ".$request->table." for app id ".$this->app_id);
         $this->deleteSchemaColumn($request->table, $request->field_name);
-        $this->createModelClass($request->table);
+        // $this->createModelClass($request->table);
         return ['status' => 'success'];
     }
 
@@ -98,8 +96,8 @@ trait CreatesTables
         \Log::Info(request()->ip()." renamed table ".$request->table." to ".$request->new_name." for app id ".$this->app_id);
         $this->renameTableSchema($request->table, $request->new_name);
         $this->removeUserTypeFromApp($request->table, $request->new_name);
-        $return = $this->deleteModelClass($request->table);
-        $this->createModelClass($request->new_name);
+        // $return = $this->deleteModelClass($request->table);
+        // $this->createModelClass($request->new_name);
         return redirect()->route('c.table.list.view');
     }
 
@@ -113,11 +111,11 @@ trait CreatesTables
     public function deleteTable(Request $request)
     {
         \Log::Info(request()->ip()." deleted table ".$request->table." for app id ".$this->app_id);
-        Schema::table($this->table($request->table), function (Blueprint $table){
+        Schema::connection($this->con)->table($this->table($request->table), function (Blueprint $table){
             $table->drop();
         });
         $this->removeUserTypeFromApp($request->table);
-        return $this->deleteModelClass($request->table);
+        return ['status' => 'success'];
     }
 
     public function crudTableView(Request $request)
@@ -200,7 +198,7 @@ trait CreatesTables
     {
         \Log::Info(request()->ip()." created default users table for app id ".$id);
         $this->createUsersSchema($id);
-        $this->createUserModelClass($id);
+        // $this->createModelClass('users', true);
     }
 
     public function addUserTypeToApp($auth_provider)
@@ -208,9 +206,8 @@ trait CreatesTables
         \Log::Info(request()->ip()." added auth_provider ".$auth_provider." for app id ".$this->app_id);
         $app = App::findOrFail($this->app_id);
         $arr = json_decode($app->auth_providers, true)??[];
-        $arr[$auth_provider] = ['f'=>'role', 'r'=>['All Users']];
+        array_push($arr, $auth_provider);
         $app->update(['auth_providers' => json_encode($arr)]);
-        $this->addTableFilersToApp($auth_provider);
     }
 
     public function removeUserTypeFromApp($auth_provider, $new_auth_provider = null)
@@ -218,37 +215,11 @@ trait CreatesTables
         \Log::Info(request()->ip()." removed auth_provider ".$auth_provider." for app id ".$this->app_id);
         $app = App::findOrFail($this->app_id);
         $arr = json_decode($app->auth_providers, true)??[];
-        if(isset($arr[$auth_provider])){
-            if(!empty($new_auth_provider)){
-                $arr[$new_auth_provider] = $arr[$auth_provider];
-            }
-            unset($arr[$auth_provider]);
-            $app->update(['auth_providers' => json_encode($arr)]);
-            $this->removeTableFilersFromApp($auth_provider, $new_auth_provider);
-        }else{
-            $this->removeTableFilersFromApp($auth_provider, $new_auth_provider);
+        if(!empty($new_auth_provider)){
+            array_push($arr, $new_auth_provider);
         }
-    }
-
-    public function addTableFilersToApp($table)
-    {
-        \Log::Info(request()->ip()." added table filters to table ".$table." for app id ".$this->app_id);
-        $app = App::findOrFail($this->app_id);
-        $arr = json_decode($app->table_filters, true)??[];
-        $arr[$table] = ['All Rows'];
-        $app->update(['table_filters' => json_encode($arr)]);
-    }
-
-    public function removeTableFilersFromApp($table, $new_table = null)
-    {
-        \Log::Info(request()->ip()." removed table filters to table ".$table." for app id ".$this->app_id);
-        $app = App::findOrFail($this->app_id);
-        $arr = json_decode($app->table_filters, true)??[];
-        if(!empty($new_table)){
-            $arr[$new_table] = isset($arr[$table])?$arr[$table]:['All Rows'];
-        }
-        unset($arr[$table]);
-        $app->update(['table_filters' => json_encode($arr)]);
+        unset($arr[$auth_provider]);
+        $app->update(['auth_providers' => json_encode($arr)]);
     }
 
 }

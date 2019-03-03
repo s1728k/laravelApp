@@ -18,9 +18,9 @@ class CreateAppsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('name');
             $table->string('secret')->unique();
-            $table->text('origins');
-            $table->longText('permissions');
+            $table->string('db_connection');
             $table->text('auth_providers');
+            $table->text('origins');
             $table->boolean('blocked')->default(false);
             $table->timestamps();
         });

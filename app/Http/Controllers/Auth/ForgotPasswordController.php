@@ -37,14 +37,13 @@ class ForgotPasswordController extends Controller
 
     public function showLinkRequestForm()
     {
-        return view('auth.passwords.email')->with('rtype', 'guest');
+        return view('auth.passwords.email');
     }
 
     public function sendResetLinkEmail(Request $request)
     {
-        $table = 'App\\'.ucwords(rtrim($request->rtype,'s'));
+        $table = 'App\\User';
         $record = $table::where('email', $request->email)->first();
-        \Log::Info($record);
         if(!empty($record)){
             $precord = PasswordReset::where("email", $request->email)->first();
             if(!empty($precord)){
@@ -56,20 +55,20 @@ class ForgotPasswordController extends Controller
                 'created_at' => Carbon::now(),
             ]);
             $precord = PasswordReset::where("email", $request->email)->first();
-            Mail::to($request->email)->send(new ResetPasswordMail($request->rtype, $precord));
+            Mail::to($request->email)->send(new ResetPasswordMail($precord));
         }
-        return view('auth.passwords.email')->with(['error' => "Email not in our database", 'email' => $request->email, 'rtype' => $request->rtype]);
+        return view('auth.passwords.email')->with(['error' => "Email not in our database", 'email' => $request->email]);
     }
 
-    public function password_reset($rtype, $id, $hash)
+    public function password_reset($id, $hash)
     {
-        $table = 'App\\'.ucwords(rtrim($rtype,'s'));
+        $table = 'App\\User';
         $record = $table::findOrFail($id);
         $precord = PasswordReset::where("email", $record->email)->first();
         if(!empty($precord)){
             if($hash == $precord->token){
                 \DB::table('password_resets')->where('email', $record->email)->delete();
-                return view('auth.passwords.reset')->with(["id" => $id, "rtype" => $rtype, "email" => $record->email]);
+                return view('auth.passwords.reset')->with(["id" => $id, "email" => $record->email]);
             }
         }
         return redirect('/login');
@@ -80,7 +79,7 @@ class ForgotPasswordController extends Controller
         $request->validate([
             'password' => 'required|string|min:6|confirmed'
         ]);
-        $table = 'App\\'.ucwords(rtrim($request->rtype,'s'));
+        $table = 'App\\User';
         $record = $table::findOrFail($request->id);
         $record->update([
             'password' => \Hash::make($request->password),

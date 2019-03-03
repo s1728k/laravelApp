@@ -7,153 +7,91 @@
 		<div class="col-md-12 table-responsive">
 			<table class="table">
         <caption>Files | for the app id: {{\Auth::user()->active_app_id}}<div class="btn-group" style="float:right">
-          <a class="btn btn-default" onclick="uploadFile()">Upload File</a>
-          <a class="btn btn-default" onclick="uploadFiles()">Upload Files</a></caption>
+          <form id="uploadFiles" method="post" action="{{route('c.files.upload.files')}}" enctype="multipart/form-data" style="display: none;">
+              <input type="hidden" name="_token" value="{{csrf_token()}}">
+              <input type="hidden" name="success" />
+              <input type="file" name="files[]" id="filesUpload" multiple onchange="$('#uploadFiles').submit()">
+          </form><label for="filesUpload"><a class="btn btn-default">Upload Files</a></label></caption>
 				<thead>
 					<tr>
 						<th>Sr</th>
+            <th>Id</th>
 						<th>File Name</th>
             <th>File Type</th>
             <th>File Size</th>
-            <th>Pivot Table</th>
-            <th>Pivot Column</th>
-            <th>Pivot Id</th>
-            <th>Sr No</th>
+            <th>File Path</th>
             <th colspan="2">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
           @foreach($files as $key => $file)
-          <tr id="r{{($key + 1)}}">
+          <tr id="r{{$file->id}}">
             <td>{{ ($key + 1) }}</td>
+            <td>{{ $file->id }}</td>
             <td>{{ $file->name }}</td>
             <td>{{ $file->mime }}</td>
             <td>{{ $file->size }}</td>
-            <td>{{ $file->pivot_table }}</td>
-            <td>{{ $file->pivot_field }}</td>
-            <td>{{ $file->pivot_id }}</td>
-            <td>{{ $file->sr_no }}</td>
-            <td><a>Preview</a></td>
-            <td><a style="cursor:pointer" href="/files/{{$file->pivot_table}}/{{$file->pivot_field}}/{{$file->pivot_id}}/{{$file->sr_no}}">Download</a></td>
+            <td>{{ str_replace(env('APP_URL'), '', $file->path) }}</td>
+            <td><a style="cursor:pointer" href="{{$file->path}}">Preview</a></td>
+            <td><a style="cursor:pointer" href="{{route('c.files.download',['id'=>$file->id])}}">Download</a></td>
+            <td><a style="cursor:pointer" onclick="deleteFile('{{$file->id}}','{{$file->name}}')">Delete</a></td>
+            @if(false)
+            <td><label for="file" class="link"><a onclick="replaceFile('{{$file->id}}','{{$file->name}}')">Replace</a></label></td>
             <td><form id="replaceFile{{($key + 1)}}" method="post" action="{{route('c.files.replace')}}" enctype="multipart/form-data" style="display: none;">
                           <input type="hidden" name="_token" value="{{csrf_token()}}">
-                          <input type="hidden" name="pivot_table" value="{{$file->pivot_table}}">
-                          <input type="hidden" name="pivot_field" value="{{$file->pivot_field}}">
-                          <input type="hidden" name="pivot_id" value="{{$file->pivot_id}}">
-                          <input type="hidden" name="sr_no" value="{{$file->sr_no}}">
+                          <input type="hidden" name="id" value="{{$file->id}}">
                           <input type="hidden" name="success" />
                           <input type="file" name="file" id="file{{($key + 1)}}" onchange="$('#replaceFile{{($key + 1)}}').submit()">
                       </form>
               <label for="file{{($key + 1)}}" class="link"><a>Replace</a></label></td>
-            <td><a>Delete</a></td>
+            <td><form id="delfile{{($key + 1)}}" method="post" action="{{route('c.files.delete')}}" style="display: none;">
+                          <input type="hidden" name="_token" value="{{csrf_token()}}">
+                          <input type="hidden" name="id" value="{{$file->id}}">
+                          <input type="hidden" name="success" />
+                      </form>
+              <label class="link"><a onclick="$('#delfile{{($key + 1)}}').submit()">Delete</a></label></td>
+            @endif
           </tr>
           @endforeach
 				</tbody>
 			</table>
       {{$files->links()}}
+      @if(false)
+      <form id="replaceFile" method="post" action="{{route('c.files.replace')}}" enctype="multipart/form-data" style="display: none;">
+          <input type="hidden" name="_token" value="{{csrf_token()}}">
+          <input type="hidden" name="id" id="id">
+          <input type="hidden" name="success" />
+          <input type="file" name="file" id="file" onchange="$('#replaceFile').submit()">
+      </form>
+      @endif
 		</div>
 	</div>
 </div>
-
 <script>
-  function uploadFile(){
-    $("#mt").html("Upload File For Reference");
-    $("#file_div").html($("#file_div_s").html());
-    $("#uploadFile").modal();
+  @if(false)
+  function replaceFile(id, file_name){
+    // var bool = confirm("Are you sure! you want to replace file " + file_name);
+    // if(!bool){
+    //   return;
+    // }
+    $('#id').val(id);
   }
-  function uploadFiles(){
-    $("#mt").html("Upload Files For Reference");
-    $("#files_div").html($("#files_div_s").html());
-    $("#uploadFileForm").attr('action', "{{route('c.files.upload.files')}}");
-    $("#uploadFile").modal();
-  }
-  function getFields(){
-    $.get("{{route('c.db.get.columns')}}", {"table":$("#pivot_table").val()}, function(data, status){
-      if(status = "success"){
-        $("#pivot_field").html(data);
+  @endif
+  function deleteFile(id, file_name){
+    var bool = confirm("Are you sure! you want to remove file " + file_name);
+    if(!bool){
+      return;
+    }
+    $.post("{{route('c.files.delete')}}", {'_token':'{{csrf_token()}}', 'id':id}, function(data){
+      console.log(data);
+      if(data['status'] == 'success'){
+        $('#r'+id).remove();
+        $('#alrt').html('<div class="alert alert-success"><strong>Success!</strong> File '+file_name+' was successfully removed.</div>');
+      }else{
+        $('#alrt').html('<div class="alert alert-warning"><strong>Warning!</strong> File '+file_name+' was not removed.</div>');
       }
     });
   }
 </script>
 
-<!-- Modal -->
-<div id="uploadFile" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <form id="uploadFileForm" method="post" action="{{route('c.files.upload.file')}}" enctype="multipart/form-data">
-        <input type="hidden" name="_token" value="{{csrf_token()}}" />
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="mt">Upload File For Reference </h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-group row">
-            <div class="col-md-4">
-              <label for="pivot_table">Pivot Table</label>
-            </div>
-            <div class="col-md-6">
-              <select id="pivot_table" name="pivot_table" class="form-control" onchange="getFields()" autofocus>
-                @foreach($tables as $table)
-                <option>{{$table}}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <div class="col-md-4">
-              <label for="pivot_field">Pivot Field</label>
-            </div>
-            <div class="col-md-6">
-              <select id="pivot_field" name="pivot_field" class="form-control">
-                @foreach($fields as $field)
-                <option>{{$field}}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <div class="col-md-4">
-              <label for="pivot_id">Pivot Id</label>
-            </div>
-            <div class="col-md-6">
-              <input id="pivot_id" type="number" class="form-control" name="pivot_id" required/>
-            </div>
-          </div>
-
-          <div class="form-group row" id="file_div"></div>
-          <div class="form-group row" id="files_div"></div>
-          <input type="hidden" name="success" />
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-default">Upload</button>
-        </div>
-      </form>
-    </div>
-
-  </div>
-</div>
-
-<div style="display: none">
-  <div class="form-group row" id="file_div_s">
-    <div class="col-md-4">
-      <label for="file">File Selected</label>
-    </div>
-    <div class="col-md-8">
-      <input id="file" type="file" class="form-control" name="file" required/>
-    </div>
-  </div>
-
-  <div class="form-group row" id="files_div_s">
-    <div class="col-md-4">
-      <label for="files">Files Selected</label>
-    </div>
-    <div class="col-md-8">
-      <input id="files" type="file" class="form-control" name="files[]" multiple required/>
-    </div>
-  </div>
-</div>
 @endsection

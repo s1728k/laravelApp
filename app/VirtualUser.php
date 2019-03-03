@@ -13,7 +13,7 @@ class VirtualUser extends Model
      * @var array
      */
     protected $fillable = [
-        'domain_id', 'email', 'password', 'app_id',
+        'user_id', 'domain_id', 'email', 'password', 'mailbox', 
     ];
 
 }

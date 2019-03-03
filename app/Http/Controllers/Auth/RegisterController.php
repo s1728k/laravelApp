@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use App\Admin;
 use App\Mail\EmailVerification;
 use App\Traits\RegistersUsers;
 use Illuminate\Support\Facades\Mail;
@@ -43,18 +42,10 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    protected function redirectTo($rtype = "")
+    protected function redirectTo()
     {
-        if ($rtype == "admin"){
-            \Log::Info(request()->ip()." redirected to email verification send page.");
-            return '/admin123/email_verification_sent';
-        }else if ($rtype == ""){
-            \Log::Info(request()->ip()." redirected to email verification send page.");
-            return '/email_verification_sent';
-        }else{
-            \Log::Info(request()->ip()." redirected to email verification send page.");
-            return "/".$rtype.'/email_verification_sent';
-        }
+        \Log::Info(request()->ip()." redirected to email verification send page.");
+        return '/email_verification_sent';
     }
 
     /**
@@ -84,46 +75,14 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'avatar' => '', 
-            'api_token' => '', 
-            'active_app_id' => 0, 
-            'online_status' => 'offline', 
-            'chat_resource_id' => 0, 
             'email_varification' => bcrypt($data['email']),
-            'blocked' => false,
         ]);
     }
 
-    protected function adminvalidator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:admins',
-            'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|string|max:255',
-        ]);
-    }
-
-    protected function admincreate(array $data)
-    {
-        return Admin::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'avatar' => '',
-            'api_token' => '', 
-            'role' => $data['role'],
-            'online_status' => 'offline',
-            'chat_resource_id' => 0,
-            'email_varification' => bcrypt($data['email']),
-            'blocked' => false,
-        ]);
-    }
-
-    protected function sendEmailVerificationMail($request, $rtype, $user)
+    protected function sendEmailVerificationMail($request, $user)
     {
         \Log::Info(request()->ip()." confirmation mail was sent to verify email.");
-        Mail::to($request->email)->send(new EmailVerification($rtype, $user));
+        Mail::to($request->email)->send(new EmailVerification($user));
     }
 
     public function email_verification_sent()
@@ -132,24 +91,12 @@ class RegisterController extends Controller
         return view('c.email-verification-sent')->with(['admin' => false]);
     }
 
-    public function verify_email($request, $rtype, $id)
+    public function verify_email($request, $id)
     {
-        switch ($rtype) {
-            case 'admin':
-                if('"'.Admin::findOrFail($id)->email_varification.'"' == $request->query('hash')){
-                    Admin::findOrFail($id)->update(['email_varification' => 'done']);
-                    return view('c.email_verified')->with(['admin' => true]);
-                };
-                return redirect('/admin/login');
-                break;
-                
-            default:
-                if('"'.User::findOrFail($id)->email_varification.'"' == $request->query('hash')){
-                    User::findOrFail($id)->update(['email_varification' => 'done']);
-                    return view('c.email_verified')->with(['admin' => false]);
-                };
-                break;
-        }
+        if('"'.User::findOrFail($id)->email_varification.'"' == $request->query('hash')){
+            User::findOrFail($id)->update(['email_varification' => 'done']);
+            return view('c.email_verified');
+        };
         \Log::Info(request()->ip()." email verification was successfull redirected to login page.");
         return redirect('/login-form');
     }

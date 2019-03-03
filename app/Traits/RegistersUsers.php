@@ -15,24 +15,10 @@ trait RegistersUsers
      *
      * @return \Illuminate\Http\Response
      */
-    public function showRegistrationForm($rtype = "")
+    public function showRegistrationForm()
     {
-        switch ($rtype) {
-            case 'admin':
-                \Log::Info(request()->ip()." visited admin signup page.");
-                return view('c.admin_signup');
-                break;
-            default:
-                \Log::Info(request()->ip()." visited laravel signup page.");
-                return view('c.auth.signup');
-                break;
-        }
-    }
-
-    public function showAdminRegistrationForm($rtype = "")
-    {
-        \Log::Info(request()->ip()." visited admin signup page.");
-        return view('c.admin_signup');
+        \Log::Info(request()->ip()." visited laravel signup page.");
+        return view('c.auth.signup');
     }
 
     /**
@@ -41,38 +27,22 @@ trait RegistersUsers
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request, $rtype = "")
+    public function register(Request $request)
     {
         \Log::Info(request()->ip()." attempted to register.");
         // $this->validator($request->all())->validate();
         // $this->guard()->login($user);
         // return $this->registered($request, $user) ?: redirect($this->redirectPath());
-        switch ($rtype) {
-            case 'admin':
-                $this->adminvalidator($request->all())->validate();
-                event(new Registered($user = $this->admincreate($request->all())));
-                $this->sendEmailVerificationMail($request, $rtype, $user);
-                return redirect($this->redirectPath($rtype));
-                break;
-            default:
-                $this->validator($request->all())->validate();
-                event(new Registered($user = $this->create($request->all())));
-                $this->sendEmailVerificationMail($request, $rtype, $user);
-                return redirect($this->redirectPath());
-                break;
-        }
+        $this->validator($request->all())->validate();
+        event(new Registered($user = $this->create($request->all())));
+        $this->sendEmailVerificationMail($request, $user);
+        return redirect($this->redirectPath());
     }
 
-    public function adminRegister(Request $request)
-    {
-        \Log::Info(request()->ip()." attempted to admin register.");
-        $this->register($request, 'admin');
-    }
-
-    public function email_verified(Request $request, $rtype, $id)
+    public function email_verified(Request $request, $id)
     {
         \Log::Info(request()->ip()." attempted to verify email.");
-        return $this->verify_email($request, $rtype, $id);
+        return $this->verify_email($request, $id);
     }
 
     /**

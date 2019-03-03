@@ -9,7 +9,7 @@
 			<div class="input-group" style="float:right;">
 				<a class="btn btn-default" href="{{route('c.db.crud.table')}}?table={{$table}}">Back</a></div></caption>
 		</div>
-	</div>
+	</div><hr>
 	<div class="row">
 		<div class="col-md-3"></div>
 		<div class="col-md-6">

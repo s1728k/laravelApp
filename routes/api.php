@@ -65,8 +65,8 @@ use Illuminate\Http\Request;
 // Route::put('/{table}/{id}', 'TTA\HomeController@updateRecord');
 // Route::delete('/{table}/{id}', 'TTA\HomeController@deleteRecord');
 
-Route::post('/image_get', 'TTA\HomeController@getImage');
-Route::post('/file/{pivot_table}/{pivot_field}/{pivot_id}', 'TTA\HomeController@storeFile');
+// Route::post('/image_get', 'TTA\HomeController@getImage');
+// Route::post('/file/{pivot_table}/{pivot_field}/{pivot_id}', 'TTA\HomeController@storeFile');
 
 
 // =================License Routes====================
@@ -82,22 +82,30 @@ Route::post('/get-license-key', 'GuestController@getLicenseKey')->name('l.get.li
 
 // =================App Client User Registration Routes====================
 
-Route::prefix('{app_id}/{auth_provider}')->group(function() {
-	Route::post('/register', 'ApiController@register')->name('app.user.register');
-	Route::post('/login', 'ApiController@login')->name('app.user.login');
-});
+// Route::prefix('{app_id}/{auth_provider}')->group(function() {
+// 	Route::post('/register', 'ApiController@register')->name('app.user.register');
+// 	Route::post('/login', 'ApiController@login')->name('app.user.login');
+// });
 
 // =================End App Client Routes====================
 
 // =================App Client Routes====================
 
-Route::middleware('jst.auth')->prefix('{app_id}/{auth_provider}')->group(function() {
-	Route::get('/', 'ApiController@index');
-	Route::get('/{table}/all', 'ApiController@listRecords');
-	Route::get('/{table}/{id}', 'ApiController@getRecord');
-	Route::post('/{table}/new', 'ApiController@storeRecord');
-	Route::post('/{table}/{id}', 'ApiController@updateRecord');
-	Route::post('/{table}/{id}/delete', 'ApiController@deleteRecord');
+// Route::middleware('jst.auth')->prefix('{app_id}/{auth_provider}')->group(function() {
+// 	Route::get('/', 'ApiController@index');
+// 	Route::get('/{table}/all', 'ApiController@listRecords');
+// 	Route::get('/{table}/get/{id}', 'ApiController@getRecord');
+// 	Route::post('/{table}/new', 'ApiController@storeRecord');
+// 	Route::post('/{table}/mod/{id}', 'ApiController@updateRecord');
+// 	Route::post('/{table}/del/{id}', 'ApiController@deleteRecord');
+// });
+
+// =================End App Client Routes====================
+
+// =================App Client Routes====================
+
+Route::middleware('jst.auth')->prefix('{query_id}')->group(function() {
+	Route::match(['get', 'post', 'put', 'delete'], '/{id?}', 'ApiController@junction')->where('id', '[0-9]+');
 });
 
 // =================End App Client Routes====================

@@ -14,6 +14,8 @@ use App\Traits\Crone;
 use App\Traits\LicensesSoftwares;
 use App\Traits\CreatesTables;
 use App\Traits\SqlQueries;
+use App\Traits\ExportsDb;
+use App\Traits\CreatesQueries;
 use App\Traits\EmailAccounts;
 use App\Traits\FilesStore;
 use App\Traits\ValidatesRequests;
@@ -26,12 +28,15 @@ class CloudController extends Controller
     use LicensesSoftwares;
     use CreatesTables;
     use SqlQueries;
+    use ExportsDb;
+    use CreatesQueries;
     use EmailAccounts;
     use FilesStore;
     use ValidatesRequests;
     use PushesNotifications;
 
     public $app_id;
+    public $con;
 
 	protected $rtype = '';
     protected $auth = 'auth';
@@ -45,6 +50,7 @@ class CloudController extends Controller
         $this->middleware($this->auth);
         $this->middleware(function ($request, $next) {
             $this->app_id = \Auth::user()->active_app_id;
+            $this->con = App::findOrFail($this->app_id)->db_connection;
             return $next($request);
         });
     }
@@ -134,9 +140,7 @@ class CloudController extends Controller
             'name' => $request->name??'My App',
             'user_id' => \Auth::user()->id,
             'secret' => bcrypt(uniqid(rand(), true)),
-            'permissions' => json_encode(array('c' => '', 'r' => '', 'u' => '', 'd' => '')),
-            'roles' => "",
-            'auth_providers' => json_encode(array('users')),
+            'auth_providers' => json_encode(array('guest', 'users')),
             'blocked' => false,
             'origins' => "",
         ])->id;
@@ -163,92 +167,26 @@ class CloudController extends Controller
         return redirect()->route('c.app.list.view');
     }
 
-    public function appFiltersView(Request $request, $id)
-    {
-        \Log::Info(request()->ip()." visited app roles page for app ".$id);
-        $app = App::findOrFail($id);
-        $table_filters = json_decode($app->table_filters, true)??[];
-        return view($this->theme.'.app_filters')->with([
-            'selected_app' => $app,
-            'table_filters' => $table_filters,
-        ]);
-    }
-
-    public function saveFilters(Request $request, $id)
-    {
-        \Log::Info(request()->ip()." requested to save roles for app ".$id);
-        $app = App::findOrFail($id)->update([
-            'table_filters' => json_encode($request->f),
-        ]);
-        return ['status' => 'success'];
-    }
-
-    public function appRolesView(Request $request, $id)
-    {
-        \Log::Info(request()->ip()." visited app roles page for app ".$id);
-        $app = App::findOrFail($id);
-        $auth_providers = json_decode($app->auth_providers, true)??[];
-        return view($this->theme.'.app_roles')->with([
-            'selected_app' => $app,
-            'auth_providers' => $auth_providers,
-        ]);
-    }
-
-    public function saveRoles(Request $request, $id)
-    {
-        \Log::Info(request()->ip()." requested to save roles for app ".$id);
-        \Log::Info($request->r);
-        $app = App::findOrFail($id)->update([
-            'auth_providers' => json_encode($request->r),
-        ]);
-        return ['status' => 'success'];
-    }
-
     public function appPermissionsView(Request $request, $id)
     {
         \Log::Info(request()->ip()." visited app permissions page for app ".$id);
         $app = App::findOrFail($id);
         $tables = $this->getTables($id);
-        $user_type_fields = [];
-        $user_role_fields =[];
-        $user_id_fields = [];
-        $fields = [];
-        foreach ($tables as $table) {
-            $user_type_fields[$table]=$this->getFieldsLike($table, ["\_by", "\_type"], $id);
-            $user_role_fields[$table]=$this->getFieldsLike($table, ["\_role"], $id);
-            $user_id_fields[$table]=$this->getFieldsLike($table, ["\_id"], $id);
-            $fields[$table]=$this->getRemovableFields($table, $id);
-        }
-        $perm = json_decode($app->permissions, true)??[];
-        $arr = json_decode($app->auth_providers, true)??[];
-        $tfs = json_decode($app->table_filters, true)??[];
-        $p = [];
-        foreach ($arr as $ap => $roles) {
-            $r=[];
-            foreach ($roles['r'] as $role) {
-                $t=[];
-                foreach ($tfs as $table => $filters) {
-                    $f=[];
-                    foreach ($filters as $filter) {
-                        if(isset($perm[$ap][$role][$table]['f'][$filter])){
-                            $f[$filter] = $perm[$ap][$role][$table]['f'][$filter];
-                            $t[$table] = ['f'=>$f, 'p'=>$perm[$ap][$role][$table]['p']];
-                        }else{
-                            $f[$filter] = ['p' => "none", 'u' => "none", 'r' => "none", 'd' => "none", 'uf' => []];
-                            $t[$table] = ['f'=>$f, 'p'=>0];
-                        }
-                        $r[$role] = $t;
-                        $p[$ap] = $r;
-                    }
+        $auth_providers = json_decode($app->auth_providers, true)??[];
+        $p = json_decode($app->permissions, true)??[];
+        $pm = ['c','r','u','d'];
+
+        foreach ($pm as $m) {
+            $p[$m] = $p[$m]??[];
+            foreach ($auth_providers as $a) {
+                $p[$m][$a] = $p[$m][$a]??[];
+                foreach ($tables as $t) {
+                    $p[$m][$a][$t] = $p[$m][$a][$t]??false;
                 }
             }
         }
         return view($this->theme.'.app_permissions')->with([
             'selected_app' => $app,
-            'user_type_fields' => $user_type_fields,
-            'user_role_fields' => $user_role_fields,
-            'user_id_fields' => $user_id_fields,
-            'fields' => $fields,
             'p' => $p,
         ]);
     }
@@ -266,11 +204,11 @@ class CloudController extends Controller
     {
         $this->app_id = $app_id??$this->app_id;
         $table_name = $this->tClass($table);
-        $myFilePath = app_path() ."/Models/$table_name.php";
-        if(!file_exists($myFilePath)){
+        // $myFilePath = app_path() ."/Models/$table_name.php";
+        // if(!file_exists($myFilePath)){
             $arr = json_decode(App::findOrFail($this->app_id)->auth_providers, true);
             $this->createModelClass($table, in_array($table, $arr));
-        }
+        // }
         return "App\\Models\\".$table_name;
     }
 

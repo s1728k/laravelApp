@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use PDO;
 use JWTAuth;
 use App\App;
+use App\Query;
+use App\Traits\ScrapesWeb;
 use App\Traits\StoresSessionTokens;
 use App\Traits\CreatesModelClass;
 use App\Traits\SqlQueries;
@@ -18,6 +20,7 @@ use Illuminate\Config\Repository\Config;
 
 class ApiController extends Controller
 {
+    use ScrapesWeb;
     use StoresSessionTokens;
     use CreatesModelClass;
     use SqlQueries;
@@ -25,9 +28,10 @@ class ApiController extends Controller
     use ValidatesRequests;
 
     public $app_id;
+    public $con;
 
     private $table;
-    private $visibles;
+    private $fillables;
     private $hiddens;
     private $has_many;
     private $filters;
@@ -38,154 +42,228 @@ class ApiController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->visibles = $request->query("visibles");
+        $this->fillables = $request->query("fillables");
         $this->hiddens = $request->query("hiddens")?$request->query("hiddens"):[];
         $this->has_many = $request->query("has_many")?$request->query("has_many"):[];
         $this->filters = $request->query("filters");
         $this->dates = $request->query("dates");
     }
 
-    public function register(Request $request, $app_id, $auth_provider)
+    public function junction(Request $request, $query_id, $id = null)
     {
-        \Log::Info(request()->ip()." end user registered app_id ".$app_id);
-        $this->routeChecker($app_id, $auth_provider, $request->secret);
-        $this->app_id = $app_id;
-        $table = $this->gtc($auth_provider);
-        $this->validateGenericInputs($request, $auth_provider, ['id', 'created_at', 'updated_at']);
-        $id = $table::create($request->all())->id;
-        $table::findOrFail($id)->update(['password' => bcrypt($request->password)]);
-        return ['status' => 'success'];
-    }
+        \Log::Info('junction');
+        $query = Query::findOrFail($query_id);
+        $this->app_id = $query->app_id;
+        $this->con = App::findOrFail($this->app_id)->db_connection;
 
-    public function login(Request $request, $app_id, $auth_provider)
-    {
-        $this->routeChecker($app_id, $auth_provider, $request->secret);
-        \Log::Info(request()->ip()." end user logged in app_id ".$app_id);
-        $this->app_id = $app_id;
-        $table = $this->gtc($auth_provider);
-        $record = $table::where(['email' => $request->email])->first();
-        if (\Hash::check($request->password, $record->password)){
-            $new_token = $this->getToken($app_id, $auth_provider, $record->id);
-            return ['status' => 'success', '_token' => $new_token, 'user' => $record];
+        if(!$request->author){
+            $authors = explode(', ', $query->auth_providers);
+            $author = $authors[0];
         }else{
-            return ['status' => "failed"];
+            $author = $request->author;
+        }
+
+        if(!$request->table){
+            $tables = explode(', ', $query->tables);
+            $table = $tables[0];
+        }else{
+            $table = $request->table;
+        }
+
+        if(!$request->command){
+            $commands = explode(', ', $query->commands);
+            $command = $commands[0];
+        }else{
+            $command = $request->command;
+        }
+
+        if(!$request->fillable){
+            $fillables = explode(', ', $query->fillables);
+        }else{
+            $fillables = explode(',', $request->fillable);
+        }
+
+        if(!$request->hidden){
+            $hiddens = explode(', ', $query->hiddens);
+        }else{
+            $hiddens = explode(',', $request->hidden);
+        }
+
+        if(!$request->mandatory){
+            $mandatory = explode(', ', $query->mandatory);
+        }else{
+            $mandatory = explode(',', $request->mandatory);
+        }
+
+        if(!$request->join){
+            $joins = explode('|', $query->joins);
+        }else{
+            $joins = explode('|', $request->join);
+        }
+
+        if(!$request->filter){
+            $filters = explode('|', $query->filters);
+        }else{
+            $filters = explode('|', $request->filter);
+        }
+
+        if(!$request->special){
+            // $specials = explode(', ', $query->specials);
+            // $special = $specials[0];
+            $special = "";
+        }else{
+            $special = $request->special;
+        }
+
+        if($command == 'signup'){
+            array_push($fillables, 'password');
+            return $this->signup($request, $table, $fillables, $hiddens);
+        }elseif($command == 'login'){
+            array_push($fillables, 'password');
+            return $this->login($request, $table, $fillables, $hiddens);
+        }elseif($command == 'files_upload'){
+            return $this->uploadFiles($request);
+        }
+
+        $table_class = $this->gtc($table, $fillables, $hiddens);
+
+        if($command == 'all'){
+            return $this->index($table, $fillables, $hiddens, $joins, $filters, $special);
+        }elseif($command == 'new'){
+            return $this->storeRecord($request, $table_class, $table, $mandatory);
+        }elseif($command == 'get'){
+            return $this->getRecord($table_class, $id, $joins);
+        }elseif($command == 'mod'){
+            return $this->updateRecord($request, $table_class, $table, $id, $mandatory);
+        }elseif($command == 'del'){
+            return $this->deleteRecord($table_class, $id);
         }
     }
 
-    public function index(Request $request, $app_id, $auth_provider)
+    public function index($table, $fillables = [], $hiddens = [], $joins = [], $filters = [], $special = null)
     {
-        \Log::Info(request()->ip()." end user requested auth_id in app_id ".$app_id);
-        $this->app_id = $app_id;
-        return ['auth_id' => $this->getAuthId($app_id, $auth_provider, $request->_token)];
-    }
-
-    public function count($app_id, $auth_provider, $table){
-        \Log::Info(request()->ip()." end user requested count in app_id ".$app_id);
-        $this->app_id = $app_id;
-        $this->setTable($table);
-        return $this->table::count();
-    }
-
-    public function listRecords($app_id, $auth_provider, $table)
-    {
-        \Log::Info(request()->ip()." end user requested list of records in app_id ".$app_id);
-        $this->app_id = $app_id;
-        if(!$this->permitChecker($app_id, $auth_provider, $table, 'r')){
-            return ['status' => 'un authorized'];
+        \Log::Info(request()->ip()." end user requested list of records in app_id ".$this->app_id);
+        $table_class = $this->gtc($table, $fillables, $hiddens);
+        $query = $table_class::where('id','<>',0);
+        foreach ($filters as $filter) {
+            $f = explode(", ", $filter);
+            if($f[0] == 'where'){
+                $query = $query->where($f[1],$f[2],$f[3]);
+            }elseif($f[0] == 'orWhere'){
+                $query = $query->orWhere($f[1],$f[2],$f[3]);
+            }
         }
-        $this->setTable('app'.$app_id.'_'.$table);
-        \Log::Info($this->table::all());
-        $this->table = $this->table::all();
-        $this->table = $this->table->makeVisible($this->visibles);
-        $this->table = $this->table->makeHidden($this->hiddens);
-        if(is_array($this->filters)){
-            $this->table = $this->table->filter(function($item){
-                foreach ($this->filters as $key => $value) {
-                    if($item[$key] != $value){
-                        return false;
-                    }
-                }
-                return true;
-            });
+        // $arr = $this->getFields($table, ['password', 'remember_token'], $this->app_id);
+        // $query->select(array_intersect($arr,$fillables));
+        if($special == 'pluck'){
+            $res = $query->pluck($column);
+        }elseif($special == 'count'){
+            $res = ['count' => $query->count()];
+        }elseif($special == 'max'){
+            $res = ['max' => $query->max($column)];
+        }elseif($special == 'min'){
+            $res = ['min' => $query->min($column)];
+        }elseif($special == 'avg'){
+            $res = ['avg' => $query->avg($column)];
+        }elseif($special == 'sum'){
+            $res = ['sum' => $query->sum($column)];
+        }else{
+            $res = $query->get();
         }
-        $this->processTableForHasMany($table);
-        return $this->table->toArray();
+        $this->remModelClass($table_class);
+        return $res;
     }
 
-    public function getRecord($app_id, $auth_provider, $table, $id)
+    public function storeRecord($request, $table_class, $table, $mandatory = [])
     {
-        \Log::Info(request()->ip()." end user requested get record in app_id ".$app_id);
-        $this->app_id = $app_id;
-        $this->setTable('app'.$app_id.'_'.$table);
-        $this->table = $this->table::findOrFail($id);
-        // $this->table = $this->table->makeVisible($this->visibles);
-        // $this->table = $this->table->makeHidden($this->hiddens);
-        // foreach ($this->has_many as $key => $value) {
-        //     if( strpos($value, '|') ){
-        //         $value = explode('|', $value);
-        //         $stable = 'App\\Models\\'.$this->auth_user->id.'\\'.$this->auth_user->active_app_id.ucwords(rtrim($value[0],'s'));
-        //         $this->table[$value[1]] = $stable::where('pivot_table', $table)->where('pivot_field', $value[1])->where('pivot_id', $id)->get();
-        //     }else{
-        //         $stable = 'App\\Models\\'.$this->auth_user->id.'\\'.$this->auth_user->active_app_id.ucwords(rtrim($value,'s'));
-        //         $this->table[$value] = $stable::where($table.'_id', $id);
-        //     }
-        // }
-        return $this->table->toArray();
+        \Log::Info(request()->ip()." end user requested store record in app_id ".$this->app_id);
+        $this->validateGenericInputs($request, $table, ['id', 'created_at', 'updated_at'], $mandatory);
+        $res = $table_class::create($request->all())->id;
+        $this->remModelClass($table_class);
+        return ['id' => $res];
     }
 
-    public function storeRecord($app_id, $auth_provider, $table)
+    public function getRecord($table_class, $id, $joins = [])
     {
-        \Log::Info(request()->ip()." end user requested store record in app_id ".$app_id);
-        $this->app_id = $app_id;
-        $this->setTable('app'.$app_id.'_'.$table);
-        // $this->processRequestForDates();
-        $id = $this->table::create($this->request->all())->id;
-        return $id;
+        \Log::Info(request()->ip()." end user requested get record in app_id ".$this->app_id);
+        $res = $table_class::findOrFail($id);
+        $this->remModelClass($table_class);
+        return $res;
     }
 
-    public function updateRecord($app_id, $auth_provider, $table, $id)
+    public function updateRecord($request, $table_class, $table, $id, $mandatory = [])
     {
-        \Log::Info(request()->ip()." end user requested updated record in app_id ".$app_id);
-        $this->app_id = $app_id;
-        $this->setTable('app'.$app_id.'_'.$table);
-        $record = $this->table::findOrFail($id)->update($this->request->all());
+        \Log::Info(request()->ip()." end user requested updated record in app_id ".$this->app_id);
+        $this->validateGenericInputs($request, $table, ['id', 'created_at', 'updated_at'], $mandatory);
+        $record = $table_class::findOrFail($id)->update($request->all());
+        $this->remModelClass($table_class);
         return ['status' => 'success'];
     }
 
-    public function deleteRecord($app_id, $auth_provider, $table, $id)
+    public function deleteRecord($table_class, $id)
     {
-        \Log::Info(request()->ip()." end user requested delete record in app_id ".$app_id);
-        $this->app_id = $app_id;
-        $this->setTable('app'.$app_id.'_'.$table);
-        $record = $this->table::findOrFail($id);
-        if($this->table::destroy($id)){
+        \Log::Info(request()->ip()." end user requested delete record in app_id ".$this->app_id);
+        $record = $table_class::findOrFail($id);
+        if($table_class::destroy($id)){
+            $this->remModelClass($table_class);
             return ['status' => 'success'];
         }
     }
 
-    public function storeFile($app_id, $auth_provider, $pivot_table, $pivot_field, $pivot_id)
+    public function signup($request, $author, $fillables, $hiddens)
     {
-        \Log::Info(request()->ip()." end user requested store file in app_id ".$app_id);
-        $this->app_id = $app_id;
-        // public_path(); // Path of public/
-        // base_path(); // Path of application root
-        // storage_path(); // Path of storage/
-        // app_path(); // Path of app/
+        \Log::Info(request()->ip()." end user registered app_id ".$this->app_id);
+        $app = App::findOrFail($this->app_id);
+        if($app->secret !== $request->secret){
+            return ['status' => 'failed'];
+        }
+        $this->validateGenericInputs($request, $author, ['id', 'created_at', 'updated_at']);
+        $table_class = $this->gtc($author, $fillables, $hiddens);
+        $record = $table_class::create($request->all());
+        $record->update(['password' => bcrypt($request->password)]);
+        $this->remModelClass($table_class);
+        return ['status' => 'success'];
+    }
 
-        \Log::Info("storeFile".$pivot_table.$pivot_field.$pivot_id);
-        $path = storage_path() .'/app/'. $this->request->file('uploadFile')->store($pivot_table.'/'.$pivot_field.'/'.$pivot_id);
+    public function login($request, $author, $fillables, $hiddens)
+    {
+        \Log::Info(request()->ip()." end user logged in app_id ".$this->app_id);
+        $app = App::findOrFail($this->app_id);
+        if($app->secret !== $request->secret){
+            return ['status' => 'failed'];
+        }
+        $table_class = $this->gtc($author, $fillables, $hiddens);
+        $record = $table_class::where(['email' => $request->email])->first();
+        if (\Hash::check($request->password, $record->password)){
+            $new_token = $this->getToken($this->app_id, $author, $record->id);
+            $this->remModelClass($table_class);
+            return ['status' => 'success', '_token' => $new_token, 'user' => $record];
+        }else{
+            $this->remModelClass($table_class);
+            return ['status' => "failed"];
+        }
+    }
 
-        $this->setTable('attach');
-        $id = $this->table::create([
-            'pivot_table' => $pivot_table, 
-            'pivot_field' => $pivot_field, 
-            'pivot_id' => $pivot_id, 
-            // 'attach_type_id' => $attach_type_id, 
-            // 'attach_name' => $attach_name, 
-            'path' => $path
-        ])->id;
-
-        return ['id' => $id , 'path'=> $path];
+    public function uploadFiles($request)
+    {
+        \Log::Info(request()->ip()." uploaded files for app id ".$this->app_id);
+        $files = $request->file('files');
+        $res = [];
+        if($request->hasFile('files'))
+        {
+            $table = 'App\\File';
+            foreach ($files as $key => $file) {
+                $path = $file->store('public');
+                $res[] = $table::create([
+                    'app_id' => $this->app_id,
+                    'name' => $file->getClientOriginalName(),
+                    'mime' => $file->getMimeType(),
+                    'size' => $file->getSize(),
+                    'path' => env('APP_URL').str_replace('public','/public/storage',$path),
+                ]);
+            }
+        }
+        return $res;
     }
 
     private function setTable($table)
@@ -262,29 +340,23 @@ class ApiController extends Controller
         }
     }
 
-    private function permitChecker($app_id, $auth_provider, $table, $p)
-    {
-        $app = App::findOrFail($app_id);
-        $perm = json_decode($app->permissions, true);
-        if(empty($perm[$p][$table.'guest'])){
-            if(empty($perm[$p][$table.$auth_provider])){
-                \Log::Info(request()->ip()." permission denied for end user in app_id ".$app_id);
-                return false;
-            }
-        }
-        \Log::Info(request()->ip()." permission granted for end user in app_id ".$app_id);
-        return true;
-    }
-
-    public function gtc($table)
+    public function gtc($table, $fillables = null, $hiddens = null)
     {
         $table_name = ucwords(rtrim('app'.$this->app_id.'_'.$table),'s');
-        $myFilePath = app_path() ."/Models/$table_name.php";
-        if(!file_exists($myFilePath)){
+        // $myFilePath = app_path() ."/Models/$table_name.php";
+        // if(!file_exists($myFilePath)){
             $arr = json_decode(App::findOrFail($this->app_id)->auth_providers, true);
-            $this->createModelClass($table, in_array($table, $arr));
-        }
+            $this->createModelClass($table, in_array($table, $arr), $fillables, $hiddens);
+        // }
         return "App\\Models\\".$table_name;
+    }
+
+    private function remModelClass($table_class)
+    {
+        $myFilePath = base_path() .'/'.$table_class.'.php';
+        if(is_writable($myFilePath)){
+            unlink($myFilePath);
+        }
     }
 
     public function tClass($table)

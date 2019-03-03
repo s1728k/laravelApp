@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 
 use Config;
+use Minishlink\WebPush\WebPush;
+use Minishlink\WebPush\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -21,14 +23,75 @@ class TempController extends Controller
 
     public function up()
     {
-        Schema::create('a123', function (Blueprint $table) {
-            $length = "";
-            $length = $length ?: Builder::$defaultStringLength;
+        // Schema::create('a123', function (Blueprint $table) {
+        //     $length = "";
+        //     $length = $length ?: Builder::$defaultStringLength;
 
-            $table->addColumn('string', "name", compact('length'));
-            // $table->addColumn("string", "name");
-        });
+        //     $table->addColumn('string', "name", compact('length'));
+        //     // $table->addColumn("string", "name");
+        // });
+        // Schema::dropIfExists('queries');
+        
+        // Schema::create('queries', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->integer('app_id')->unsigned()->index();
+        //     $table->string("name");
+        //     $table->string("auth_providers");
+        //     $table->string("tables");
+        //     $table->string("commands");
+        //     $table->text("fillables")->nullable();
+        //     $table->text("hiddens")->nullable();
+        //     $table->text("mandatory")->nullable();
+        //     $table->text("joins")->nullable();
+        //     $table->text("filters")->nullable();
+        //     $table->string("specials")->nullable();
+        //     $table->timestamps();
+        // });
+
+        // Schema::dropIfExists('files');
+
+        // Schema::create('files', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->unsignedInteger('app_id');
+        //     $table->string('name');
+        //     $table->string('mime');
+        //     $table->unsignedInteger('size');
+        //     $table->string('path');
+        //     $table->timestamps();
+        // });
+        $notifications = [
+            ['subscription' => Subscription::create([ 
+                "endpoint" => "https://fcm.googleapis.com/fcm/send/e1LoQfvvs_U:AP…v4SpLrMws5eoDlMi3oN5Dck6KjkoDxna7OytHut8Qa4mw7yxJ",
+                "keys" => [
+                    'p256dh' => "BFjhL9sLLpQgNowT2M-q1eptYxWfURT9cz2q6myy4BJKyqI4Qx0P6lq6SAtDPDcRv7MNUNLj2x_5gvwY7iiZdew",
+                    'auth' => 'CidMraZ8ZPbaXPtn2POybw'
+                    ],
+                ]),
+            'payload' => '{msg:"Hello World!"}',
+            ],
+        ];
+
+        $webPush = new WebPush();
+
+        foreach ($notifications as $notification) {
+            $webPush->sendNotification(
+                $notification['subscription'],
+                $notification['payload']
+            );
+        }
+
+        foreach ($webPush->flush() as $report) {
+            $endpoint = $report->getRequest()->getUri()->__toString();
+
+            if ($report->isSuccess()) {
+                echo "[v] Message sent successfully for subscription {$endpoint}.";
+            } else {
+                echo "[x] Message failed to sent for subscription {$endpoint}: {$report->getReason()}";
+            }
+        }
+
     }
+
 
     public function down()
     {

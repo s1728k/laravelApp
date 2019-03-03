@@ -11,7 +11,6 @@ class ResetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $rtype;
     protected $precord;
 
     /**
@@ -19,9 +18,8 @@ class ResetPasswordMail extends Mailable
      *
      * @return void
      */
-    public function __construct($rtype, $precord)
+    public function __construct($precord)
     {
-        $this->rtype = $rtype;
         $this->precord = $precord;
     }
 
@@ -32,9 +30,9 @@ class ResetPasswordMail extends Mailable
      */
     public function build()
     {
-        $table = 'App\\'.ucwords(rtrim($this->rtype,'s'));
+        $table = 'App\\User';
         $record = $table::where('email', $this->precord->email)->first();
-        $urlpath = '/'.$this->rtype.'/'.$record->id.'?hash="'.$this->precord->token.'"';
-        return $this->view('c.auth.passwords.password-reset-mail')->with(['rtype' => $this->rtype, 'urlpath' => $urlpath]);
+        $urlpath = '/'.$record->id.'?hash="'.$this->precord->token.'"';
+        return $this->view('c.auth.passwords.password-reset-mail')->with(['urlpath' => $urlpath]);
     }
 }

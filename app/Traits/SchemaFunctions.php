@@ -11,7 +11,7 @@ trait SchemaFunctions
 	public function createUsersSchema($app_id)
 	{
 		\Log::Info(request()->ip()." created users schema for app id ".$app_id);
-		Schema::create('app'.$app_id.'_users', function (Blueprint $table) {
+		Schema::connection($this->con)->create('app'.$app_id.'_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
@@ -28,7 +28,7 @@ trait SchemaFunctions
 	public function createTableSchema($request, $table)
 	{
 		\Log::Info(request()->ip()." created table schema for app id ".$this->app_id);
-		Schema::create($this->table($table), function (Blueprint $table) use ($request) {
+		Schema::connection($this->con)->create($this->table($table), function (Blueprint $table) use ($request) {
             $this->schemaColumnsDeveloper($request, $table);
         });
 	}
@@ -36,16 +36,16 @@ trait SchemaFunctions
 	public function renameTableSchema($from, $to)
 	{
 		\Log::Info(request()->ip()." renamed table schema for app id ".$this->app_id);
-		if(!Schema::hasTable($this->table($from))){
+		if(!Schema::connection($this->con)->hasTable($this->table($from))){
 			return ['status' => 'table name doest not exist.'];
 		}
-		Schema::rename($this->table($from), $this->table($to));
+		Schema::connection($this->con)->rename($this->table($from), $this->table($to));
 	}
 
 	public function addColumnsSchema($request, $table)
 	{
 		\Log::Info(request()->ip()." added columns to table schema for app id ".$this->app_id);
-		Schema::table($this->table($table), function (Blueprint $table) use ($request) {
+		Schema::connection($this->con)->table($this->table($table), function (Blueprint $table) use ($request) {
 			$this->schemaColumnsDeveloper($request, $table);
         }); 
 	}
@@ -53,12 +53,12 @@ trait SchemaFunctions
 	public function renameSchemaColumn($table, $from, $to)
 	{
 		\Log::Info(request()->ip()." renamed column to table schema for app id ".$this->app_id);
-		if(!Schema::hasColumn($this->table($table), $from)){
+		if(!Schema::connection($this->con)->hasColumn($this->table($table), $from)){
 			\Log::Info('hasColumn');
 			return ['status' => 'column desnot exist.'];
 		}
 		\Log::Info('renameColumn');
-		Schema::table($this->table($table), function (Blueprint $table)use($from, $to){
+		Schema::connection($this->con)->table($this->table($table), function (Blueprint $table)use($from, $to){
 			\Log::Info('renameColumn');
             $table->renameColumn($from, $to);
         });
@@ -67,10 +67,10 @@ trait SchemaFunctions
 	public function deleteSchemaColumn($table, $column)
 	{
 		\Log::Info(request()->ip()." deleted column to table schema for app id ".$this->app_id);
-		if(!Schema::hasColumn($this->table($table), $column)){
+		if(!Schema::connection($this->con)->hasColumn($this->table($table), $column)){
 			return ['status' => 'column desnot exist.'];
 		}
-		Schema::table($this->table($table), function (Blueprint $table)use($column){
+		Schema::connection($this->con)->table($this->table($table), function (Blueprint $table)use($column){
             $table->dropColumn($column);
         });
 	}
@@ -78,8 +78,8 @@ trait SchemaFunctions
 	public function addIndexToSchemaColumn($table_name, $column_name, $index_name)
 	{
 		\Log::Info(request()->ip()." added index to column to table schema for app id ".$this->app_id);
-		Schema::table($this->table($table_name), function (Blueprint $table) use($table_name, $column_name, $index_name){
-		    $sm = Schema::getConnection()->getDoctrineSchemaManager();
+		Schema::connection($this->con)->table($this->table($table_name), function (Blueprint $table) use($table_name, $column_name, $index_name){
+		    $sm = Schema::connection($this->con)->getConnection()->getDoctrineSchemaManager();
 		    $indexesFound = $sm->listTableIndexes($table_name);
 
 		    $in = $table_name.'_'.$column_name.'_'.$index_name;
@@ -108,8 +108,8 @@ trait SchemaFunctions
 	public function removeIndexFromSchemaColumn($table_name, $column_name, $index_name)
 	{
 		\Log::Info(request()->ip()." removed index to column to table schema for app id ".$this->app_id);
-        Schema::table($this->table($table_name), function (Blueprint $table) use($table_name, $column_name, $index_name){
-		    $sm = Schema::getConnection()->getDoctrineSchemaManager();
+        Schema::connection($this->con)->table($this->table($table_name), function (Blueprint $table) use($table_name, $column_name, $index_name){
+		    $sm = Schema::connection($this->con)->getConnection()->getDoctrineSchemaManager();
 		    $indexesFound = $sm->listTableIndexes($table_name);
 
 		    $in = $table_name.'_'.$column_name.'_'.$index_name;

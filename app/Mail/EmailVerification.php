@@ -11,7 +11,6 @@ class EmailVerification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $rtype;
     protected $user;
 
     /**
@@ -19,9 +18,8 @@ class EmailVerification extends Mailable
      *
      * @return void
      */
-    public function __construct($rtype, $user)
+    public function __construct($user)
     {
-        $this->rtype = $rtype;
         $this->user = $user;
     }
 
@@ -32,7 +30,7 @@ class EmailVerification extends Mailable
      */
     public function build()
     {
-        $urlpath = '/'.$this->rtype.'/'.$this->user->id.'?hash="'.$this->user->email_varification.'"';
-        return $this->view('c.email-verification-mail')->with(['rtype' => $this->rtype, 'urlpath' => $urlpath]);
+        $urlpath = '/'.$this->user->id.'?hash="'.$this->user->email_varification.'"';
+        return $this->view('c.email-verification-mail')->with(['urlpath' => $urlpath]);
     }
 }

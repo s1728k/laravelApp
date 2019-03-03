@@ -24,10 +24,8 @@
             <td>{{$app->secret}}</td>
             <td><a style="cursor:pointer" onclick="activate({{$app->id}}, {{$loop->index}})">Activate</a></td>
             <td><a style="cursor:pointer" onclick="updateApp({{$app->id}}, {{$loop->index}})">Update App</a></td>
-            <td><a style="cursor:pointer" href="{{ route('c.app.roles.view', ['id' => $app->id]) }}">Roles</a></td>
-            <td><a style="cursor:pointer" href="{{ route('c.app.filters.view', ['id' => $app->id]) }}">Filters</a></td>
-            <td><a style="cursor:pointer" href="{{ route('c.app.permissions.view', ['id' => $app->id]) }}">Permissions</a></td>
             <td><a style="cursor:pointer" href="{{ route('c.app.origins.view', ['id' => $app->id]) }}">Origins</a></td>
+            <td><a style="cursor:pointer" href="{{ route('c.app.sql.export', ['id' => $app->id]) }}">ExportDB</a></td>
           </tr>
           @endforeach
 				</tbody>

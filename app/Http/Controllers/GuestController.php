@@ -18,72 +18,49 @@ class GuestController extends CloudController
      */
     public function __construct()
     {
-        $table = 'App\\Visitor';
-        $record = $table::where('ip_address', request()->ip())->first();
-        $this->theme = $record->theme??'cb';
-    }
 
-    public function setTheme(Request $request)
-    {
-        $arr = ['Bootstrap Theme' => 'cb', 'Materialize Theme' => 'cm'];
-        $table = 'App\\Visitor';
-        $record = $table::where('ip_address', request()->ip())->first();
-        if(!empty($record)){
-            $record->update([
-                'ip_address' => request()->ip(),
-                'uuid' => $request->uuid,
-                'theme' => $arr[$request->theme]
-            ]);
-        }else{
-            $table::create([
-                'ip_address' => request()->ip(),
-                'uuid' => $request->uuid,
-                'theme' => $arr[$request->theme]
-            ]);
-        }
-        return redirect()->route('c.welcome');
     }
 
     public function homeView()
     {
         \Log::Info(request()->ip()." visited welcome page.");
-        return view($this->theme.'.welcome')->with(['admin' => false]);
+        return view($this->theme.'.welcome');
     }
 
     public function docsView()
     {
         \Log::Info(request()->ip()." visited docs page.");
-        return view($this->theme.'.docs')->with(['admin' => false]);
+        return view($this->theme.'.docs');
     }
 
     public function loginView()
     {
         \Log::Info(request()->ip()." visited login page.");
-        return view($this->theme.'.auth.login')->with(['admin' => false]);
+        return view($this->theme.'.auth.login');
     }
 
     public function signupView()
     {
         \Log::Info(request()->ip()." visited signup page.");
-        return view($this->theme.'.auth.signup')->with(['admin' => false]);
+        return view($this->theme.'.auth.signup');
     }
 
     public function passwordResetRequestFormView()
     {
         \Log::Info(request()->ip()." visited password reset request page.");
-        return view($this->theme.'.auth.passwords.email')->with(['admin' => false]);
+        return view($this->theme.'.auth.passwords.email');
     }
 
-    public function passwordResetFormView(Request $request, $rtype, $id)
+    public function passwordResetFormView(Request $request, $id)
     {
         \Log::Info(request()->ip()." visited password reset page.");
-        $table = 'App\\'.ucwords(rtrim($rtype,'s'));
+        $table = 'App\\User';
         $record = $table::findOrFail($id);
         $precord = PasswordReset::where("email", $record->email)->first();
         if(!empty($precord)){
             if($request->hash == '"'.$precord->token.'"'){
                 \DB::table('password_resets')->where('email', $record->email)->delete();
-                return view($this->theme.'.auth.passwords.reset')->with(['admin' => false, "id" => $id, "rtype" => $rtype, "email" => $record->email]);
+                return view($this->theme.'.auth.passwords.reset')->with(["id" => $id, "email" => $record->email]);
             }
         }
         return redirect('/login-form');
@@ -95,7 +72,7 @@ class GuestController extends CloudController
         $request->validate([
             'email' => 'required|string|max:255|'
         ]);
-        $table = 'App\\'.ucwords(rtrim('users','s'));
+        $table = 'App\\User';
         $record = $table::where('email', $request->email)->first();
         if(!empty($record)){
             $precord = PasswordReset::where("email", $request->email)->first();
@@ -108,7 +85,7 @@ class GuestController extends CloudController
                 'created_at' => Carbon::now(),
             ]);
             $precord = PasswordReset::where("email", $request->email)->first();
-            Mail::to($request->email)->send(new ResetPasswordMail('user', $precord));
+            Mail::to($request->email)->send(new ResetPasswordMail($precord));
             $request->validate([
                 'email' => [function($attribute, $value, $fail){
                     $fail("Reset link has been successfully sent to your email!");
@@ -122,35 +99,18 @@ class GuestController extends CloudController
         ]);
     }
 
-    public function passwordReset(Request $request, $rtype, $id)
+    public function passwordReset(Request $request, $id)
     {
         \Log::Info(request()->ip()." changed password.");
         $request->validate([
             'password' => 'required|string|min:6|confirmed'
         ]);
-        $table = 'App\\'.ucwords(rtrim($rtype,'s'));
+        $table = 'App\\User';
         $record = $table::findOrFail($id);
         $record->update([
             'password' => bcrypt($request->password),
         ]);
         return redirect('/login-form');
-    }
-
-    public function adminLoginRedirect()
-    {
-        return redirect()->route('c.auth.admin.login');
-    }
-
-    public function adminLoginView()
-    {
-        \Log::Info(request()->ip()." visited admin login page.");
-        return view($this->theme.'.auth.admin_login')->with(['admin' => true]);
-    }
-
-    public function adminSignupView()
-    {
-        \Log::Info(request()->ip()." visited admin signup page.");
-        return view($this->theme.'.auth.admin_signup')->with(['admin' => true]);
     }
 
 }

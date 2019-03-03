@@ -4,16 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VirtualDomain extends Model
+class Query extends Model
 {
-    public $table = 'virtual_domains';
+    public $table = 'queries';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'user_id', 'name', 'verified', 'expiry_date', 
+        'app_id', 'name', 'auth_providers', 'tables', 'commands', 'fillables', 'hiddens', 'mandatory', 'joins', 'filters', 'specials',
     ];
 
 }

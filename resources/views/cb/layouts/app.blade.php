@@ -1,19 +1,25 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
   <meta charset="utf-8">
-  <title>HoneyWeb.Org - Delightful Web Creations</title>
-  <base href="/">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="description" content="Backend Solutions for Single Page Websites and Mobile Applications Licenses | Session | Database | Email | Assets Store | CDN | Chat | Cloud Messaging | Push Notifications | Code Obfuscation also Prebuild Applications">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HoneyWeb.Org - Delightful Web Creations</title>
+  <base href="/">
+  {{-- <link href="{{ asset('images/honeyweb.svg') }}" rel="icon" type="image/x-icon" >
+  <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+  <script src="{{ asset('js/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/bootstrap.min.js') }}"></script> --}}
   <link rel="icon" type="image/x-icon" href="public/images/honeyweb.svg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://honeyweb.github.io/cdn/css/bootstrap-multiselect.css">
-  <script src="https://honeyweb.github.io/cdn/js/bootstrap-multiselect.js"></script>
   <style>
     tbody tr:hover{
       background: #f9f9f9;
@@ -110,12 +116,13 @@
           <li><a href="{{route('c.auth.login')}}"><i class="fa fa-sign-in"></i> Login</a></li>
         @else
           <li><a href="{{route('c.app.list.view')}}"><i class="fa fa-desktop"></i> MyApps</a></li>
-          <li><a href="{{route('l.license.list.view')}}"><i class="fa fa-lock"></i> Licenses</a></li>
-          <li><a href="{{route('c.my.table.list')}}"><i class="fa fa-database"></i> Tables</a></li>
-          <li><a href="{{route('c.email.list.view')}}"><i class="fa fa-envelope"></i> Email</a></li>
+          @if(!in_array('Licenses', json_decode(\Auth::user()->hidden_modules,true)??[]))<li><a href="{{route('l.license.list.view')}}"><i class="fa fa-lock"></i> Licenses</a></li>@endif
+          <li><a href="{{route('c.table.list.view')}}"><i class="fa fa-database"></i> Tables</a></li>
+          <li><a href="{{route('c.query.list.view')}}"><i class="fa fa-search"></i> Queries</a></li>
           <li><a href="{{route('c.files.view')}}"><i class="fa fa-file"></i> Files</a></li>
+          <li><a href="{{route('c.email.list.view')}}"><i class="fa fa-envelope"></i> Email</a></li>
+          {{-- <li><a href="{{route('c.files.view')}}"><i class="fa fa-bullhorn"></i> WebPsuh</a></li>
           <li><a href="{{route('c.files.view')}}"><i class="fa fa-comments"></i> WebSockets</a></li>
-          <li><a href="{{route('c.files.view')}}"><i class="fa fa-bullhorn"></i> WebPsuh</a></li>
           <li><a href="{{route('c.files.view')}}"><i class="fa fa-video-camera"></i> WebRTC</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-code"></i> Obfuscator
@@ -123,7 +130,7 @@
             <ul class="dropdown-menu">  
               <li><a href="{{route('c.obfu.vba')}}">VBA</a></li>
             </ul>
-          </li>
+          </li> --}}
           
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-user"></i> {{\Auth::user()->name}}
@@ -144,16 +151,12 @@
   
 </div>
 </div>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-12">
-      @yield("content")
-    </div>
-  </div>
-</div>
-  <div class="loader"></div>
 
-<script type="text/javascript">
+@yield("content")
+
+<div class="loader"></div>
+
+{{-- <script type="text/javascript">
     $(document).ready(function() {
         $('.multi-select-demo').multiselect({
             selectAllValue: 'multiselect-all',
@@ -171,6 +174,6 @@
             }
         });
     });
-</script>
+</script> --}}
 </body>
 </html>

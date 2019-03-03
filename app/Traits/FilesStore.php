@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use ZipArchive;
 use App\File;
 use Illuminate\Http\Request;
 
@@ -32,60 +33,40 @@ trait FilesStore
     public function filesView()
     {
         \Log::Info(request()->ip()." visited files page for app id ".$this->app_id);
-        $files = File::paginate(10);
-        $tables = $this->getTables();
-        $fields = $this->getRemovableFields($tables[0]);
-        return view($this->theme.'.file.files_store')->with(['files' => $files??[], 'tables' => $tables, 'fields' => $fields]);
+        $files = File::where('app_id', $this->app_id)->paginate(10);
+        return view($this->theme.'.file.files_store')->with(['files' => $files??[]]);
     }
 
     public function uploadFile(Request $request)
     {
         \Log::Info(request()->ip()." uploaded file for app id ".$this->app_id);
-        $path = storage_path() .'/app/'. $request->file('file')->store($request->pivot_table.'/'.$request->pivot_field);
-        $request->validate([
-            'pivot_table' => [function($attribule, $value, $fail)use($request){
-                $table = 'App\\File';
-                $file = $table::where([
-                    'pivot_table'=>$request->pivot_table, 
-                    'pivot_field'=>$request->pivot_field, 
-                    'pivot_id'=>$request->pivot_id, 
-                    'sr_no'=>1
-                ])->first();
-                if(!empty($file))
-                    $fail("Duplicate Pivot Reference");
-            }],
-        ]);
+        $path = '/storage/app/'.$request->file('file')->store('file_store');
         $table = 'App\\File';
-        $table::create([
+        $file = $table::create([
+            'app_id' => \Auth::user()->app_id,
             'name' => $request->file->getClientOriginalName(),
             'mime' => $request->file->getMimeType(),
             'size' => $request->file->getSize(),
-            'pivot_table' => $request->pivot_table,
-            'pivot_field' => $request->pivot_field,
-            'pivot_id' => $request->pivot_id,
-            'sr_no' => 1,
             'path' => $path,
         ]);
-        $request->validate(['success' => 'required']);
+        return $file;
     }
 
     public function uploadFiles(Request $request)
     {
         \Log::Info(request()->ip()." uploaded files for app id ".$this->app_id);
         $files = $request->file('files');
+        $res = [];
         if($request->hasFile('files'))
         {
             $table = 'App\\File';
             foreach ($files as $key => $file) {
-                $path = storage_path() .'/app/'. $file->store($request->pivot_table.'/'.$request->pivot_field);
-                $table::create([
+                $path = '/storage/app/'.$file->store('file_store');
+                $res[] = $table::create([
+                    'app_id' => $this->app_id,
                     'name' => $file->getClientOriginalName(),
                     'mime' => $file->getMimeType(),
                     'size' => $file->getSize(),
-                    'pivot_table' => $request->pivot_table,
-                    'pivot_field' => $request->pivot_field,
-                    'pivot_id' => $request->pivot_id,
-                    'sr_no' => $key+1,
                     'path' => $path,
                 ]);
             }
@@ -93,40 +74,68 @@ trait FilesStore
         $request->validate(['success' => 'required']);
     }
 
-    public function downloadFile($pivot_table, $pivot_field, $pivot_id, $sr_no = 1)
+    public function downloadFile($id)
     {
         \Log::Info(request()->ip()." downloaded file for app id ".$this->app_id);
         $table = 'App\\File';
-        $file = $table::where([
-            'pivot_table'=>$pivot_table, 
-            'pivot_field'=>$pivot_field, 
-            'pivot_id'=>$pivot_id, 
-            'sr_no'=>$sr_no
-        ])->first();
-        return response()->download($file->path, $file->name);
+        $file = $table::findOrFail($id);
+        if($file->app_id != $this->app_id){
+            return "";
+        }
+        return response()->download(base_path().str_replace(env('APP_URL'),'',$file->path));
+    }
+
+    public function downloadFile1($id)
+    {
+        $zip = new ZipArchive();
+        $zip->open('file.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        $table = 'App\\File';
+        foreach ($table::all() as $file) {
+            $zip->addFile($file->path, base_path());
+        }
+        $zip->close();
+        return response()->download('file.zip');
     }
 
     public function replaceFile(Request $request)
     {
         \Log::Info(request()->ip()." updated file for app id ".$this->app_id);
-        $path = storage_path() .'/app/'. $request->file('file')->store($request->pivot_table.'/'.$request->pivot_field);
+        $path = $request->file('file')->store('public');
         $table = 'App\\File';
-        $file = $table::where([
-            'pivot_table'=>$request->pivot_table, 
-            'pivot_field'=>$request->pivot_field, 
-            'pivot_id'=>$request->pivot_id, 
-            'sr_no'=>$request->sr_no
-        ])->first();
+        $file = $table::findOrFail($request->id);
+        if($file->app_id != $this->app_id){
+            return ['status' => 'un-authorized'];
+        }
+        // return ['status' => 'un-authorized'];
+        $file_path = str_replace(env('APP_URL'),'',$file->path);
+        if(is_writable(base_path().$file_path)){
+            unlink(base_path().$file_path);
+        }
         $file->update([
             'name' => $request->file->getClientOriginalName(),
             'mime' => $request->file->getMimeType(),
             'size' => $request->file->getSize(),
-            'path' => $path,
+            'path' => env('APP_URL').str_replace('public','/public/storage',$path),
         ]);
-        if(is_writable($file->path)){
-            unlink($file->path);
-        }
         $request->validate(['success' => 'required']);
+    }
+
+    public function deleteFile(Request $request)
+    {
+        \Log::Info(request()->ip()." updated file for app id ".$this->app_id);
+        $table = 'App\\File';
+        $file = $table::findOrFail($request->id);
+        if($file->app_id != $this->app_id){
+            return ['status' => 'un-authorized'];
+        }
+        $file_path = str_replace(env('APP_URL'),'',$file->path);
+        if(is_writable(base_path().$file_path)){
+            unlink(base_path().$file_path);
+        }
+        if($table::destroy($request->id)){
+            return ['status' => 'success'];
+        }
+        return ['status' => 'un-successfull'];
     }
 
     public function importCreateCSV(Request $request)

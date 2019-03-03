@@ -13,7 +13,7 @@ class File extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'mime', 'size', 'pivot_table', 'pivot_field', 'pivot_id', 'sr_no', 'path',
+        'app_id', 'name', 'mime', 'size', 'path',
     ];
 
 }

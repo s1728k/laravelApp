@@ -18,11 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->text('avatar');
-            $table->string('api_token');
-            $table->integer('active_app_id');
-            $table->string('online_status');
-            $table->unsignedInteger('chat_resource_id');
+            $table->integer('active_app_id')->default(0);
+            $table->string('hidden_modules')->default('["Licenses"]');
+            $table->string('online_status')->default('offline');
+            $table->unsignedInteger('chat_resource_id')->default(0);
             $table->string('email_varification');
             $table->boolean('blocked')->default(false);
             $table->rememberToken();

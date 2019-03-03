@@ -17,7 +17,7 @@ trait ValidatesRequests
     {
         $request->validate([
             "name" => ['required','string','max:255', function($attribute, $value, $fail){
-                if(Schema::hasTable($this->table($value))){
+                if(Schema::connection($this->con)->hasTable($this->table($value))){
                     $fail('A table with this name already exisits.');
                 }
             }],
@@ -94,19 +94,22 @@ trait ValidatesRequests
         }
     }
 
-    public function validateGenericInputs($request, $table, $skips=[])
+    public function validateGenericInputs($request, $table, $skips=[], $mandatory=[])
     {
         $td = $this->getDescriptions($table, $skips);
-        $r = $request->all();
         $rules = [];
         foreach ($td as $k => $v) {
-            if(!empty($request->input($v->Field)))
                 if($v->Field == 'email'){
                     $rules[$v->Field] = 'required|email|'.$this->getValidationString($v->Type).'|unique:app'.$this->app_id.'_'.$table;
                 }else if($v->Field == 'password'){
                     $rules[$v->Field] = 'required|min:6|'.$this->getValidationString($v->Type).'|confirmed';
                 }else{
-                    $rules[$v->Field] = $this->getValidationString($v->Type);
+                    if(in_array($v->Field, $mandatory)){
+                        $rules[$v->Field] = 'required|'.$this->getValidationString($v->Type);
+                    }else{
+                        if(!empty($request->input($v->Field)))
+                            $rules[$v->Field] = $this->getValidationString($v->Type);
+                    }
                 }
         }
         $request->validate($rules);
@@ -201,7 +204,7 @@ trait ValidatesRequests
             'datetime' => 'date_multi_format:Y-m-d H:i:s,Y-m-d H:i,y-m-d H:i:s,y-m-d H:i',
             'time' => 'date_multi_format:H:i:s,H:i',
             'char(255)' => 'char:10',
-            'varchar(255)' => 'string|max:255',
+            'varchar(255)' => 'present|string|max:255',
             'text' => 'max:65535',
             'mediumtext' => 'max:16777215',
             'longtext' => 'max:4294967295',

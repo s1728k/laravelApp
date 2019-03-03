@@ -18,13 +18,8 @@ class CreateFilesTable extends Migration
             $table->string('name');
             $table->string('mime');
             $table->unsignedInteger('size');
-            $table->string('pivot_table');
-            $table->string('pivot_field');
-            $table->unsignedInteger('pivot_id');
-            $table->unsignedInteger('sr_no');
             $table->string('path');
             $table->timestamps();
-            $table->unique(['pivot_table', 'pivot_field', 'pivot_id', 'sr_no']);
         });
     }
 

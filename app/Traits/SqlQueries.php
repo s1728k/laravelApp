@@ -2,6 +2,9 @@
 
 namespace App\Traits;
 
+use PDO;
+use PDOException;
+
 trait SqlQueries
 {
     public function getNonHiddenFields($table, $app_id = null)
@@ -33,12 +36,26 @@ trait SqlQueries
         return $fields??'';
     }
 
+    public function getRawTables($app_id = null)
+    {
+        $app_id = $app_id??$this->app_id;
+        \Log::Info(request()->ip()." requested tables for app id ".$app_id);
+        $tables = [];
+        $raw=\DB::connection($this->con)->select(\DB::connection($this->con)->raw("SHOW TABLES LIKE 'app".$app_id."\_%'"));
+        foreach($raw as $key => $value){
+            foreach($value as $key1 => $table){
+                $tables[]=$table;
+            }
+        }
+        return $tables;
+    }
+
     public function getTables($app_id = null)
     {
         $app_id = $app_id??$this->app_id;
         \Log::Info(request()->ip()." requested tables for app id ".$app_id);
         $tables = [];
-        $raw = \DB::select(\DB::raw("SHOW TABLES LIKE 'app".$app_id."\_%'"));
+        $raw=\DB::connection($this->con)->select(\DB::connection($this->con)->raw("SHOW TABLES LIKE 'app".$app_id."\_%'"));
         foreach($raw as $key => $value){
             foreach($value as $key1 => $table){
                 $tables[]=str_replace('app'.$app_id.'_','', $table);
@@ -51,8 +68,9 @@ trait SqlQueries
 	{
         $app_id = $app_id??$this->app_id;
         \Log::Info(request()->ip()." requested fields for table ".$table." of app id ".$app_id);
-        $query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".env('DB_DATABASE')."' AND TABLE_NAME = '".'app'.$app_id.'_'.$table."'";
-		$raw = \DB::select(\DB::raw($query));
+        $query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".'app'.$app_id.'_'.$table."'";
+        // $query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".env('DB_DATABASE')."' AND TABLE_NAME = '".'app'.$app_id.'_'.$table."'";
+		$raw = \DB::connection($this->con)->select(\DB::connection($this->con)->raw($query));
         $fields=[];
         foreach ($raw as $key => $value) {
             foreach ($value as $key2 => $field) {
@@ -70,8 +88,9 @@ trait SqlQueries
         \Log::Info(request()->ip()." requested fields for table ".$table." of app id ".$app_id);
         $fields=[];
         foreach ($likes as $like) {
-            $query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".env('DB_DATABASE')."' AND TABLE_NAME = '".'app'.$app_id.'_'.$table."' AND COLUMN_NAME LIKE '%".$like."%'";
-            $raw = \DB::select(\DB::raw($query));
+            $query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".'app'.$app_id.'_'.$table."' AND COLUMN_NAME LIKE '%".$like."%'";
+            // $query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".env('DB_DATABASE')."' AND TABLE_NAME = '".'app'.$app_id.'_'.$table."' AND COLUMN_NAME LIKE '%".$like."%'";
+            $raw = \DB::connection($this->con)->select(\DB::connection($this->con)->raw($query));
             foreach ($raw as $key => $value) {
                 foreach ($value as $key2 => $field) {
                     $fields[]=$field;
@@ -85,7 +104,7 @@ trait SqlQueries
     {
         $app_id = $app_id??$this->app_id;
         \Log::Info(request()->ip()." requested description for table ".$table." of app id ".$app_id);
-        $td = \DB::select(\DB::raw('DESCRIBE app'.$app_id.'_'.$table));
+        $td = \DB::connection($this->con)->select(\DB::connection($this->con)->raw('DESCRIBE app'.$app_id.'_'.$table));
         foreach ($td as $k => $v) {
             if(in_array($v->Field, $skips))
                 unset($td[$k]);

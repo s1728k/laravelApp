@@ -11,8 +11,9 @@ trait EmailAccounts
 	public function emailListView()
 	{
 		\Log::Info(request()->ip()." visited email list for app id ".$this->app_id);
-		$domains = VirtualDomain::where(['app_id' => $this->app_id, 'verified' => 'done'])->get();
-		$emails = VirtualUser::where('app_id', $this->app_id)->get();
+		\Log::Info(\Auth::user()->id);
+		$domains = VirtualDomain::where(['user_id' => \Auth::user()->id, 'verified' => 'done'])->get();
+		$emails = VirtualUser::where(['user_id' => \Auth::user()->id])->orderBy('domain_id', 'asc')->get();
 		foreach ($emails as $key => $email) {
 			$emails[$key]->domain = substr($emails[$key]->email, strpos($emails[$key]->email, '@'), 255);
 			$emails[$key]->user = str_replace($emails[$key]->domain, '', $emails[$key]->email);
@@ -22,12 +23,11 @@ trait EmailAccounts
 
 	public function addNewUser(Request $request)
 	{
-		$domain = VirtualDomain::where([
-			'app_id' => $this->app_id,
-			'verified' => 'done',
-			'id' => $request->domain_id,
-		])->first();
 		\Log::Info(request()->ip()." added email user for domain ".$domain->name." for app id ".$this->app_id);
+		$domain = VirtualDomain::findOrFail($request->domain_id);
+		if($domain->user_id != \Auth::user()->id || $domain->verified != 'done'){
+			return redirect()->route('c.email.list.view');
+		}
 		$email = $request->name.'@'.$domain->name;
 		$request->validate([
 			'domain_id' => ['required', function($attribute, $value, $fail)use($request, $domain){
@@ -37,7 +37,7 @@ trait EmailAccounts
 			}],
 			'name' => ['required', 'string', 'max:255', function($attribute, $value, $fail)use($request, $email){
 				$emailcheck = VirtualUser::where([
-					'app_id' => $this->app_id, 
+					'user_id' => \Auth::user()->id, 
 					'email' => $email,
 				])->first();
 				if(!empty($emailcheck)){
@@ -48,12 +48,12 @@ trait EmailAccounts
 		]);
 		$ssha = $this->ssha($request->password);
 		VirtualUser::create([
-			'app_id' => $this->app_id,
+			'user_id' => \Auth::user()->id,
 			'domain_id' => $request->domain_id,
 			'email' => $email,
 			'password' => $ssha,
+			'mailbox' => $domain->name.'/'.$request->name.'/Maildir/',
 		]);
-		$this->addEmailUserToPasswdFile($request->domain_id);
 		return redirect()->route('c.email.list.view');
 		// SELECT a.columname1 AS 1, a.columname1 AS 2 FROM tablename a
 	}
@@ -61,10 +61,7 @@ trait EmailAccounts
 	public function deleteEmailAccount(Request $request)
 	{
 		\Log::Info(request()->ip()." deleted email user for domain ".$record->domain_id." app id ".$this->app_id);
-		$record = VirtualUser::findOrFail($request->id);
-		$domain_id = $record->domain_id;
 		VirtualUser::destroy($request->id);
-		$this->addEmailUserToPasswdFile($domain_id);
 		return ['status' => 'success'];
 	}
 
@@ -87,7 +84,7 @@ trait EmailAccounts
 		$record = VirtualDomain::where('name', $request->name)->first();
 		if(empty($record)){
 			$id = VirtualDomain::create([
-				'app_id' => $this->app_id,
+				'user_id' => \Auth::user()->id,
 				'name' => $request->name,
 				'verified' => bcrypt($request->name),
 				'expiry_date' => $this->expiry_date($request->name),
@@ -127,7 +124,6 @@ trait EmailAccounts
 		if($record->verified == $data){
 			\Log::Info(request()->ip()." Verified page record for domain ".$domain." for app id ".$this->app_id);
 			$record->update(['verified' => 'done', 'expiry_date' => $this->expiry_date($record->name)]);
-			$this->addMailAuthFolder($record->name);
 			return ['status' => 'success'];
 		}
 		return ['status' => $data];
@@ -157,29 +153,4 @@ trait EmailAccounts
 		// base64_encode(pack('H*',sha1($passwordplain))); 
 	}
 
-	public function addEmailUserToPasswdFile($domain_id)
-	{
-		\Log::Info(request()->ip()." added mail user to passwd file for domain ".$domain_id." for app id ".$this->app_id);
-		$virtual_users = VirtualUser::where([
-			'app_id' => $this->app_id, 
-			'domain_id' => $domain_id,
-		])->get();
-		$cont = "";
-		foreach ($virtual_users as $virtual_user) {
-			$arr = explode('@',$virtual_user->email);
-			$cont = $cont . $virtual_user->email.':'.$virtual_user->password.':5000:5000::/var/vmail/'.$arr[1].'/'.$arr[0];
-			$cont = $cont . '::userdb_quota_rule=\*:storage=5G userdb_acl_groups=PublicMailboxAdmins'."\n";
-		}
-		$myfile = fopen(base_path() ."/auth.d/".$arr[1].'/'.'passwd', "w");
-        fwrite($myfile, $cont);
-        fclose($myfile);
-	}
-
-	public function addMailAuthFolder($domain)
-	{
-		\Log::Info(request()->ip()." added mail auth folder for domain ".$domain." for app id ".$this->app_id);
-		if (!file_exists(base_path() ."/auth.d/".$domain)) {
-		    mkdir(base_path() ."/auth.d/".$domain, 0777, true);
-		}
-	}
 }

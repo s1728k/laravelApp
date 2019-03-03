@@ -22,9 +22,6 @@ class RedirectIfAuthenticated
                 case 'api':
                   return ['status' => 'Un Authorized'];
                   break;
-                case 'admin':
-                  return redirect()->route('c.admin.dashboard');
-                  break;
                 default:
                   return redirect()->route('c.app.list.view');
                   break;

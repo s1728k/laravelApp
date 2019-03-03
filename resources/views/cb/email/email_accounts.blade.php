@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-md-12 table-responsive">
 			<table class="table">
-        <caption>Email Accounts List | for the app id: {{\Auth::user()->active_app_id}}<div class="btn-group" style="float:right"> <a class="btn btn-default" onclick="addNewEmailAccount()">Add New Email Account</a><a class="btn btn-default" href="{{route('c.email.new.domain.view')}}">Add New Domain</a><a class="btn btn-default" href="http://mail.honeyweb.org" target="_blank">Goto Mails</a></caption>
+        <caption>Email Accounts List | for the user id: {{\Auth::user()->id}}<div class="btn-group" style="float:right"> <a class="btn btn-default" onclick="addNewEmailAccount()">Add New Email Account</a><a class="btn btn-default" href="{{route('c.email.new.domain.view')}}">Add New Domain</a><a class="btn btn-default" href="http://mail.honeyweb.org" target="_blank">Goto Mails</a></caption>
 				<thead>
 					<tr>
 						<th>Sr</th>
@@ -77,7 +77,7 @@
               <div class="col-md-4">
                 <select class="form-control" id="domains" name="domain_id">
                   @foreach($domains as $domain)
-                  <option value="{{$domain->id}}">{{$domain->name}}</option>
+                  <option value="{{$domain->id}}"><span>@</span>{{$domain->name}}</option>
                   @endforeach
                 </select>
                 @if($errors->has('domain_id'))
