@@ -128,7 +128,7 @@
           @else
             <li><a href="{{route('c.app.list.view')}}"><i class="fa fa-desktop"></i> MyApps</a></li>
             <li><a href="{{route('l.license.list.view')}}"><i class="fa fa-lock"></i> Licenses</a></li>
-            <li><a href="{{route('c.my.table.list')}}"><i class="fa fa-database"></i> Tables</a></li>
+            <li><a href="{{route('c.table.list.view')}}"><i class="fa fa-database"></i> Tables</a></li>
             <li><a href="{{route('c.email.list.view')}}"><i class="fa fa-envelope"></i> Email</a></li>
             <li><a href="{{route('c.files.view')}}"><i class="fa fa-file"></i> Files</a></li>
             <li><a href="{{route('c.files.view')}}"><i class="fa fa-comments"></i> WebSockets</a></li>
@@ -186,7 +186,7 @@
       <li><div class="divider"></div></li>
       <li><a href="{{route('c.app.list.view')}}"><i class="fa fa-desktop"></i> MyApps</a></li>
       <li><a href="{{route('l.license.list.view')}}"><i class="fa fa-lock"></i> Licenses</a></li>
-      <li><a href="{{route('c.my.table.list')}}"><i class="fa fa-database"></i> Tables</a></li>
+      <li><a href="{{route('c.table.list.view')}}"><i class="fa fa-database"></i> Tables</a></li>
       <li><a href="{{route('c.email.list.view')}}"><i class="fa fa-envelope"></i> Email</a></li>
       <li><a href="{{route('c.files.view')}}"><i class="fa fa-file"></i> Files</a></li>
       <li><div class="divider"></div></li>

@@ -15,7 +15,7 @@
 									<option value="model">Model</option>
 									<option value="authenticatable">Authenticatable</option>
 								</select>
-						<button type="submit" class="waves-effect waves-light btn blue darken-2">Create Table</button><a class="waves-effect waves-light btn blue darken-2" href="{{route('c.my.table.list')}}">Back</a></div>
+						<button type="submit" class="waves-effect waves-light btn blue darken-2">Create Table</button><a class="waves-effect waves-light btn blue darken-2" href="{{route('c.table.list.view')}}">Back</a></div>
   </div>
 </div>
 <div class="row">

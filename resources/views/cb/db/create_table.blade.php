@@ -15,7 +15,7 @@
 										<option value="model">Model</option>
 										<option value="authenticatable">Authenticatable</option>
 									</select>
-							<button type="submit" class="btn btn-default">Create Table</button><a class="btn btn-default" href="{{route('c.my.table.list')}}">Back</a></div></caption>
+							<button type="submit" class="btn btn-default">Create Table</button><a class="btn btn-default" href="{{route('c.table.list.view')}}">Back</a></div></caption>
 					<thead>
 						<tr>
 							<th>Sr</th>

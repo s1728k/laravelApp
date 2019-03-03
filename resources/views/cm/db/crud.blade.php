@@ -8,7 +8,7 @@
   <div class="col s12 m8">
     <div class="input-group" style="float:right;">
 		<a class="waves-effect waves-light btn blue darken-2" href="{{route('c.db.add.record')}}?table={{$table}}">Add New Record</a>
-		<a class="waves-effect waves-light btn blue darken-2" href="{{route('c.my.table.list')}}">Back</a>
+		<a class="waves-effect waves-light btn blue darken-2" href="{{route('c.table.list.view')}}">Back</a>
 	</div>
   </div>
 </div>

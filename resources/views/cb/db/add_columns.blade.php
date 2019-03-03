@@ -12,7 +12,7 @@
 					<caption>
 						Add Columns To Table "{{$table}}"
 						<div class="input-group" style="float:right;">
-							<button type="submit" class="btn btn-default">Update Table</button><a class="btn btn-default" href="{{route('c.my.table.list')}}">Back</a></div></caption>
+							<button type="submit" class="btn btn-default">Update Table</button><a class="btn btn-default" href="{{route('c.table.list.view')}}">Back</a></div></caption>
 					<thead>
 						<tr>
 							<th>Sr.No.</th>

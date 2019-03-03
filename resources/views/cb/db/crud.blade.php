@@ -10,7 +10,7 @@
 						CRUD Table "{{$table}}"
 						<div class="input-group" style="float:right;">
 							<a class="btn btn-default" href="{{route('c.db.add.record')}}?table={{$table}}">Add New Record</a>
-							<a class="btn btn-default" href="{{route('c.my.table.list')}}">Back</a>
+							<a class="btn btn-default" href="{{route('c.table.list.view')}}">Back</a>
 						</div></caption>
 					<thead>
 						<form method="get" action="{{route('c.db.crud.table')}}">
