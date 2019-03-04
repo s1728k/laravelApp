@@ -20,6 +20,7 @@ class CreateVirtualUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('mailbox');
+            $table->string('alias');
             $table->timestamps();
         });
     }

@@ -23,11 +23,13 @@ trait EmailAccounts
 
 	public function addNewUser(Request $request)
 	{
-		$domain = VirtualDomain::findOrFail($request->domain_id);
+		$d_domain = VirtualDomain::findOrFail($request->domain_id);
+		$a_domain = VirtualDomain::findOrFail($request->alias_domain_id);
 		if($domain->user_id != \Auth::user()->id || $domain->verified != 'done'){
 			return redirect()->route('c.email.list.view');
 		}
 		$email = $request->name.'@'.$domain->name;
+		$alias = $request->alias.'@'.$alias_domain->name;
 		$request->validate([
 			'domain_id' => ['required', function($attribute, $value, $fail)use($request, $domain){
 				if(empty($domain)){
@@ -43,7 +45,8 @@ trait EmailAccounts
 					$fail('User name is already taken');
 				}
 			}],
-			'password' => 'required|string|min:6|confirmed'
+			'password' => 'required|string|min:6|confirmed',
+			'alias' => 'string|email|max:255',
 		]);
 		$ssha = $this->ssha($request->password);
 		VirtualUser::create([
@@ -52,6 +55,7 @@ trait EmailAccounts
 			'email' => $email,
 			'password' => $ssha,
 			'mailbox' => $domain->name.'/'.$request->name.'/Maildir/',
+			'alias' => $domain->alias,
 		]);
 		\Log::Info(request()->ip()." added email user for domain ".$domain->name." for app id ".$this->app_id);
 		return redirect()->route('c.email.list.view');

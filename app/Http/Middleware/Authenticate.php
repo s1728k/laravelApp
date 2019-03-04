@@ -108,19 +108,16 @@ class Authenticate
         $response = $next($request);
         $data = json_decode($response->Content());
         if(is_array($data)){
-            return response(['status' => 'success', 'data' => $data, '_token' => $res['_token']])->withHeaders([
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'X-Header-One' => 'Header Value',
-                'X-Header-Two' => 'Header Value',
-            ]);
+            return response()->json(['status' => 'success', 'data' => $data, '_token' => $res['_token']]);
         }else{
             $data->_token=$data->_token??$res['_token'];
-            return response($data)->withHeaders([
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'X-Header-One' => 'Header Value',
-                'X-Header-Two' => 'Header Value',
-            ]);;
+            return response()->json($data);
         }
+        // ->withHeaders([
+        //         'Content-Type' => 'application/x-www-form-urlencoded',
+        //         'X-Header-One' => 'Header Value',
+        //         'X-Header-Two' => 'Header Value',
+        //     ]);
 
     }
     

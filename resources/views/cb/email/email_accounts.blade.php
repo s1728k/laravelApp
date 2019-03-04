@@ -13,6 +13,7 @@
             <th>User Name</th>
             <th>Domain Alias</th>
 						<th>Email Address</th>
+            <th>Alias Address</th>
             <th colspan="6">Actions</th>
 					</tr>
 				</thead>
@@ -23,6 +24,7 @@
             <td>{{ $email->user }}</td>
             <td>{{ $email->domain }}</td>
             <td>{{ $email->email }}</td>
+            <td>{{ $email->alias }}</td>
             <td><a style="cursor:pointer" onclick="deleteEmailAccount('{{$email->id}}')">Delete</a></td>
           </tr>
           @endforeach
@@ -84,6 +86,18 @@
                   <p style="color:red">{{$errors->first('domain_id')}}</p> 
                 @endif
               </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-4">
+                <label for="alias">Alias</label>
+              </div>
+              <div class="col-md-8">
+                <input type="text" id="alias" class="form-control{{ $errors->has('alias') ? ' is-invalid' : '' }}" name="alias" value="{{ old('alias') }}" placeholder="Alias (Forwarding Address)">
+                @if($errors->has('alias'))
+                  <p style="color:red">{{$errors->first('alias')}}</p> 
+                @endif
+              </div>      
             </div>
 
             <div class="form-group row">
