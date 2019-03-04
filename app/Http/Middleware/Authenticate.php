@@ -66,14 +66,6 @@ class Authenticate
             }
         }
 
-        if($request->visible){
-            $visibles = explode(', ', $query->visibles);
-            $arr = explode(',', $request->visible);
-            if(array_intersect($arr, $visibles) !== $arr){
-                return response()->json(['status' => 'un-authorized']);
-            }
-        }
-
         if($request->hidden){
             $hiddens = explode(', ', $query->hiddens);
             $arr = explode(',', $request->hidden);

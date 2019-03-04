@@ -359,7 +359,7 @@
 		$("#mid").val(diff.join(", "));
 	}
 	function j(){
-		const v = $("#jt").val() + ", " + $("#tf").val() + ", " + $("#jo").val() + ", " + $("#jf").val();
+		const v = $("#jt").val() + "," + $("#tf").val() + "," + $("#jo").val() + "," + $("#jf").val();
 		if(jf.indexOf(v) != -1){
 			jf.splice(jf.indexOf(v),1);
 		}else{
@@ -371,7 +371,7 @@
 		$("#jid").val(jf.join("|"));
 	}
 	function f(){
-		const v = $("#ft").val() + ", " + $("#ff").val() + ", " + $("#fo").val() + ", " + $("#fv").val();
+		const v = $("#ft").val() + "," + $("#ff").val() + "," + $("#fo").val() + "," + $("#fv").val();
 		if(ff.indexOf(v) != -1){
 			ff.splice(ff.indexOf(v),1);
 		}else{

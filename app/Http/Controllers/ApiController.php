@@ -128,11 +128,11 @@ class ApiController extends Controller
         $table_class = $this->gtc($table, $fillables, $hiddens);
 
         if($command == 'all'){
-            return $this->index($table_class, $fillables, $hiddens, $joins, $filters, $special);
+            return $this->index($table_class, $joins, $filters, $special);
         }elseif($command == 'new'){
             return $this->storeRecord($request, $table_class, $table, $mandatory);
         }elseif($command == 'get'){
-            return $this->getRecord($table_class, $id, $joins);
+            return $this->getRecord($table_class, $id, $joins, $filters);
         }elseif($command == 'mod'){
             return $this->updateRecord($request, $table_class, $table, $id, $mandatory);
         }elseif($command == 'del'){
@@ -145,7 +145,10 @@ class ApiController extends Controller
         \Log::Info(request()->ip()." end user requested list of records in app_id ".$this->app_id);
         $query = $table_class::where('id','<>',0);
         foreach ($filters as $filter) {
-            $f = explode(", ", $filter);
+            $f = explode(",", $filter);
+            if(count($f)!=4){
+                return ['status' => 'invalid input'];
+            }
             if($f[0] == 'where'){
                 $query = $query->where($f[1],$f[2],$f[3]);
             }elseif($f[0] == 'orWhere'){
@@ -184,17 +187,21 @@ class ApiController extends Controller
     public function getRecord($table_class, $id, $joins = [], $filters = [])
     {
         \Log::Info(request()->ip()." end user requested get record in app_id ".$this->app_id);
-        $res = $table_class::findOrFail($id);
+        $query = $table_class::where('id','<>',0);
         foreach ($filters as $filter) {
-            $f = explode(", ", $filter);
+            $f = explode(",", $filter);
+            if(count($f)!=4){
+                return ['status' => 'invalid input'];
+            }
             if($f[0] == 'where'){
-                if($res->{$f[1]} != $f[3]){
-                    return ['status' => 'unauthorized'];
-                }
+                $query = $query->where($f[1],$f[2],$f[3]);
+            }elseif($f[0] == 'orWhere'){
+                $query = $query->orWhere($f[1],$f[2],$f[3]);
             }
         }
         $this->remModelClass($table_class);
-        return $res;
+        $res = $query->get();
+        return $res[0]??['status'=>'unauthorizeds'];
     }
 
     public function updateRecord($request, $table_class, $table, $id, $mandatory = [])
