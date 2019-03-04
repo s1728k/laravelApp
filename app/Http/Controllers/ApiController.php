@@ -128,7 +128,7 @@ class ApiController extends Controller
         $table_class = $this->gtc($table, $fillables, $hiddens);
 
         if($command == 'all'){
-            return $this->index($table, $fillables, $hiddens, $joins, $filters, $special);
+            return $this->index($table_class, $fillables, $hiddens, $joins, $filters, $special);
         }elseif($command == 'new'){
             return $this->storeRecord($request, $table_class, $table, $mandatory);
         }elseif($command == 'get'){
@@ -140,10 +140,9 @@ class ApiController extends Controller
         }
     }
 
-    public function index($table, $fillables = [], $hiddens = [], $joins = [], $filters = [], $special = null)
+    public function index($table_class, $joins = [], $filters = [], $special = null)
     {
         \Log::Info(request()->ip()." end user requested list of records in app_id ".$this->app_id);
-        $table_class = $this->gtc($table, $fillables, $hiddens);
         $query = $table_class::where('id','<>',0);
         foreach ($filters as $filter) {
             $f = explode(", ", $filter);
@@ -153,8 +152,7 @@ class ApiController extends Controller
                 $query = $query->orWhere($f[1],$f[2],$f[3]);
             }
         }
-        // $arr = $this->getFields($table, ['password', 'remember_token'], $this->app_id);
-        // $query->select(array_intersect($arr,$fillables));
+
         if($special == 'pluck'){
             $res = $query->pluck($column);
         }elseif($special == 'count'){
@@ -183,10 +181,18 @@ class ApiController extends Controller
         return ['id' => $res];
     }
 
-    public function getRecord($table_class, $id, $joins = [])
+    public function getRecord($table_class, $id, $joins = [], $filters = [])
     {
         \Log::Info(request()->ip()." end user requested get record in app_id ".$this->app_id);
         $res = $table_class::findOrFail($id);
+        foreach ($filters as $filter) {
+            $f = explode(", ", $filter);
+            if($f[0] != 'where'){
+                if($res->{$f[1]} == $f[3]){
+                    return ['status' => 'unauthorized'];
+                }
+            }
+        }
         $this->remModelClass($table_class);
         return $res;
     }
