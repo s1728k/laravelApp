@@ -267,7 +267,7 @@ class ApiController extends Controller
                     'name' => $file->getClientOriginalName(),
                     'mime' => $file->getMimeType(),
                     'size' => $file->getSize(),
-                    'path' => env('APP_URL').str_replace('public','/public/storage',$path),
+                    'path' => str_replace('public','/public/storage',$path),
                 ]);
             }
         }
