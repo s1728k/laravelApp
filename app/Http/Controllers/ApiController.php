@@ -147,7 +147,7 @@ class ApiController extends Controller
         foreach ($filters as $filter) {
             $f = explode(",", $filter);
             if(count($f)!=4){
-                return ['status' => 'invalid input'];
+                return ['error' => 'invalid input'];
             }
             if($f[0] == 'where'){
                 $query = $query->where($f[1],$f[2],$f[3]);
@@ -179,9 +179,9 @@ class ApiController extends Controller
     {
         \Log::Info(request()->ip()." end user requested store record in app_id ".$this->app_id);
         $this->validateGenericInputs($request, $table, ['id', 'created_at', 'updated_at'], $mandatory);
-        $res = $table_class::create($request->all())->id;
+        $res = $table_class::create($request->all());
         $this->remModelClass($table_class);
-        return ['id' => $res];
+        return $res;
     }
 
     public function getRecord($table_class, $id, $joins = [], $filters = [])
@@ -191,7 +191,7 @@ class ApiController extends Controller
         foreach ($filters as $filter) {
             $f = explode(",", $filter);
             if(count($f)!=4){
-                return ['status' => 'invalid input'];
+                return ['error' => 'invalid input'];
             }
             if($f[0] == 'where'){
                 $query = $query->where($f[1],$f[2],$f[3]);
@@ -201,7 +201,7 @@ class ApiController extends Controller
         }
         $this->remModelClass($table_class);
         $res = $query->get();
-        return $res[0]??['status'=>'unauthorizeds'];
+        return $res[0]??['error'=>'un-authorizeds'];
     }
 
     public function updateRecord($request, $table_class, $table, $id, $mandatory = [])
@@ -240,7 +240,7 @@ class ApiController extends Controller
         $table_class = $this->gtc($author, $fillables, $hiddens);
         $record = $table_class::where(['email' => $request->email])->first();
         if(!$record){
-            return ['error' => "incorrect email"];
+            return ['status' => 'error', 'error' => "incorrect email"];
         }
         if (\Hash::check($request->password, $record->password)){
             $new_token = $this->getToken($this->app_id, $author, $record->id);
@@ -248,7 +248,7 @@ class ApiController extends Controller
             return ['status' => 'success', '_token' => $new_token, 'user' => $record];
         }else{
             $this->remModelClass($table_class);
-            return ['error' => "incorrect password"];
+            return ['status' => 'error', 'error' => "incorrect password"];
         }
     }
 

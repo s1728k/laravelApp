@@ -108,9 +108,12 @@ class Authenticate
         $data = json_decode($response->Content());
         if($command == 'login'){
             return response()->json($data);
-        }else{
-            return response()->json(['status' => 'success', 'data' => $data, '_token' => $res['_token']]);
+        }elseif($command == 'get' || $command == 'all'){
+            if(!empty($data->error)){
+                return response()->json(['status' => 'error', 'error' => $data->error, '_token' => $res['_token']]);
+            }
         }
+        return response()->json(['status' => 'success', 'data' => $data, '_token' => $res['_token']]);
     }
     
 }
