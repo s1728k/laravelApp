@@ -187,7 +187,7 @@ class ApiController extends Controller
     public function getRecord($table_class, $id, $joins = [], $filters = [])
     {
         \Log::Info(request()->ip()." end user requested get record in app_id ".$this->app_id);
-        $query = $table_class::where('id','<>',0);
+        $query = $table_class::where('id',$id);
         foreach ($filters as $filter) {
             $f = explode(",", $filter);
             if(count($f)!=4){
@@ -200,8 +200,8 @@ class ApiController extends Controller
             }
         }
         $this->remModelClass($table_class);
-        $res = $query->get();
-        return $res[0]??['error'=>'un-authorizeds'];
+        $res = $query->first();
+        return $res??['error'=>'un-authorizeds'];
     }
 
     public function updateRecord($request, $table_class, $table, $id, $mandatory = [])
