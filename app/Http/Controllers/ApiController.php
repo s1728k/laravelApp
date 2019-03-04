@@ -342,13 +342,12 @@ class ApiController extends Controller
 
     public function gtc($table, $fillables = null, $hiddens = null)
     {
-        $table_name = ucwords(rtrim('app'.$this->app_id.'_'.$table),'s');
         // $myFilePath = app_path() ."/Models/$table_name.php";
         // if(!file_exists($myFilePath)){
             $arr = json_decode(App::findOrFail($this->app_id)->auth_providers, true);
             $this->createModelClass($table, in_array($table, $arr), $fillables, $hiddens);
         // }
-        return "App\\Models\\".$table_name;
+        return $this->tClass($table);
     }
 
     private function remModelClass($table_class)
