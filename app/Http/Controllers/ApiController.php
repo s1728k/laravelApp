@@ -187,8 +187,8 @@ class ApiController extends Controller
         $res = $table_class::findOrFail($id);
         foreach ($filters as $filter) {
             $f = explode(", ", $filter);
-            if($f[0] != 'where'){
-                if($res->{$f[1]} == $f[3]){
+            if($f[0] == 'where'){
+                if($res->{$f[1]} != $f[3]){
                     return ['status' => 'unauthorized'];
                 }
             }
