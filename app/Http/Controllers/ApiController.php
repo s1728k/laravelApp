@@ -210,7 +210,7 @@ class ApiController extends Controller
         $this->validateGenericInputs($request, $table, ['id', 'created_at', 'updated_at'], $mandatory);
         $record = $table_class::findOrFail($id)->update($request->all());
         $this->remModelClass($table_class);
-        return ['status' => 'success'];
+        return $record;
     }
 
     public function deleteRecord($table_class, $id)
@@ -219,41 +219,36 @@ class ApiController extends Controller
         $record = $table_class::findOrFail($id);
         if($table_class::destroy($id)){
             $this->remModelClass($table_class);
-            return ['status' => 'success'];
+            return ['id' => $id];
         }
     }
 
     public function signup($request, $author, $fillables, $hiddens)
     {
         \Log::Info(request()->ip()." end user registered app_id ".$this->app_id);
-        $app = App::findOrFail($this->app_id);
-        if($app->secret !== $request->secret){
-            return ['status' => 'failed'];
-        }
         $this->validateGenericInputs($request, $author, ['id', 'created_at', 'updated_at']);
         $table_class = $this->gtc($author, $fillables, $hiddens);
         $record = $table_class::create($request->all());
         $record->update(['password' => bcrypt($request->password)]);
         $this->remModelClass($table_class);
-        return ['status' => 'success'];
+        return $record;
     }
 
     public function login($request, $author, $fillables, $hiddens)
     {
         \Log::Info(request()->ip()." end user logged in app_id ".$this->app_id);
-        $app = App::findOrFail($this->app_id);
-        if($app->secret !== $request->secret){
-            return ['status' => 'failed'];
-        }
         $table_class = $this->gtc($author, $fillables, $hiddens);
         $record = $table_class::where(['email' => $request->email])->first();
+        if(!$record){
+            return ['error' => "incorrect email"];
+        }
         if (\Hash::check($request->password, $record->password)){
             $new_token = $this->getToken($this->app_id, $author, $record->id);
             $this->remModelClass($table_class);
             return ['status' => 'success', '_token' => $new_token, 'user' => $record];
         }else{
             $this->remModelClass($table_class);
-            return ['status' => "failed"];
+            return ['error' => "incorrect password"];
         }
     }
 

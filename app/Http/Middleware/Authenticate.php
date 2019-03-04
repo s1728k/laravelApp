@@ -27,7 +27,7 @@ class Authenticate
         $authors = explode(', ', $query->auth_providers);
         if($request->author){
             if(!in_array($request->author, $authors)){
-                return response()->json(['status' => 'un-authorized']);
+                return response()->json(['error' => 'un-authorized']);
             }
             $author = $request->author;
         }else{
@@ -37,7 +37,7 @@ class Authenticate
         if($request->table){
             $tables = explode(', ', $query->tables);
             if(!in_array($request->table, $tables)){
-                return response()->json(['status' => 'un-authorized']);
+                return response()->json(['error' => 'un-authorized']);
             }
         }
 
@@ -45,7 +45,7 @@ class Authenticate
         if($request->command){
             $commands = explode(', ', $query->commands);
             if(!in_array($request->command, $commands)){
-                return response()->json(['status' => 'un-authorized']);
+                return response()->json(['error' => 'un-authorized']);
             }
             $command = $request->command;
         }else{
@@ -54,15 +54,22 @@ class Authenticate
         
         if($command=='new' || $command=='signup' || $command=='login' || $command=='files_upload' ){
             if(strtolower($request->method()) != 'post'){
-                return response()->json(['status' => 'methodNotAllowed']);
+                return response()->json(['error' => 'methodNotAllowed']);
             }
         }elseif($command == 'mod'){
             if(strtolower($request->method()) != 'put'){
-                return response()->json(['status' => 'methodNotAllowed']);
+                return response()->json(['error' => 'methodNotAllowed']);
             }
         }elseif($command == 'del'){
             if(strtolower($request->method()) != 'delete'){
-                return response()->json(['status' => 'methodNotAllowed']);
+                return response()->json(['error' => 'methodNotAllowed']);
+            }
+        }
+
+        if($command=='signup' || $command == 'login'){
+            $app = ('App\\App')::findOrFail($query->app_id);
+            if($app->secret !== $request->secret){
+                return ['error' => 'un-authorized'];
             }
         }
 
@@ -70,14 +77,14 @@ class Authenticate
             $hiddens = explode(', ', $query->hiddens);
             $arr = explode(',', $request->hidden);
             if(array_intersect($hiddens, $arr) !== $hiddens){
-                return response()->json(['status' => 'un-authorized']);
+                return response()->json(['error' => 'un-authorized']);
             }
         }
 
         if($request->special){
             $specials = explode(', ', $query->specials);
             if(!in_array($request->special, $specials)){
-                return response()->json(['status' => 'un-authorized']);
+                return response()->json(['error' => 'un-authorized']);
             }
         }
 
@@ -99,18 +106,11 @@ class Authenticate
         // return $next($request);
         $response = $next($request);
         $data = json_decode($response->Content());
-        if(is_array($data)){
-            return response()->json(['status' => 'success', 'data' => $data, '_token' => $res['_token']]);
-        }else{
-            $data->_token=$data->_token??$res['_token'];
+        if($command == 'login'){
             return response()->json($data);
+        }else{
+            return response()->json(['status' => 'success', 'data' => $data, '_token' => $res['_token']]);
         }
-        // ->withHeaders([
-        //         'Content-Type' => 'application/x-www-form-urlencoded',
-        //         'X-Header-One' => 'Header Value',
-        //         'X-Header-Two' => 'Header Value',
-        //     ]);
-
     }
     
 }
