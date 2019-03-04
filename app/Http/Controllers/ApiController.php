@@ -102,7 +102,7 @@ class ApiController extends Controller
         }
 
         if(!$request->filter){
-            $filters = explode('|', $query->filters);
+            $filters = $query->filters?explode('|', $query->filters):[];
         }else{
             $filters = explode('|', $request->filter);
         }
@@ -147,7 +147,7 @@ class ApiController extends Controller
         foreach ($filters as $filter) {
             $f = explode(",", $filter);
             if(count($f)!=4){
-                return ['error' => 'invalid input'];
+                return ['error' => 'invalid input--'];
             }
             if($f[0] == 'where'){
                 $query = $query->where($f[1],$f[2],$f[3]);
@@ -188,6 +188,7 @@ class ApiController extends Controller
     {
         \Log::Info(request()->ip()." end user requested get record in app_id ".$this->app_id);
         $query = $table_class::where('id',$id);
+        \Log::Info($filters);
         foreach ($filters as $filter) {
             $f = explode(",", $filter);
             if(count($f)!=4){
@@ -226,7 +227,7 @@ class ApiController extends Controller
     public function signup($request, $author, $fillables, $hiddens)
     {
         \Log::Info(request()->ip()." end user registered app_id ".$this->app_id);
-        $this->validateGenericInputs($request, $author, ['id', 'created_at', 'updated_at']);
+        $this->validateGenericInputs($request, $author, ['id', 'created_at', 'updated_at'],[],true);
         $table_class = $this->gtc($author, $fillables, $hiddens);
         $record = $table_class::create($request->all());
         $record->update(['password' => bcrypt($request->password)]);
@@ -237,11 +238,9 @@ class ApiController extends Controller
     public function login($request, $author, $fillables, $hiddens)
     {
         \Log::Info(request()->ip()." end user logged in app_id ".$this->app_id);
+        $this->validateGenericInputs($request, $author, ['id', 'created_at', 'updated_at']);
         $table_class = $this->gtc($author, $fillables, $hiddens);
         $record = $table_class::where(['email' => $request->email])->first();
-        if(!$record){
-            return ['status' => 'error', 'error' => "incorrect email"];
-        }
         if (\Hash::check($request->password, $record->password)){
             $new_token = $this->getToken($this->app_id, $author, $record->id);
             $this->remModelClass($table_class);

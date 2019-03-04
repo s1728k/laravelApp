@@ -94,14 +94,14 @@ trait ValidatesRequests
         }
     }
 
-    public function validateGenericInputs($request, $table, $skips=[], $mandatory=[])
+    public function validateGenericInputs($request, $table, $skips=[], $mandatory=[], $pc=false)
     {
         $td = $this->getDescriptions($table, $skips);
         $rules = [];
         foreach ($td as $k => $v) {
                 if($v->Field == 'email'){
-                    $rules[$v->Field] = 'required|email|'.$this->getValidationString($v->Type).'|unique:app'.$this->app_id.'_'.$table;
-                }else if($v->Field == 'password'){
+                    $rules[$v->Field] = 'required|email|'.$this->getValidationString($v->Type).'|exists:'.$this->con.'.app'.$this->app_id.'_'.$table;
+                }else if($v->Field == 'password' && $pc == true){
                     $rules[$v->Field] = 'required|min:6|'.$this->getValidationString($v->Type).'|confirmed';
                 }else{
                     if(in_array($v->Field, $mandatory)){
