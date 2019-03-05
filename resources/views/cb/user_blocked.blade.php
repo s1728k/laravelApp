@@ -7,7 +7,7 @@
         <div class="col-md-6" style="text-align: center;">
         	<div class="panel panel-default">
               <div class="panel-body">
-	            	<h1>Verification link has been sent to your email. Please click the verification link to confirm your email.</h1>
+	            	<h1>Hi {{$user->name}}. you have been blocked by the site admin.</h1>
 	          </div>
 	        </div>
         </div>

@@ -10,8 +10,24 @@
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-      <form method="POST" action="{{ route('c.auth.password.reset.submit', ['rtype' => $rtype, 'id' => $id]) }}" aria-label="{{ __('Reset Password') }}">
+      <form method="POST" action="{{ url('password/reset') }}" aria-label="{{ __('Reset Password') }}">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
+        <input type="hidden" name="id" value="{{$id}}">
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label for="email">Email</label>
+            </div>
+            <div class="col-md-6">
+                <div class="well well-sm">{{$email}}</div>
+                <input type="hidden" name="email" value="{{$email}}">
+                @if ($errors->has('email'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
+                @endif
+            </div>
+        </div>
+
         <div class="form-group row">
             <div class="col-md-4">
                 <label for="password">New Password</label>

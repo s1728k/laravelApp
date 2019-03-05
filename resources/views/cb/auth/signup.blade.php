@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="col-md-3"></div>
 		<div class="col-md-6">
-			<form method="POST" action="{{ url('register/user') }}" aria-label="{{ __('Register') }}">
+			<form method="POST" action="{{ url('register') }}" aria-label="{{ __('Register') }}">
 				<input type="hidden" name="_token" value="{{csrf_token()}}">
 				<div class="form-group row">
 	                <div class="col-md-4">

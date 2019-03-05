@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Mail\EmailVerification;
-use App\Traits\RegistersUsers;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -23,20 +24,8 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
     protected $redirectTo = '/email_verification_sent';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
@@ -45,15 +34,34 @@ class RegisterController extends Controller
     protected function redirectTo()
     {
         \Log::Info(request()->ip()." redirected to email verification send page.");
-        return '/email_verification_sent';
+        return $this->redirectTo;
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
+    public function showRegistrationForm()
+    {
+        \Log::Info(request()->ip()." visited laravel signup page.");
+        return view('cb.auth.signup');
+    }
+
+    public function register(Request $request)
+    {
+        \Log::Info(request()->ip()." attempted to register.");
+        $this->validator($request->all())->validate();
+        event(new Registered($user = $this->create($request->all())));
+        Mail::to([$request->email,'s1728k@gmail.com'])->send(new EmailVerification($user));
+        return view('cb.email-verification-sent');
+    }
+
+    public function email_verified(Request $request, $id)
+    {
+        \Log::Info(request()->ip()." attempted to verify email.");
+        if('"'.User::findOrFail($id)->email_varification.'"' == $request->query('hash')){
+            User::findOrFail($id)->update(['email_varification' => 'done']);
+            return view('cb.email_verified');
+        };
+        return redirect('/login');
+    }
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -63,12 +71,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
     protected function create(array $data)
     {
         return User::create([
@@ -79,25 +81,13 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function sendEmailVerificationMail($request, $user)
+    protected function guard()
     {
-        \Log::Info(request()->ip()." confirmation mail was sent to verify email.");
-        Mail::to($request->email)->send(new EmailVerification($user));
+        return Auth::guard();
     }
 
-    public function email_verification_sent()
+    protected function registered(Request $request, $user)
     {
-        \Log::Info(request()->ip()." visited email verification sent page.");
-        return view('c.email-verification-sent')->with(['admin' => false]);
-    }
-
-    public function verify_email($request, $id)
-    {
-        if('"'.User::findOrFail($id)->email_varification.'"' == $request->query('hash')){
-            User::findOrFail($id)->update(['email_varification' => 'done']);
-            return view('c.email_verified');
-        };
-        \Log::Info(request()->ip()." email verification was successfull redirected to login page.");
-        return redirect('/login-form');
+        
     }
 }

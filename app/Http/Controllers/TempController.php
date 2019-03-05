@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Config;
 use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
+use App\PushSubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -59,19 +60,47 @@ class TempController extends Controller
         //     $table->string('path');
         //     $table->timestamps();
         // });
+        // $s = PushSubscription::latest()->first();
+        // $subscription = Subscription::create(json_decode($s->subscription, true));
+$auth = array(
+    'VAPID' => array(
+        'subject' => env('VAPID_SUBJECT'),
+        'publicKey' => env('VAPID_PUBLIC_KEY'), // don't forget that your public key also lives in app.js
+        'privateKey' => env('VAPID_PRIVATE_KEY'), // in the real world, this would be in a secret file
+    ),
+);
+$defaultOptions = [
+    'TTL' => 300, // defaults to 4 weeks
+    'urgency' => 'normal', // protocol defaults to "normal"
+    'topic' => 'new_event', // not defined by default,
+    'batchSize' => 200, // defaults to 1000
+];
+$webPush = new WebPush($auth);
+$webPush->setDefaultOptions($defaultOptions);
+// $res = $webPush->sendNotification(
+//     $subscription,
+//     "Hello!"
+// );
+// handle eventual errors here, and remove the subscription from your server if it is expired
+// foreach ($webPush->flush() as $report) {
+//     $endpoint = $report->getRequest()->getUri()->__toString();
+//     if ($report->isSuccess()) {
+//         echo "[v] Message sent successfully for subscription {$endpoint}.";
+//     } else {
+//         echo "[x] Message failed to sent for subscription {$endpoint}: {$report->getReason()}";
+//     }
+// }
+        $s = PushSubscription::latest()->first();
+        \Log::Info($s->subscription);
         $notifications = [
-            ['subscription' => Subscription::create([ 
-                "endpoint" => "https://fcm.googleapis.com/fcm/send/e1LoQfvvs_U:AP…v4SpLrMws5eoDlMi3oN5Dck6KjkoDxna7OytHut8Qa4mw7yxJ",
-                "keys" => [
-                    'p256dh' => "BFjhL9sLLpQgNowT2M-q1eptYxWfURT9cz2q6myy4BJKyqI4Qx0P6lq6SAtDPDcRv7MNUNLj2x_5gvwY7iiZdew",
-                    'auth' => 'CidMraZ8ZPbaXPtn2POybw'
-                    ],
-                ]),
-            'payload' => '{msg:"Hello World!"}',
+            ['subscription' => Subscription::create(json_decode($s->subscription,true)),
+            'payload' => '{"msg":"Hello World!"}',
+            false,
+            ['TTL' => 5000]
             ],
         ];
 
-        $webPush = new WebPush();
+        // $webPush = new WebPush();
 
         foreach ($notifications as $notification) {
             $webPush->sendNotification(

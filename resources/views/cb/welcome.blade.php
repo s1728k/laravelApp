@@ -107,5 +107,15 @@
   //   }
   // }
   // displayNotification();
+//   self.addEventListener('push', function(event) {
+//   const promiseChain = self.registration.showNotification('Hello, World.');
+
+//   event.waitUntil(promiseChain);
+// });
+const title = 'Simple Title';
+    const options = {
+      body: 'Simple piece of body text.\nSecond line of body text :)'
+    };
+    registration.showNotification(title, options);
 </script>
 @endsection

@@ -71,11 +71,7 @@ var register_sw = {
     console.log(subscription);
     $.post(register_sw['save_subscription_url'], subscription, function(data, status){
       if(status == "success"){
-        if(data.status == "success"){
-          console.log("subscription saved");
-        }else{
-          console.log("subscription failed");
-        }
+        console.log(data.message);
       }else{
         console.log(status);
       }

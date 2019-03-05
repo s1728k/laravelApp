@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-md-12">
         	<label>Click below password reset link</label>
-            <a href="{{ url('password-reset-form') }}{{$urlpath}}">{{ url('password-reset-form') }}{{$urlpath}}</a>
+            <a href="{{ url('password/reset') }}{{$urlpath}}">{{ url('password/reset') }}{{$urlpath}}</a>
         </div>
     </div>
 </div>

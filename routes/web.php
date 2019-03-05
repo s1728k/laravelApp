@@ -20,17 +20,30 @@ Route::get('/honeyweb-domain-verification', function () {
 });
 //====================End of Site Verification Routes=============
 
+
+//====================Authentication Routes====================
+// // Authentication Routes...
+// Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+// Route::post('login', 'Auth\LoginController@login');
+// Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+// // Registration Routes...
+// Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+// Route::post('register', 'Auth\RegisterController@register');
+// Route::get('email_verified/{id}', 'Auth\RegisterController@email_verified');
+
+// // Password Reset Routes...
+// Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+// Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+// Route::get('password/reset/{id}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+// Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+Auth::routes();
+//====================Authentication Routes Ends====================
+
 //====================Guest Routes====================
 Route::post('/theme', 'GuestController@setTheme')->name("theme");
 Route::get('/', 'GuestController@homeView')->name('c.welcome');
 // Route::get('/docs', 'GuestController@docsView')->name('c.docs');
-Route::get('/login-form', 'GuestController@loginView')->name('c.auth.login');
-Route::get('/signup-form', 'GuestController@signupView')->name('c.auth.signup');
-Route::get('/password-reset-request-form', 'GuestController@passwordResetRequestFormView')->name('c.auth.password.reset.request');
-Route::post('/password-reset-request', 'GuestController@passwordResetRequest')->name('c.auth.password.reset.request.submit');
-Route::get('/password-reset-form/{rtype}/{id}', 'GuestController@passwordResetFormView')->name('c.auth.password.reset');
-Route::post('/password-reset/{rtype}/{id}', 'GuestController@passwordReset')->name('c.auth.password.reset.submit');
-Auth::routes();
 //====================End of Guest Routes=============
 
 //====================App Routes====================

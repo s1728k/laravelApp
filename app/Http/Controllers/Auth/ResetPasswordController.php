@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\PasswordReset;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
@@ -18,22 +19,37 @@ class ResetPasswordController extends Controller
     |
     */
 
-    use ResetsPasswords;
+    public $redirectTo = '/login';
 
-    /**
-     * Where to redirect users after resetting their password.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    public function showResetForm(Request $request, $id)
+    {
+        $table = 'App\\User';
+        $record = $table::findOrFail($id);
+        $precord = \DB::table('password_resets')->where("email", $record->email)->first();
+        if(!empty($precord)){
+            if($request->hash == '"'.$precord->token.'"'){
+                return view('cb.auth.passwords.reset')->with(["id" => $id, "email" => $record->email]);
+            }
+        }
+        return redirect($this->redirectTo);
+    }
+
+    public function reset(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed'
+        ]);
+        $table = 'App\\User';
+        $record = $table::findOrFail($request->id);
+        $record->update([
+            'password' => \Hash::make($request->password),
+        ]);
+        \DB::table('password_resets')->where('email', $record->email)->delete();
+        return redirect($this->redirectTo);
     }
 }

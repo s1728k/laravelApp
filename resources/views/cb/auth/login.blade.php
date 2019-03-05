@@ -47,7 +47,7 @@
                     {{ __('Login') }}
                 </button>
 
-                <a class="btn btn-link" href="{{ route('c.auth.password.reset.request') }}">
+                <a class="btn btn-link" href="{{ route('password.request') }}">
                     {{ __('Forgot Your Password?') }}
                 </a>
             </div>

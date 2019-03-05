@@ -112,8 +112,8 @@
         <ul class="nav navbar-nav navbar-right">
         @guest
           <li><a href="{{route('c.docs.routemap')}}"><i class="fa fa-book"></i> Docs</a></li>
-          <li><a href="{{route('c.auth.signup')}}"><i class="fa fa-user"></i> Sign Up</a></li>
-          <li><a href="{{route('c.auth.login')}}"><i class="fa fa-sign-in"></i> Login</a></li>
+          <li><a href="{{route('register')}}"><i class="fa fa-user"></i> Sign Up</a></li>
+          <li><a href="{{route('login')}}"><i class="fa fa-sign-in"></i> Login</a></li>
         @else
           <li><a href="{{route('c.app.list.view')}}"><i class="fa fa-desktop"></i> MyApps</a></li>
           @if(!in_array('Licenses', json_decode(\Auth::user()->hidden_modules,true)??[]))<li><a href="{{route('l.license.list.view')}}"><i class="fa fa-lock"></i> Licenses</a></li>@endif
@@ -121,8 +121,8 @@
           <li><a href="{{route('c.query.list.view')}}"><i class="fa fa-search"></i> Queries</a></li>
           <li><a href="{{route('c.files.view')}}"><i class="fa fa-file"></i> Files</a></li>
           <li><a href="{{route('c.email.list.view')}}"><i class="fa fa-envelope"></i> Email</a></li>
-          {{-- <li><a href="{{route('c.files.view')}}"><i class="fa fa-bullhorn"></i> WebPsuh</a></li>
-          <li><a href="{{route('c.files.view')}}"><i class="fa fa-comments"></i> WebSockets</a></li>
+          <li><a href="{{route('c.files.view')}}"><i class="fa fa-bullhorn"></i> WebPsuh</a></li>
+          {{-- <li><a href="{{route('c.files.view')}}"><i class="fa fa-comments"></i> WebSockets</a></li>
           <li><a href="{{route('c.files.view')}}"><i class="fa fa-video-camera"></i> WebRTC</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-code"></i> Obfuscator

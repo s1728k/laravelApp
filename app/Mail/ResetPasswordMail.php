@@ -33,6 +33,6 @@ class ResetPasswordMail extends Mailable
         $table = 'App\\User';
         $record = $table::where('email', $this->precord->email)->first();
         $urlpath = '/'.$record->id.'?hash="'.$this->precord->token.'"';
-        return $this->view('c.auth.passwords.password-reset-mail')->with(['urlpath' => $urlpath]);
+        return $this->view('cb.auth.passwords.password-reset-mail')->with(['urlpath' => $urlpath]);
     }
 }

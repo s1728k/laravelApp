@@ -10,11 +10,13 @@ trait PushesNotifications
 	public function saveSubscription(Request $request)
 	{
 		$table = "App\\PushSubscription";
-		foreach ($table::all() as $key => $value) {
-			$value->delete();
+		$exists = $table::where('subscription', json_encode($request->all()))->first();
+		if(!$exists){
+			$table::create(['subscription' => json_encode($request->all())]);
+			return ['message' => 'successfully saved'];
+		}else{
+			return ['message' => 'already saved'];
 		}
-		$table::create(['subscription' => json_encode($request->all())]);
-		return ['status' => 'success'];
 	}
 
 	public function sendMessage()

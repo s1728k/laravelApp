@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use App\Traits\AuthenticatesUsers;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -21,18 +22,10 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
+
     protected $redirectTo = '/app/app-list';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
@@ -41,7 +34,43 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         \Log::Info(request()->ip()." was redirected to app list page.");
-        return '/app/app-list';
+        return $this->redirectTo;
+    }
+
+    protected function showLoginForm()
+    {
+        return view('cb.auth.login');
+    }
+
+    protected function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        //----------------------------------------
+        if ($this->emailNotVerified($request)){
+            return view('cb.email-verification-sent');
+        }
+        $user = $this->blockedUser($request);
+        if($user){
+            return view('cb.user_blocked')->with('user', $user);
+        }
+        //----------------------------------------
+
+        if ($this->attemptLogin($request)) {
+            \Log::Info("attempt to login success");
+            \Log::Info($this->sendLoginResponse($request));
+            return $this->sendLoginResponse($request);
+        }
+
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
     }
 
     protected function emailNotVerified($request)
@@ -71,7 +100,7 @@ class LoginController extends Controller
             return false;
         }
         \Log::Info(request()->ip()." user blocked by admin.");
-        return true;
+        return $check;
     }
 
 }

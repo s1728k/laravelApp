@@ -50,7 +50,7 @@ class CloudController extends Controller
         $this->middleware($this->auth);
         $this->middleware(function ($request, $next) {
             $this->app_id = \Auth::user()->active_app_id;
-            $this->con = App::findOrFail($this->app_id)->db_connection;
+            $this->con = $this->app_id?App::findOrFail($this->app_id)->db_connection:'apps_db';
             return $next($request);
         });
     }
@@ -135,7 +135,7 @@ class CloudController extends Controller
     private function createNewAppAndAssociatives(Request $request)
     {
         \Log::Info(request()->ip()." created new app and associatives");
-        $this->validateCreateAppRequest($request);
+        $request->validate(['name' => 'string|max:255']);
         $id = App::create([
             'name' => $request->name??'My App',
             'user_id' => \Auth::user()->id,
@@ -145,6 +145,7 @@ class CloudController extends Controller
             'origins' => "",
         ])->id;
         $this->app_id = $id;
+        \Auth::user()->active_app_id = $id;
         \Auth::user()->save();
 
         $this->createDefaultUsersTable($id);
