@@ -24,7 +24,7 @@
   </div><hr>
   <div class="row">
     <div class="col-md-12 text-center align-middle">
-      <h3><a class="btn btn-primary btn-lg" href="{{route('c.auth.signup')}}">Get Started SignUp Now Freely</a></h3>
+      <h3><a class="btn btn-primary btn-lg" href="{{route('register')}}">Get Started SignUp Now Freely</a></h3>
     </div>
   </div><hr>
   <div class="row text-center align-middle">
