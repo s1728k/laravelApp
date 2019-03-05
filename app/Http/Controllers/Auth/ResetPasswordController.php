@@ -36,7 +36,7 @@ class ResetPasswordController extends Controller
                 return view('cb.auth.passwords.reset')->with(["id" => $id, "email" => $record->email]);
             }
         }
-        return redirect($this->redirectTo);
+        return view ('cb.user_interaction')->with(['msg' => 'invalid_link']);
     }
 
     public function reset(Request $request)
@@ -50,6 +50,6 @@ class ResetPasswordController extends Controller
             'password' => \Hash::make($request->password),
         ]);
         \DB::table('password_resets')->where('email', $record->email)->delete();
-        return redirect($this->redirectTo);
+        return view ('cb.user_interaction')->with(['msg' => 'reset_complete']);
     }
 }

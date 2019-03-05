@@ -54,7 +54,7 @@ class LoginController extends Controller
 
         //----------------------------------------
         if ($this->emailNotVerified($request)){
-            return view('cb.email-verification-sent');
+            return view ('cb.user_interaction')->with(['msg' => 'login_redirect']);
         }
         $user = $this->blockedUser($request);
         if($user){

@@ -24,7 +24,7 @@ class RegisterController extends Controller
     |
     */
 
-    protected $redirectTo = '/email_verification_sent';
+    protected $redirectTo = '/login';
 
     public function __construct()
     {
@@ -49,7 +49,7 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));
         Mail::to([$request->email,'s1728k@gmail.com'])->send(new EmailVerification($user));
-        return view('cb.email-verification-sent');
+        return view ('cb.user_interaction')->with(['msg' => 'signup']);
     }
 
     public function email_verified(Request $request, $id)
@@ -57,9 +57,9 @@ class RegisterController extends Controller
         \Log::Info(request()->ip()." attempted to verify email.");
         if('"'.User::findOrFail($id)->email_varification.'"' == $request->query('hash')){
             User::findOrFail($id)->update(['email_varification' => 'done']);
-            return view('cb.email_verified');
+            return view ('cb.user_interaction')->with(['msg' => 'signup_complete']);
         };
-        return redirect('/login');
+        return view ('cb.user_interaction')->with(['msg' => 'invalid_link']);
     }
 
     protected function validator(array $data)

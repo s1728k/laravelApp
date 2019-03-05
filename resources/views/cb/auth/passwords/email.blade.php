@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-      <form method="POST" action="{{ route('c.auth.password.reset.request.submit') }}" aria-label="{{ __('Password Reset') }}">
+      <form method="POST" action="{{ route('password.email') }}" aria-label="{{ __('Password Reset') }}">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <div class="form-group row">
             <div class="col-md-4">
