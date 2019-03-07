@@ -14,7 +14,7 @@
 			<caption class="">
 			@isset($domain) @if($domain->verified != 'done') Verify ownership of the domain <strong>{{$domain->name}}</strong> @endif @else Add New Domain @endisset
 			<div class="input-group" style="float:right;">
-				<a class="btn btn-default" href="{{route('c.email.list.view')}}">Back</a></div></caption>
+				<a class="btn btn-default" href="{{route('c.domain.list.view')}}">Back</a></div></caption>
 		</div>
 	</div>
 	@isset($domain)
@@ -68,36 +68,6 @@
 		</div>
 	</div>
 	@endif
-	@else
-	<div class="row">
-		<div class="col-md-3"></div>
-		<div class="col-md-6">
-			<form method="post" action="{{route('c.email.new.domain.submit')}}" >
-		        <input type="hidden" name="_token" value="{{csrf_token()}}" />
-
-				<div class="form-group row">
-					<div class="col-md-1"></div>
-					<div class="col-md-4">
-						<label for="name">Domain Name:</label>
-					</div>
-					<div class="col-md-6">
-						<input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" placeholder="Domain Name">
-						@if($errors->has('name'))
-							<p style="color:red">{{$errors->first('name')}}</p> 
-						@endif
-					</div>			
-				</div>
-
-				<div class="form-group row">
-					<div class="col-md-1"></div>
-					<div class="col-md-4"></div>
-					<div class="col-md-6">
-						<button type="submit" class="btn btn-primary">Add New Domain</button>
-					</div>			
-				</div>
-		    </form>
-		</div>
-	</div>
 	@endisset
 </div>
 @endsection

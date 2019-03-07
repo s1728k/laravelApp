@@ -23,7 +23,8 @@ trait CreatesQueries
         \Log::Info(request()->ip()." visited create new query page for app id ".$this->app_id);
         $app = App::findOrFail(\Auth::user()->active_app_id);
         $commands = ['ReadAll'=>'all', 'Create'=>'new', 'Read'=>'get', 'Update'=>'mod', 'Delete'=>'del', 
-        'SignUp' => 'signup', 'Login' => 'login', 'FilesUpload' => 'files_upload'];
+        'SignUp' => 'signup', 'Login' => 'login', 'FilesUpload' => 'files_upload', 'PushSubscribe' => 'ps', 
+        'PushReadCount' => 'prc'];
         $specials = ['pluck', 'count', 'max', 'min', 'avg', 'sum'];
         return view($this->theme.'.q.create_query')->with([
             'auth_providers' => json_decode($app->auth_providers,true)??[], 
@@ -37,7 +38,7 @@ trait CreatesQueries
     {
         \Log::Info(request()->ip()." requested columns for the table ".$request->table." for app id ".$this->app_id);
         $res = [];
-        foreach ($request->tables as $table) {
+        foreach ($request->tables??[] as $table) {
             $arr = $this->getFields($table, ['password', 'remember_token'], $this->app_id);
             $a = array_intersect($res, $arr);
             $b = array_diff($res, $arr);
@@ -78,7 +79,8 @@ trait CreatesQueries
         $query = Query::findOrFail($id);
         $app = App::findOrFail(\Auth::user()->active_app_id);
         $commands = ['ReadAll'=>'all', 'Create'=>'new', 'Read'=>'get', 'Update'=>'mod', 'Delete'=>'del', 
-        'SignUp' => 'signup', 'Login' => 'login', 'FilesUpload' => 'files_upload'];
+        'SignUp' => 'signup', 'Login' => 'login', 'FilesUpload' => 'files_upload', 'PushSubscribe' => 'ps', 
+        'PushReadCount' => 'prc'];
         $specials = ['pluck', 'count', 'max', 'min', 'avg', 'sum'];
         return view($this->theme.'.q.update_query')->with([
             'query'=> $query,
@@ -98,7 +100,6 @@ trait CreatesQueries
             "tables" => "required",
             "commands" => "required",
         ]);
-        \Log::Info($request->mandatory);
         Query::findOrFail($request->id)->update([
             'name' => $request->name,
             "auth_providers" => $request->auth_providers,
@@ -117,10 +118,8 @@ trait CreatesQueries
     public function deleteQuery(Request $request)
     {
         \Log::Info(request()->ip()." deleted query ".$request->id." for app id ".$this->app_id);
-        if(!empty($request->id)){
-            Query::destroy($request->id);
-        }
-        return redirect()->route('c.query.list.view');
+        Query::destroy($request->id);
+        return ['status' => 'success'];
     }
 
 }

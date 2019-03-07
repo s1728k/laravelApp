@@ -7,18 +7,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class GeneralAcknowledgement extends Mailable
+class AliasVerification extends Mailable
 {
     use Queueable, SerializesModels;
+
+    protected $code;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($code)
     {
-        //
+        $this->code = $code;
     }
 
     /**
@@ -28,7 +30,6 @@ class GeneralAcknowledgement extends Mailable
      */
     public function build()
     {
-        return $this->from('info@sunilkumar.me')
-                    ->markdown('emails.orders.shipped');
+        return $this->view('cb.email-verification-mail')->with(['msg' => 'alias', 'code' => $this->code]);
     }
 }

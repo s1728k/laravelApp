@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVirtualDomainsTable extends Migration
+class CreateVirtualAliasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateVirtualDomainsTable extends Migration
      */
     public function up()
     {
-        Schema::create('virtual_domains', function (Blueprint $table) {
+        Schema::create('virtual_alias', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->index();
-            $table->string('name');
+            $table->string('email');
+            $table->string('domain');
             $table->string('verified');
-            $table->timestamp('expiry_date');
+            $table->timestamp('expiry_date')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateVirtualDomainsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('virtual_domains');
+        Schema::dropIfExists('virtual_alias');
     }
 }

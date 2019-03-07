@@ -31,6 +31,6 @@ class EmailVerification extends Mailable
     public function build()
     {
         $urlpath = '/'.$this->user->id.'?hash="'.$this->user->email_varification.'"';
-        return $this->view('cb.email-verification-mail')->with(['urlpath' => $urlpath]);
+        return $this->view('cb.email-verification-mail')->with(['msg'=>'email', 'urlpath' => $urlpath]);
     }
 }

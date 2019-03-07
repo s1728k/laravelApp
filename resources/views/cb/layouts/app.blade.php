@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
+  {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
   <meta name="description" content="Backend Solutions for Single Page Websites and Mobile Applications Licenses | Session | Database | Email | Assets Store | CDN | Chat | Cloud Messaging | Push Notifications | Code Obfuscation also Prebuild Applications">
 
   <title>HoneyWeb.Org - Delightful Web Creations</title>
@@ -121,7 +121,7 @@
           <li><a href="{{route('c.query.list.view')}}"><i class="fa fa-search"></i> Queries</a></li>
           <li><a href="{{route('c.files.view')}}"><i class="fa fa-file"></i> Files</a></li>
           <li><a href="{{route('c.email.list.view')}}"><i class="fa fa-envelope"></i> Email</a></li>
-          <li><a href="{{route('c.files.view')}}"><i class="fa fa-bullhorn"></i> WebPsuh</a></li>
+          <li><a href="{{route('c.push.messages')}}"><i class="fa fa-bullhorn"></i> WebPsuh</a></li>
           {{-- <li><a href="{{route('c.files.view')}}"><i class="fa fa-comments"></i> WebSockets</a></li>
           <li><a href="{{route('c.files.view')}}"><i class="fa fa-video-camera"></i> WebRTC</a></li>
           <li class="dropdown">

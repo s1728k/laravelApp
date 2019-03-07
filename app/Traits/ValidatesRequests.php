@@ -96,7 +96,12 @@ trait ValidatesRequests
 
     public function validateGenericInputs($request, $table, $skips=[], $mandatory=[], $pc=false)
     {
-        $td = $this->getDescriptions($table, $skips);
+        // $skips      = $options['skips']??[];
+        // $mandatory  = $options['mandatory']??[];
+        // $pc         = $options['pc']??false;
+        // $tp         = $options['tp']??[];
+
+        $td = $this->getDescriptions($table, $skips, $con);
         $rules = [];
         foreach ($td as $k => $v) {
                 if($v->Field == 'email'){

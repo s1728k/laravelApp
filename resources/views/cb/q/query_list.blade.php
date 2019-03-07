@@ -2,6 +2,7 @@
 
 @section("content")
 <div class="container-fluid">
+  <div id="alrt"></div>
 	<div class="row">
 		<div class="col-md-12 table-responsive">
 			<table class="table">
@@ -25,7 +26,7 @@
 				</thead>
 				<tbody>
           @foreach($queries as $query)
-          <tr>
+          <tr id="r{{$query->id}}">
             <td>{{ ($loop->index + 1) + 10 * ($page-1)}}</td>
             <td>{{$query->id}}</td>
             <td>{{$query->name}}</td>
@@ -39,12 +40,7 @@
             <td>{{$query->filters}}</td>
             <td>{{$query->specials}}</td>
             <td><a href="{{route('c.query.details.view', ['id' => $query->id])}}">Update</a></td>
-            <td><a href="{{route('c.query.list.view')}}" onclick="event.preventDefault();
-                               document.getElementById('delete_query').submit();">Delete</a>
-            <form id="delete_query" method="post" action="{{route('c.delete.query', ['id' => $query->id])}}" style="display: none;">
-            	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-            	{{ method_field('DELETE') }}
-            </form>
+            <td><a style="cursor: pointer;" onclick="d('{{$query->id}}')">Delete</a>
 	        </td>
           </tr>
           @endforeach
@@ -54,4 +50,16 @@
 		</div>
 	</div>
 </div>
+<script>
+  function d(id){
+    $.post("{{ route('c.delete.query') }}", {"_token":"{{csrf_token()}}", "id":id, "_method":"DELETE"}, function(data) {
+      if(data['status'] == 'success'){
+        $('#r'+id).remove();
+        $('#alrt').html('<div class="alert alert-success"><strong>Success!</strong> Query was successfully removed.</div>');
+      }else{
+        $('#alrt').html('<div class="alert alert-warning"><strong>Warning!</strong> Query was not removed.</div>');
+      }
+    })
+  }
+</script>
 @endsection

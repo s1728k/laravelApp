@@ -68,7 +68,7 @@ use Illuminate\Http\Request;
 // Route::post('/image_get', 'TTA\HomeController@getImage');
 // Route::post('/file/{pivot_table}/{pivot_field}/{pivot_id}', 'TTA\HomeController@storeFile');
 
-
+Route::post('/save-subscription', 'GuestController@saveSubscription');
 // =================License Routes====================
 
 Route::prefix('license')->group(function() {

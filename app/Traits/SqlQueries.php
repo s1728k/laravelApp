@@ -28,7 +28,7 @@ trait SqlQueries
     public function getFieldsSelectOptions($table, $app_id = null)
     {
         // \Log::Info(request()->ip()." requested Options fields for table ".$table." of app id ".$this->app_id);
-        $array = $this->getRemovableFields($table, $app_id = null);
+        $array = $this->getRemovableFields($table, $app_id);
         $fields="";
         foreach ($array as $field) {
             $fields=$fields.'<option>'.$field.'</option>';

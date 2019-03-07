@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Email Confirmation</title>
+	@if($msg == "email")
+	<title>Confirm your email to complete your registration.</title>
+	@endif
+	@if($msg == "alias")
+	<title>Confirm your alias address</title>
+    @endif
 </head>
 <body>
 <div class="container-fluid">
@@ -12,8 +17,13 @@
 	</div>
     <div class="row">
         <div class="col-md-12">
+        	@if($msg == "email")
         	<label>Click below verification link</label>
             <a href="{{ url('email_verified') }}{{$urlpath}}">{{ url('email_verified') }}{{$urlpath}}</a>
+            @endif
+            @if($msg == "alias")
+            Your Code: {{$code}}
+            @endif
         </div>
     </div>
 </div>

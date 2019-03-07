@@ -16,27 +16,13 @@ Route::get('/up', 'TempController@up'); // temp route
 
 //====================Site Verification Routes====================
 Route::get('/honeyweb-domain-verification', function () {
-    return "$2y$10$"."vojQmIpHyZkLSpEFc01/bOaHLdnAKv2INhi.JU8O3NdnEJtmUjI6a";
+    return "$2y$10$uyohYtWlS/h598L7/FRXl.I8L6tMlfEONA4GZOc2Gz4Skk21rFJZy";
 });
 //====================End of Site Verification Routes=============
 
 
 //====================Authentication Routes====================
-// // Authentication Routes...
-// Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-// Route::post('login', 'Auth\LoginController@login');
-// Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-
-// // Registration Routes...
-// Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-// Route::post('register', 'Auth\RegisterController@register');
-// Route::get('email_verified/{id}', 'Auth\RegisterController@email_verified');
-
-// // Password Reset Routes...
-// Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-// Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-// Route::get('password/reset/{id}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-// Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+Route::get('email_verified/{id}', 'Auth\RegisterController@email_verified');
 Auth::routes();
 //====================Authentication Routes Ends====================
 
@@ -104,20 +90,26 @@ Route::prefix('query')->group(function() {
 	Route::post('/new-query', 'UserController@createNewQuery')->name('c.create.new.query.submit');
 	Route::get('/query-details/{id}', 'UserController@queryDetailsView')->name('c.query.details.view');
 	Route::put('/update/{id}', 'UserController@updateQuery')->name('c.update.query');
-	Route::delete('/delete/{id}', 'UserController@deleteQuery')->name('c.delete.query');
+	Route::delete('/delete', 'UserController@deleteQuery')->name('c.delete.query');
 });
 //====================End of License Routes=============
 
 //====================Email Routes====================
 Route::prefix('email')->group(function() {
-	Route::get('/new-domain-view', 'UserController@addNewDomainView')->name('c.email.new.domain.view');
-	Route::post('/new-domain', 'UserController@addNewDomain')->name('c.email.new.domain.submit');
-	Route::get('/verify-new-domain-view/{id}', 'UserController@verifyNewDomainView')->name('c.email.verify.domain.view');
+	Route::get('/email-users-list', 'UserController@emailListView')->name('c.email.list.view');
+	Route::get('/domain-list', 'UserController@domainListView')->name('c.domain.list.view');
+	Route::post('/domain-new', 'UserController@addNewDomain')->name('c.domain.add.new');
+	Route::get('/domain-verify/{id}', 'UserController@verifyNewDomainView')->name('c.domain.verify');
+	Route::delete('/domain-delete', 'UserController@deleteDomain')->name('c.domain.delete');
+	Route::get('/alias-list', 'UserController@aliasListView')->name('c.alias.list.view');
+	Route::post('/alias-new', 'UserController@addNewAlias')->name('c.alias.add.new');
+	Route::post('/alias-verify', 'UserController@verifyAlias')->name('c.alias.verify');
+	Route::delete('/alias-delete', 'UserController@deleteAlias')->name('c.alias.delete');
+	Route::get('/create-email-account-view', 'UserController@createEmailAccountView')->name('c.email.new.account');
+	Route::post('/new-email-account', 'UserController@addNewUser')->name('c.email.new.user.submit');
+	Route::delete('/delete', 'UserController@deleteEmailAccount')->name('c.email.delete.user');
 	Route::post('/get-txt', 'UserController@getTxtRecord')->name('c.email.get.txt');
 	Route::post('/get-page', 'UserController@getPageContents')->name('c.email.get.page');
-	Route::get('/email-users-list', 'UserController@emailListView')->name('c.email.list.view');
-	Route::post('/new-email-account', 'UserController@addNewUser')->name('c.email.new.user.submit');
-	Route::post('/delete', 'UserController@deleteEmailAccount')->name('c.email.delete.user');
 });
 //====================End of Email Routes=============
 
@@ -141,6 +133,14 @@ Route::prefix('files')->group(function() {
 //====================Push Notification Routes====================
 Route::prefix('push')->group(function() {
 	Route::post('/save-subscription', 'GuestController@saveSubscription')->name('c.push.save_subscription');
+	Route::get('/messages', 'UserController@messageList')->name('c.push.messages');
+	Route::get('/new_message', 'UserController@createMessageView')->name('c.push.new.msg');
+	Route::post('/new_message_submit', 'UserController@createMessage')->name('c.push.new.msg.submit');
+	Route::get('/update_message/{id}', 'UserController@updateMessageView')->name('c.push.update.msg');
+	Route::post('/update_message_submit', 'UserController@updateMessage')->name('c.push.update.msg.submit');
+	Route::post('/copy_message', 'UserController@copyMessage')->name('c.push.copy.msg');
+	Route::post('/delete_message', 'UserController@deleteMessage')->name('c.push.del.msg');
+	Route::get('/broadcast/{id}', 'UserController@broadcast')->name('c.push.broadcast');
 	Route::get('/test-message', 'GuestController@sendMessage')->name('c.push.test_message');
 });
 //====================End of Push Notification Routes=============

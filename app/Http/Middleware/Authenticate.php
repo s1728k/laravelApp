@@ -21,7 +21,10 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
-        $query = Query::findOrFail($request->route('query_id'));
+        $query = Query::find($request->route('query_id'));
+        if(empty($query)){
+            return response()->json(['error' => 'unknown request']);
+        }
         $app_id = $query->app_id;
 
         $authors = explode(', ', $query->auth_providers);
@@ -52,7 +55,7 @@ class Authenticate
             $command = $commands[0];
         }
         
-        if($command=='new' || $command=='signup' || $command=='login' || $command=='files_upload' ){
+        if(in_array($command, ['new','signup','login','files_upload','ps','prc'])){
             if(strtolower($request->method()) != 'post'){
                 return response()->json(['error' => 'methodNotAllowed']);
             }

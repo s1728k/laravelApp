@@ -123,6 +123,8 @@ class ApiController extends Controller
             return $this->login($request, $table, $fillables, $hiddens);
         }elseif($command == 'files_upload'){
             return $this->uploadFiles($request);
+        }elseif($command == 'ps'){
+            return $this->savePushSubscription($request);
         }
 
         $table_class = $this->gtc($table, $fillables, $hiddens);
@@ -271,6 +273,18 @@ class ApiController extends Controller
             }
         }
         return $res;
+    }
+
+    public function savePushSubscription($request)
+    {
+        $table = "App\\PushSubscription";
+        $exists = $table::where('subscription', json_encode($request->subscription))->first();
+        if(!$exists){
+            $table::create(['app_id' => $this->app_id, 'subscription' => json_encode($request->subscription)]);
+            return ['message' => 'successfully saved'];
+        }else{
+            return ['message' => 'already saved'];
+        }
     }
 
     private function setTable($table)

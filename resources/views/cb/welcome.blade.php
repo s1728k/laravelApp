@@ -93,29 +93,11 @@
   </div><hr>
 </div>
 
-<script src="public/js/service-worker.js"></script>
 <script src="public/js/register_sw.js"></script>
 <script>
+  register_sw.service_worker = "http://localhost:8003/public/js/service-worker.js";
   register_sw.save_subscription_url = "http://localhost:8003/push/save-subscription";
   register_sw.csrf_token = "{{csrf_token()}}";
   register_sw.execute();
-  // function displayNotification() {
-  //   if (Notification.permission == 'granted') {
-  //     navigator.serviceWorker.getRegistration().then(function(reg) {
-  //       reg.showNotification('Hello world!');
-  //     });
-  //   }
-  // }
-  // displayNotification();
-//   self.addEventListener('push', function(event) {
-//   const promiseChain = self.registration.showNotification('Hello, World.');
-
-//   event.waitUntil(promiseChain);
-// });
-const title = 'Simple Title';
-    const options = {
-      body: 'Simple piece of body text.\nSecond line of body text :)'
-    };
-    registration.showNotification(title, options);
 </script>
 @endsection

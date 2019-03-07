@@ -1,7 +1,6 @@
-var register_sw = {
+var app_register_sw = {
   'service_worker':"public/js/service-worker.js",
   'save_subscription_url':"http://localhost:8003/push/save-subscription",
-  'csrf_token':"",
   'urlBase64ToUint8Array':function (base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
@@ -13,11 +12,11 @@ var register_sw = {
   },
   'isSupported':function () {
     if (!('serviceWorker' in navigator)) {
-      // console.log("Service Worker isn't supported on this browser, disable or hide UI");
+      console.log("Service Worker isn't supported on this browser, disable or hide UI");
       return false;
     }
     if (!('PushManager' in window)) {
-      // console.log("Push isn't supported on this browser, disable or hide UI.");
+      console.log("Push isn't supported on this browser, disable or hide UI.");
       return false;
     }
     return true;
@@ -39,28 +38,26 @@ var register_sw = {
     });
   },
   'registerServiceWorker':function () {
-    return navigator.serviceWorker.register(register_sw.service_worker)
+    return navigator.serviceWorker.register(app_register_sw.service_worker)
     .then(function(registration) {
-      // console.log('Service worker successfully registered.');
       return registration;
     })
     .catch(function(err) {
-      // console.error('Unable to register service worker.', err);
+      console.error('Unable to register service worker.', err);
     });
   },
   'subscribeUserToPush':function () {
-    return navigator.serviceWorker.register(register_sw.service_worker)
+    return navigator.serviceWorker.register(app_register_sw.service_worker)
     .then(function(registration) {
       const subscribeOptions = {
         userVisibleOnly: true,
-        applicationServerKey: register_sw.urlBase64ToUint8Array(
+        applicationServerKey: app_register_sw.urlBase64ToUint8Array(
           'BORchmQjyQU0pSccjF6W0GsiPshuodMAzrkztfIq9HxaBU-uns-Bc7pw60E18bBYVP7RYKFviDaUqFBig9k-1zc'
         )
       };
       return registration.pushManager.subscribe(subscribeOptions);
     })
     .then(function(pushSubscription) {
-      // console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
       return pushSubscription;
     });
   },
@@ -68,26 +65,24 @@ var register_sw = {
     subscription = JSON.stringify(subscription);
     subscription = JSON.parse(subscription);
     var postBody = {};
-    postBody['_token'] = register_sw['csrf_token'];
     postBody['subscription'] = subscription;
-    // console.log(subscription);
-    $.post(register_sw['save_subscription_url'], postBody, function(data, status){
-      if(status == "success"){
-        // console.log(data.message);
-      }else{
-        // console.log(status);
+    $.ajax({
+      'type':'post',
+      'url':app_register_sw['save_subscription_url'], 
+      'data':postBody,
+      'success':function(data, status){
+        if(status == "success"){
+        }else{
+        }
       }
     });
   },
   'execute':function(){
-    if(register_sw.isSupported()){
-      register_sw.registerServiceWorker();
-      // var r = Notification.permission;
-      register_sw.askPermission().then(function() {
-          // console.log("permission granted");
-          register_sw.subscribeUserToPush().then(function(result){
-            // console.log(JSON.stringify(result));
-            register_sw.sendSubscriptionToBackEnd(result);
+    if(app_register_sw.isSupported()){
+      app_register_sw.registerServiceWorker();
+      app_register_sw.askPermission().then(function() {
+          app_register_sw.subscribeUserToPush().then(function(result){
+            app_register_sw.sendSubscriptionToBackEnd(result);
           });
       });
     }

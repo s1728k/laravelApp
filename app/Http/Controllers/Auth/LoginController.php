@@ -58,7 +58,7 @@ class LoginController extends Controller
         }
         $user = $this->blockedUser($request);
         if($user){
-            return view('cb.user_blocked')->with('user', $user);
+            return view ('cb.user_interaction')->with(['msg' => 'login_redirect', 'user' => $user]);
         }
         //----------------------------------------
 
