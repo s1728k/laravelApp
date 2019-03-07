@@ -8,6 +8,7 @@
 			<table class="table">
         <caption>My Alias List | for the user id: {{\Auth::user()->id}}
           <form method="post" action="{{route('c.alias.add.new')}}">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
           <div class="input-group" style="float:right;position: relative;">
               <input style="width:300px;" type="text" name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="Alias Email Address" />@if($errors->has('email'))<p style="color:red;position: absolute;bottom:auto;left:0px;top:30px;right:auto;"> {{$errors->first('email')}} </p>@endif
           <button class="btn btn-default">Add New Alias Email</button>
