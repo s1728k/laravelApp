@@ -126,8 +126,10 @@ trait CreatesTables
         $table = $this->gtc($request->table);
         $records = $table::where('id','!=',0);
         foreach ($td as $key => $value) { 
-            $records = empty($request->{$value->Field})?$records:$records->where($value->Field, $request->{$value->Field});
+            $records = empty($request->{$value->Field})?$records:$records->where($value->Field,'LIKE','%'.$request->{$value->Field}.'%');
         }
+        $records = $this->dateFilter($request, $records);
+        $records = $this->whereFilters($records, $request->_f?explode('|', $request->_f):[]);
         $records = $records->paginate(10);
         return view($this->theme.'.db.crud')->with([
             'td'=>$td??[], 
@@ -191,7 +193,7 @@ trait CreatesTables
         if(!empty($request->id)){
             $table::destroy($request->id);
         }
-        return redirect()->route('c.db.crud.table', ['table' => $request->table]);
+        return ['status' => 'success'];
     }
 
     private function createDefaultUsersTable($id)

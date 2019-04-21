@@ -95,8 +95,8 @@
 
 <script src="public/js/register_sw.js"></script>
 <script>
-  register_sw.service_worker = "https://honeyweb.org/public/js/service-worker.js";
-  register_sw.save_subscription_url = "https://honeyweb.org/push/save-subscription";
+  register_sw.service_worker = "{{env('APP_URL')}}/public/js/service-worker.js";
+  register_sw.save_subscription_url = "{{env('APP_URL')}}/push/save-subscription";
   register_sw.csrf_token = "{{csrf_token()}}";
   register_sw.execute();
 </script>

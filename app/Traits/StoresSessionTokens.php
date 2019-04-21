@@ -2,8 +2,78 @@
 
 namespace App\Traits;
 
+use App\App;
+use App\Session;
+
 trait StoresSessionTokens
 {
+
+    public function createSessionToken($request, $app_id, $author, $user_id, $user_name)
+    {
+        $new_token = bcrypt(rand());
+        $expiry = App::findOrFail($this->app_id)->token_lifetime + time();
+        Session::create([
+            '_token' => $new_token, 
+            'expiry' => $expiry,
+            'app_id' => $app_id,
+            'user_id' => $user_id,
+            'auth_provider' => $author,
+            'user_name' => $user_name,
+            'user_agent' => $request->header('User-Agent'),
+            'ip_address' => request()->ip(),
+        ]);
+        
+        return $new_token;
+    }
+
+    public function refreshSessionToken($token, $token_lifetime)
+    {
+        $session = Session::where('_token', $token)->first();
+        if(empty($session)){
+            return response()->json(['message' => 'token invalid'], 401);
+        }
+        if($session->expiry < time()){
+            return response()->json(['message' => 'token expired'], 401);
+        }else{
+            $new_token = bcrypt(rand());
+            $expiry = $token_lifetime + time();
+            $session->update(['_token' => $new_token, 'expiry' => $expiry]);
+            $session->save();
+            return $new_token;
+        }
+    }
+
+    public function checkSessionToken($token)
+    {
+        $session = Session::where('_token', $token)->first();
+        if(empty($session)){
+            return response()->json(['message' => 'token invalid'], 401);
+        }
+        if($session->expiry < time()){
+            return response()->json(['message' => 'token expired'], 401);
+        }
+        $this->app_id = $session->app_id;
+        $this->aid = $session->app_id;
+        $this->fid = $session->user_id;
+        $this->fap = $session->auth_provider;
+        $this->fname = $session->user_name;
+        return $session->app_id;
+    }
+
+    public function getAuth($token)
+    {
+        $session = Session::where('_token',$token)->first();
+        if($session){
+            $this->app_id = $session->app_id;
+            $this->aid = $session->app_id;
+            $this->fid = $session->user_id;
+            $this->fap = $session->auth_provider;
+            $this->fname = $session->user_name;
+        }
+    }
+
+
+    // -------------- file stored token methods---------------------------
 
     public function getToken($app_id, $auth_provider, $id)
     {
@@ -29,7 +99,7 @@ trait StoresSessionTokens
         if(!empty($tokens[$token.'_time'])){
             $time = $tokens[$token.'_time'];
             $curtime = time();
-            if(($curtime-$time) > 1800) {     //1800 seconds
+            if(($curtime-$time) > 1111800) {     //1111800 seconds
                 return ['status' => 'token expired'];
             }else{
                 $new_token = bcrypt(rand());
@@ -44,6 +114,23 @@ trait StoresSessionTokens
                 }else{
                     return ['status' => 'something wrong from our side try again!'];
                 }
+            }
+        }else{
+            return ['status' => 'invalid token'];
+        }
+    }
+
+    public function checkToken($app_id, $auth_provider, $token)
+    {
+        $tokens = $this->getFileContents($app_id, $auth_provider);
+
+        if(!empty($tokens[$token.'_time'])){
+            $time = $tokens[$token.'_time'];
+            $curtime = time();
+            if(($curtime-$time) > 1111800) {     //1111800 seconds
+                return ['status' => 'token expired'];
+            }else{
+                return ['status' => 'success'];
             }
         }else{
             return ['status' => 'invalid token'];

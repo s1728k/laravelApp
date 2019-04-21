@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use PDO;
-use JWTAuth;
 use App\App;
 use App\Query;
+use App\Log;
+use App\Mail\CommonMail;
 use App\Traits\ScrapesWeb;
 use App\Traits\StoresSessionTokens;
 use App\Traits\CreatesModelClass;
 use App\Traits\SqlQueries;
 use App\Traits\FilesStore;
 use App\Traits\ValidatesRequests;
+use App\Traits\UtilityFunctions;
+use App\Traits\SendsChatMessages;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Config\Repository\Config;
+use Illuminate\Support\Facades\Mail;
 
 class ApiController extends Controller
 {
@@ -26,32 +25,41 @@ class ApiController extends Controller
     use SqlQueries;
     use FilesStore;
     use ValidatesRequests;
+    use UtilityFunctions;
+    use SendsChatMessages;
 
-    public $app_id;
     public $con;
-
-    private $table;
-    private $fillables;
-    private $hiddens;
-    private $has_many;
-    private $filters;
-    private $dates;
-    private $result;
-    private $auth_user;
-    private $app_auth_provider;
+    public $app_id;
+    public $app;
+    public $aid;
+    public $fid;
+    public $fap;
+    public $fname;
+    public $can_chat_with;
+    public $chat_admins;
+    public $chat_friends;
+    public $fc;
 
     public function __construct(Request $request)
     {
-        $this->fillables = $request->query("fillables");
-        $this->hiddens = $request->query("hiddens")?$request->query("hiddens"):[];
-        $this->has_many = $request->query("has_many")?$request->query("has_many"):[];
-        $this->filters = $request->query("filters");
-        $this->dates = $request->query("dates");
+        $this->fc = "ApiController::";
+        \Log::Info($this->fc.'__construct');
+        if(empty($request->route('query_id'))){
+            if($request->_token){
+                $this->getAuth($request->_token);
+            }else{
+                $this->aid = $request->app_id;
+                $this->fap = $request->fap;
+                $this->fname = $request->fname??'Guest';
+            }
+        }else{
+            $this->getAuth($request->_token);
+        }
     }
 
     public function junction(Request $request, $query_id, $id = null)
     {
-        \Log::Info('junction');
+        \Log::Info($this->fc.'junction');
         $query = Query::findOrFail($query_id);
         $this->app_id = $query->app_id;
         $this->con = App::findOrFail($this->app_id)->db_connection;
@@ -69,6 +77,7 @@ class ApiController extends Controller
         }else{
             $table = $request->table;
         }
+        \Log::Info($table);
 
         if(!$request->command){
             $commands = explode(', ', $query->commands);
@@ -108,12 +117,20 @@ class ApiController extends Controller
         }
 
         if(!$request->special){
-            // $specials = explode(', ', $query->specials);
-            // $special = $specials[0];
-            $special = "";
-        }else{
-            $special = $request->special;
+            $specials = explode(', ', $query->specials);
         }
+
+        Log::create([
+            'aid'=>$this->app_id, 
+            'fid'=>$this->fid, 
+            'fap'=>$this->fap, 
+            'qid'=>$query_id, 
+            'query_nick_name' => $query->name,
+            'auth_provider'=>$author, 
+            'table_name'=>$table, 
+            'command'=>$command, 
+            'ip'=>request()->ip(),
+        ]);
 
         if($command == 'signup'){
             array_push($fillables, 'password');
@@ -121,8 +138,13 @@ class ApiController extends Controller
         }elseif($command == 'login'){
             array_push($fillables, 'password');
             return $this->login($request, $table, $fillables, $hiddens);
+        }elseif($command == 'clogin'){
+            array_push($fillables, 'password');
+            return $this->clogin($request, $table, $fillables, $hiddens);
         }elseif($command == 'files_upload'){
             return $this->uploadFiles($request);
+        }elseif($command == 'email'){
+            return $this->sendMail($request);
         }elseif($command == 'ps'){
             return $this->savePushSubscription($request);
         }
@@ -130,7 +152,7 @@ class ApiController extends Controller
         $table_class = $this->gtc($table, $fillables, $hiddens);
 
         if($command == 'all'){
-            return $this->index($table_class, $joins, $filters, $special);
+            return $this->index($request, $table_class, $joins, $filters, $special);
         }elseif($command == 'new'){
             return $this->storeRecord($request, $table_class, $table, $mandatory);
         }elseif($command == 'get'){
@@ -139,37 +161,31 @@ class ApiController extends Controller
             return $this->updateRecord($request, $table_class, $table, $id, $mandatory);
         }elseif($command == 'del'){
             return $this->deleteRecord($table_class, $id);
+        }elseif($command == 'sevc'){
+            return $this->sendEmailVerificationCode($request, $table_class);
+        }elseif($command == 've'){
+            return $this->emailVerify($request, $table_class);
         }
     }
 
-    public function index($table_class, $joins = [], $filters = [], $special = null)
+    public function index($request, $table_class, $joins = [], $filters = [], $special = [])
     {
         \Log::Info(request()->ip()." end user requested list of records in app_id ".$this->app_id);
         $query = $table_class::where('id','<>',0);
-        foreach ($filters as $filter) {
-            $f = explode(",", $filter);
-            if(count($f)!=4){
-                return ['error' => 'invalid input--'];
-            }
-            if($f[0] == 'where'){
-                $query = $query->where($f[1],$f[2],$f[3]);
-            }elseif($f[0] == 'orWhere'){
-                $query = $query->orWhere($f[1],$f[2],$f[3]);
-            }
-        }
+        $query = $this->whereFilters($query, $filters);
 
-        if($special == 'pluck'){
-            $res = $query->pluck($column);
-        }elseif($special == 'count'){
-            $res = ['count' => $query->count()];
-        }elseif($special == 'max'){
-            $res = ['max' => $query->max($column)];
-        }elseif($special == 'min'){
-            $res = ['min' => $query->min($column)];
-        }elseif($special == 'avg'){
-            $res = ['avg' => $query->avg($column)];
-        }elseif($special == 'sum'){
-            $res = ['sum' => $query->sum($column)];
+        if( !empty($request->_pluck) && in_array('_pluck', $special) ){
+            $res = $query->pluck($request->_pluck);
+        }elseif( !empty($request->_count) && in_array('_count', $special) ){
+            $res = $query->pluck($request->_count);
+        }elseif( !empty($request->_max) && in_array('_max', $special) ){
+            $res = $query->pluck($request->_max);
+        }elseif( !empty($request->_min) && in_array('_min', $special) ){
+            $res = $query->pluck($request->_min);
+        }elseif( !empty($request->_avg) && in_array('_avg', $special) ){
+            $res = $query->pluck($request->_avg);
+        }elseif( !empty($request->_sum) && in_array('_sum', $special) ){
+            $res = $query->pluck($request->_sum);
         }else{
             $res = $query->get();
         }
@@ -190,18 +206,7 @@ class ApiController extends Controller
     {
         \Log::Info(request()->ip()." end user requested get record in app_id ".$this->app_id);
         $query = $table_class::where('id',$id);
-        \Log::Info($filters);
-        foreach ($filters as $filter) {
-            $f = explode(",", $filter);
-            if(count($f)!=4){
-                return ['error' => 'invalid input'];
-            }
-            if($f[0] == 'where'){
-                $query = $query->where($f[1],$f[2],$f[3]);
-            }elseif($f[0] == 'orWhere'){
-                $query = $query->orWhere($f[1],$f[2],$f[3]);
-            }
-        }
+        $query = $this->whereFilters($query, $filters);
         $this->remModelClass($table_class);
         $res = $query->first();
         return $res??['error'=>'un-authorizeds'];
@@ -211,9 +216,9 @@ class ApiController extends Controller
     {
         \Log::Info(request()->ip()." end user requested updated record in app_id ".$this->app_id);
         $this->validateGenericInputs($request, $table, ['id', 'created_at', 'updated_at'], $mandatory);
-        $record = $table_class::findOrFail($id)->update($request->all());
+        $table_class::findOrFail($id)->update($request->all());
         $this->remModelClass($table_class);
-        return $record;
+        return ['message' => "record updated!"];
     }
 
     public function deleteRecord($table_class, $id)
@@ -234,7 +239,40 @@ class ApiController extends Controller
         $record = $table_class::create($request->all());
         $record->update(['password' => bcrypt($request->password)]);
         $this->remModelClass($table_class);
-        return $record;
+        return ['status' => 'success', 'user' => $record];
+    }
+
+    public function sendEmailVerificationCode($request, $table_class)
+    {
+        \Log::Info(request()->ip()." end user registered app_id ".$this->app_id);
+        $record = $table_class::find($request->id);
+        if(empty($record)){
+            return ["message" => "record does not exists"];
+        }
+        $code = mt_rand(100000, 999999);
+        $record->update(['email_verification' => $code]);
+        $record->save();
+        if(!empty($record->email)){
+            Mail::to($record->email)->send(new CommonMail([
+                "Verification Code" => $code,
+            ]));
+        }
+        return ['message' => 'email verification code sent successfull'];
+    }
+
+    public function emailVerify($request, $table_class)
+    {
+        $record = $table_class::find($request->id);
+        if(empty($record)){
+            return ["message" => "record does not exists"];
+        }
+        if($record->email_verification == $request->code){
+            $record->update(['email_verification' => 'done']);
+            $record->save();
+            return ["message" => "email verification successfull"];
+        }else{
+            return ["message" => "email verification failed"];
+        }
     }
 
     public function login($request, $author, $fillables, $hiddens)
@@ -243,14 +281,41 @@ class ApiController extends Controller
         $this->validateGenericInputs($request, $author, ['id', 'created_at', 'updated_at']);
         $table_class = $this->gtc($author, $fillables, $hiddens);
         $record = $table_class::where(['email' => $request->email])->first();
-        if (\Hash::check($request->password, $record->password)){
-            $new_token = $this->getToken($this->app_id, $author, $record->id);
-            $this->remModelClass($table_class);
-            return ['status' => 'success', '_token' => $new_token, 'user' => $record];
-        }else{
-            $this->remModelClass($table_class);
-            return ['status' => 'error', 'error' => "incorrect password"];
+        if(!empty($record)){
+            if (\Hash::check($request->password, $record->password)){
+                $new_token = $this->createSessionToken($request, $this->app_id, $author, $record->id, $record->name);
+                $this->remModelClass($table_class);
+                return ['status' => "success", '_token' => $new_token, 'user' => $record];
+            }else{
+                $this->remModelClass($table_class);
+                return ['message' => "incorrect password"];
+            }
         }
+        return ['message' => "email address does not exists"];
+    }
+
+    public function clogin($request, $author, $fillables, $hiddens)
+    {
+        \Log::Info(request()->ip()." end user logged in app_id ".$this->app_id);
+        $this->validateGenericInputs($request, $author, ['id', 'created_at', 'updated_at']);
+        $table_class = $this->gtc($author, $fillables, $hiddens);
+        $record = $table_class::where(['email' => $request->email])->first();
+        if(!empty($record)){
+            if($record->email_verification == 'done'){
+                if (\Hash::check($request->password, $record->password)){
+                    $new_token = $this->createSessionToken($request, $this->app_id, $author, $record->id, $record->name);
+                    $this->remModelClass($table_class);
+                    return ['status' => "success", '_token' => $new_token, 'user' => $record];
+                }else{
+                    $this->remModelClass($table_class);
+                    return ['message' => "incorrect password"];
+                }
+            }
+            $this->remModelClass($table_class);
+            return ['message' => "email address not verified"];
+        }
+        $this->remModelClass($table_class);
+        return ['message' => "email address does not exists"];
     }
 
     public function uploadFiles($request)
@@ -275,6 +340,12 @@ class ApiController extends Controller
         return $res;
     }
 
+    public function sendMail($request)
+    {
+        Mail::to($request->to)->send(new CommonMail($request->message));
+        return ['message' => 'mail successfully sent'];
+    }
+
     public function savePushSubscription($request)
     {
         $table = "App\\PushSubscription";
@@ -285,109 +356,6 @@ class ApiController extends Controller
         }else{
             return ['message' => 'already saved'];
         }
-    }
-
-    private function setTable($table)
-    {
-        $this->table = 'App\\Models\\'.ucwords(rtrim($table,'s'));
-    }
-
-    private function processTableForHasMany($table)
-    {
-        $this->table = $this->table->map(function ($itable) use ($table) {
-            // $itable['price'] = Price::find($itable->price_id);
-            foreach ($this->has_many as $key => $value) {
-                if( strpos($value, '|') ){
-                    $value = explode('|', $value);
-                    $stable = 'App\\Models\\'.$this->auth_user->id.'\\'.$this->auth_user->active_app_id.ucwords(rtrim($value[0],'s'));
-                    $itable[$value[1]] = $stable::where('pivot_table', $table)
-                                                ->where('pivot_field', $value[1])
-                                                ->where('pivot_id', $itable->id)->get();
-                }else{
-                    $stable = 'App\\Models\\'.$this->auth_user->id.'\\'.$this->auth_user->active_app_id.ucwords(rtrim($value,'s'));
-                    $itable[$value] = $stable::where($table.'_id', $itable->id);
-                }
-            }
-            return $itable;
-        });
-    }
-
-    private function processRequestForDates()
-    {
-        $this->request = $this->request->map(function ($itable) {
-            foreach ($this->dates as $key => $value) {
-                $irequest[$key] = new \DateTime($irequest[$value]);
-            }
-            return $irequest;
-        });
-    }
-
-    private function sp($auth_provider, $index)
-    {
-        $arr = explode('|', $auth_provider.'|');
-        return $arr[$index];
-    }
-
-    private function routeChecker($app_id, $auth_provider, $secret)
-    {
-        if(!Schema::hasTable('app'.$app_id.'_'. $this->sp($auth_provider,0) )){
-            return ['status' => 'failed'];
-        }
-
-        $app = App::findOrFail($app_id);
-
-        if($app->secret !== $secret){
-            return ['status' => 'failed'];
-        }
-
-        $arr = json_decode($app->auth_providers,true)??[];
-
-        if(strpos($auth_provider, '|')){
-            $ap = explode("|", $auth_provider);
-
-            if( !in_array( $ap[1], $arr[$ap[0]] ) ){
-                return ['status' => 'failed'];
-            }
-        }else{
-            if( $arr[$auth_provider] !== "All Users"){
-                return ['status' => 'failed'];
-            }
-        }
-
-        $p = json_decode($app->permissions,true)??[];
-
-        if(! $p['guest']['All Users'][$ap[0]]['p']){
-            return ['status' => 'failed'];
-        }
-    }
-
-    public function gtc($table, $fillables = null, $hiddens = null)
-    {
-        $table_name = $this->tClass($table);
-        // $myFilePath = app_path() ."/Models/$table_name.php";
-        // if(!file_exists($myFilePath)){
-            $arr = json_decode(App::findOrFail($this->app_id)->auth_providers, true);
-            $this->createModelClass($table, in_array($table, $arr), $fillables, $hiddens);
-        // }
-        return "App\\Models\\".$table_name;
-    }
-
-    private function remModelClass($table_class)
-    {
-        $myFilePath = base_path() .'/'.$table_class.'.php';
-        if(is_writable($myFilePath)){
-            unlink($myFilePath);
-        }
-    }
-
-    public function tClass($table)
-    {
-        return ucwords(rtrim('app'.$this->app_id.'_'.$table,'s'));
-    }
-
-    private function table($table)
-    {
-        return 'app'.$this->app_id.'_'.$table;
     }
 
 }

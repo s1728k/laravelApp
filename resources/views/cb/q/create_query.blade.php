@@ -192,7 +192,6 @@
 									<option value="whereYear">whereYear</option>
 									<option value="whereTime">whereTime</option>
 									<option value="whereColumn">whereColumn</option>
-									<option value="Union">Union</option>
 									<option value="orderBy">orderBy</option>
 									<option value="distinct">distinct</option>
 									<option value="latest">latest</option>
@@ -200,7 +199,8 @@
 									<option value="inRandomOrder">inRandomOrder</option>
 									<option value="groupBy">groupBy</option>
 									<option value="having">having</option>
-									<option value="offset, limit">offset, limit</option>
+									<option value="offset">offset</option>
+									<option value="limit">limit</option>
 								</select>
 							</div>
 							<div class="col-md-4">

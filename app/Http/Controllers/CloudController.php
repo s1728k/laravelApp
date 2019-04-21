@@ -20,6 +20,9 @@ use App\Traits\EmailAccounts;
 use App\Traits\FilesStore;
 use App\Traits\ValidatesRequests;
 use App\Traits\PushesNotifications;
+use App\Traits\SendsChatMessages;
+use App\Traits\UtilityFunctions;
+use App\Traits\StoresSessionTokens;
 use Illuminate\Http\Request;
 
 class CloudController extends Controller
@@ -34,9 +37,18 @@ class CloudController extends Controller
     use FilesStore;
     use ValidatesRequests;
     use PushesNotifications;
+    use SendsChatMessages;
+    use UtilityFunctions;
+    use StoresSessionTokens;
 
-    public $app_id;
     public $con;
+    public $app_id;
+    public $aid;
+    public $fid;
+    public $fap;
+    public $fname;
+    public $fromWeb;
+    public $fc;
 
 	protected $rtype = '';
     protected $auth = 'auth';
@@ -44,11 +56,19 @@ class CloudController extends Controller
 
     public function __construct($rtype, $auth, $theme)
     {
+        $this->fc = "CloudController::";
+        \Log::Info($this->fc.'__construct');
         $this->rtype = $rtype;
         $this->auth = $auth;
         $this->theme = $theme;
         $this->middleware($this->auth);
         $this->middleware(function ($request, $next) {
+            $this->aid = 1;
+            $this->fid = \Auth::user()->id;
+            $this->fap = 'users';
+            $this->fname = \Auth::user()->name;
+            $this->fromWeb = 1;
+            
             $this->app_id = \Auth::user()->active_app_id;
             $this->con = $this->app_id?App::findOrFail($this->app_id)->db_connection:'apps_db';
             return $next($request);
@@ -110,18 +130,15 @@ class CloudController extends Controller
 
     public function deleteOrigin(Request $request, $id)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255']
-        ]);
         \Log::Info(request()->ip()." delete origin ".$request->name." for app id ".$this->app_id);
         $app = App::findOrFail($id);
         $arr = json_decode($app->origins, true)??[];
-        $key = array_search ($request->name, $arr);
-        if(!empty($key)){
+        $key = array_search($request->name, $arr);
+        if($key>-1){
             unset($arr[$key]);
             $app->update(['origins' => json_encode($arr)]);
         }
-        return 'success';
+        return ['status'=>'success'];
     }
 
     public function appActivate(Request $request)
@@ -157,11 +174,13 @@ class CloudController extends Controller
         if(isset($request->request_new_secret)){
             App::findOrFail($request->id)->update([
                 'name' => $request->new_app_name??'My App',
+                'token_lifetime' => $request->token_lifetime??43200,
                 'secret' => bcrypt(uniqid(rand(), true)),
             ]);
         }else{
             App::findOrFail($request->id)->update([
                 'name' => $request->new_app_name??'My App',
+                'token_lifetime' => $request->token_lifetime??43200,
             ]);
         }
         
@@ -201,27 +220,35 @@ class CloudController extends Controller
         return ['status' => 'success'];
     }
 
-    public function gtc($table, $app_id=null)
+    public function logView(Request $request)
     {
-        $this->app_id = $app_id??$this->app_id;
-        $table_name = $this->tClass($table);
-        // $myFilePath = app_path() ."/Models/$table_name.php";
-        // if(!file_exists($myFilePath)){
-            $arr = json_decode(App::findOrFail($this->app_id)->auth_providers, true);
-            $this->createModelClass($table, in_array($table, $arr));
-        // }
-        return "App\\Models\\".$table_name;
+        return view('cb.logs')->with([
+            'logs' => ('App\\Log')::where('aid', $this->app_id)->latest()->paginate(10), 
+            'page'=>$request->page??1
+        ]);
     }
 
-    public function tClass($table)
-    {
-        return ucwords(rtrim('app'.$this->app_id.'_'.$table,'s'));
-    }
+    // public function gtc($table, $app_id=null)
+    // {
+    //     $this->app_id = $app_id??$this->app_id;
+    //     $table_name = $this->tClass($table);
+    //     // $myFilePath = app_path() ."/Models/$table_name.php";
+    //     // if(!file_exists($myFilePath)){
+    //         $arr = json_decode(App::findOrFail($this->app_id)->auth_providers, true);
+    //         $this->createModelClass($table, in_array($table, $arr));
+    //     // }
+    //     return "App\\Models\\".$table_name;
+    // }
 
-    private function table($table)
-    {
-        return 'app'.$this->app_id.'_'.$table;
-    }
+    // public function tClass($table)
+    // {
+    //     return ucwords(rtrim('app'.$this->app_id.'_'.$table,'s'));
+    // }
+
+    // private function table($table)
+    // {
+    //     return 'app'.$this->app_id.'_'.$table;
+    // }
 
     public function vbaObfuView()
     {

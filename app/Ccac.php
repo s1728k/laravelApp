@@ -4,16 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Visitor extends Model
-{
-    public $table = 'visitors';
+class Ccac extends Model
+{   
+    public $table = 'ccac';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'ip_address', 'uuid', 'theme',
+        'app_id', 'signup', 'login', 'sevc', 've', 'ap',
     ];
 
 }

@@ -15,7 +15,7 @@
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <script src="{{ asset('js/jquery.min.js') }}"></script>
   <script src="{{ asset('js/bootstrap.min.js') }}"></script> --}}
-  <link rel="icon" type="image/x-icon" href="public/images/honeyweb.svg">
+  <link rel="icon" type="image/x-icon" href="public/images/honeyweb_icon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -92,6 +92,11 @@
         100% { transform: rotate(360deg); }
     }
   </style>
+  @guest
+  @else
+  <link rel="stylesheet" href="public/hw_chat_window/2.0/css/hw_chat_window_.css">
+  @endguest
+  @yield("custom_style")
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -122,8 +127,9 @@
           <li><a href="{{route('c.files.view')}}"><i class="fa fa-file"></i> Files</a></li>
           <li><a href="{{route('c.email.list.view')}}"><i class="fa fa-envelope"></i> Email</a></li>
           <li><a href="{{route('c.push.messages')}}"><i class="fa fa-bullhorn"></i> WebPsuh</a></li>
-          {{-- <li><a href="{{route('c.files.view')}}"><i class="fa fa-comments"></i> WebSockets</a></li>
-          <li><a href="{{route('c.files.view')}}"><i class="fa fa-video-camera"></i> WebRTC</a></li>
+          <li><a href="{{route('c.chat.messages')}}"><i class="fa fa-comments"></i> WebSockets</a></li>
+          <li><a href="{{route('c.app.log')}}"><i class="fa fa-edit"></i> Log</a></li>
+          {{-- <li><a href="{{route('c.files.view')}}"><i class="fa fa-video-camera"></i> WebRTC</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-code"></i> Obfuscator
             <span class="caret"></span></a>
@@ -175,5 +181,19 @@
         });
     });
 </script> --}}
+
+@guest
+@else
+<div id="hw_chat_app"></div>
+<script src="public/hw_chat_window/2.0/js/hw_chat_window_.js"></script>
+<script>
+  hwc.ws.host = "{{env('APP_WS_URL')}}";//temp
+  hwc.logo = '<svg height="45" width="250"><text x="0" y="28" fill="grey" style="font-size:27px; font-weight:bold; font-family:Arial, Helvetica, sans-serif">HoneyWeb.Org</text><text x="0" y="42" fill="lightgrey" style="font-size:9px; font-weight:bold; font-family:Arial, Helvetica, sans-serif; letter-spacing: .38rem;">Delightful Web Creations</text>HoneyWeb.Org</svg>';
+  hwc.routes = 'web';
+  hwc.csrf_token = "{{csrf_token()}}";
+  hwc.app['tap'] = "users";
+  hwc.execute();
+</script>
+@endguest
 </body>
 </html>

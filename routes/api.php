@@ -68,7 +68,7 @@ use Illuminate\Http\Request;
 // Route::post('/image_get', 'TTA\HomeController@getImage');
 // Route::post('/file/{pivot_table}/{pivot_field}/{pivot_id}', 'TTA\HomeController@storeFile');
 
-Route::post('/save-subscription', 'GuestController@saveSubscription');
+
 // =================License Routes====================
 
 Route::prefix('license')->group(function() {
@@ -79,6 +79,25 @@ Route::prefix('license')->group(function() {
 Route::post('/get-license-key', 'GuestController@getLicenseKey')->name('l.get.licnese.key');
 
 //==================End License Routes ===============
+
+// =================Chat Routes====================
+
+Route::middleware('jst.auth')->prefix('chat')->group(function() {
+	Route::match(['get', 'post', 'put', 'delete'], '/', 'ApiController@apiChatRouteGuard');
+	// Route::post('/customer_care_app_config', 'ApiController@ccAppConfigGet');
+	// Route::post('/request_token', 'ApiController@requestToken');
+	// Route::put('/save_resource_id', 'ApiController@saveChatResourceId');
+	// Route::post('/my_chats', 'ApiController@getMyChats');
+ //    Route::post('/messages', 'ApiController@getMessages');
+	// Route::post('/start_chat', 'ApiController@saveNullMessage');
+	// Route::post('/waiting_chats', 'ApiController@getWaitingChats');
+	// Route::delete('/delete_chat_request', 'ApiController@deleteChatRequest');
+	// Route::put('/pick_chat', 'ApiController@pickWaitingChat');
+	// Route::post('/save_message', 'ApiController@saveChatMessage');
+	// Route::put('/message_status', 'ApiController@updateMessageStatus');
+});
+
+//==================End Chat Routes ===============
 
 // =================App Client User Registration Routes====================
 
@@ -116,3 +135,6 @@ Route::middleware('jst.auth')->prefix('{query_id}')->group(function() {
 //         return response()->json(['foo'=>'bar']);
 //     });
 // });
+Route::fallback(function(){
+    return response()->json(['message' => 'Page Not Found. If error persists, contact info@honeyweb.org'], 404);
+});

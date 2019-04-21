@@ -164,6 +164,12 @@ trait EmailAccounts
 		return ['status' => 'failed'];
 	}
 
+	public function templateListView(Request $request)
+	{
+		$aliases = VirtualAlias::where(['user_id' => \Auth::user()->id])->paginate(10);
+		return view($this->theme.'.email.alias_list')->with(['aliases' => $aliases, 'page' => $request->page??1]);
+	}
+
 	public function getTxtRecord(Request $request)
 	{
 		\Log::Info(request()->ip()." attempted to verify TXT record for domain".$request->id." for app id ".$this->app_id);

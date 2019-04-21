@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Session;
 use Illuminate\Console\Command;
 use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\App;
 use Ratchet\Server\EchoServer;
-use App\Http\Controllers\pending\WebSocketController;
-use App\Http\Controllers\Real\MyChatController;
+use App\Http\Controllers\MyChatController;
 
 class RunWebsocket extends Command
 {
@@ -44,7 +44,7 @@ class RunWebsocket extends Command
      */
     public function handle()
     {
-        \Log::Info('f');
+        Session::query()->update(['chat_resource_id' => null]);
         $server = IoServer::factory(
             new HttpServer(
                 new WsServer(

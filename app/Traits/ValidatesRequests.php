@@ -96,27 +96,31 @@ trait ValidatesRequests
 
     public function validateGenericInputs($request, $table, $skips=[], $mandatory=[], $pc=false)
     {
-        // $skips      = $options['skips']??[];
-        // $mandatory  = $options['mandatory']??[];
-        // $pc         = $options['pc']??false;
-        // $tp         = $options['tp']??[];
-
-        $td = $this->getDescriptions($table, $skips, $con);
+        $td = $this->getDescriptions($table, $skips);
         $rules = [];
         foreach ($td as $k => $v) {
-                if($v->Field == 'email'){
-                    $rules[$v->Field] = 'required|email|'.$this->getValidationString($v->Type).'|exists:'.$this->con.'.app'.$this->app_id.'_'.$table;
-                }else if($v->Field == 'password' && $pc == true){
+                if($v->Field == 'password' && $pc == true){
                     $rules[$v->Field] = 'required|min:6|'.$this->getValidationString($v->Type).'|confirmed';
                 }else{
                     if(in_array($v->Field, $mandatory)){
                         $rules[$v->Field] = 'required|'.$this->getValidationString($v->Type);
+                        if($v->Field == 'email'){
+                            $rules[$v->Field] = $rules[$v->Field] .'|email';
+                        }
                     }else{
-                        if(!empty($request->input($v->Field)))
+                        if(!empty($request->input($v->Field))){
                             $rules[$v->Field] = $this->getValidationString($v->Type);
+                            if($v->Field == 'email'){
+                                $rules[$v->Field] = $rules[$v->Field] .'|email';
+                            }
+                        }
                     }
                 }
+                if($v->Key == 'UNI' && $pc == true){
+                    $rules[$v->Field] = $rules[$v->Field] .'|unique:'.$this->con.'.app'.$this->app_id.'_'.$table;
+                }
         }
+        \Log::Info($rules);
         $request->validate($rules);
         \Log::Info(request()->ip()." validation passed for end user create request for app id ".$this->app_id);
     }
@@ -209,7 +213,7 @@ trait ValidatesRequests
             'datetime' => 'date_multi_format:Y-m-d H:i:s,Y-m-d H:i,y-m-d H:i:s,y-m-d H:i',
             'time' => 'date_multi_format:H:i:s,H:i',
             'char(255)' => 'char:10',
-            'varchar(255)' => 'present|string|max:255',
+            'varchar(255)' => 'string|max:255',
             'text' => 'max:65535',
             'mediumtext' => 'max:16777215',
             'longtext' => 'max:4294967295',

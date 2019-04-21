@@ -30,6 +30,9 @@
                 @if($msg == "user_blocked")
                     <h1>Hi {{$user->name}}. you have been blocked by the site admin.</h1>
                 @endif
+                @if($msg == "404")
+                    <h1>404 Page Not Found.</h1>
+                @endif
 	          </div>
 	        </div>
         </div>

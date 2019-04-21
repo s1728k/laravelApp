@@ -23,8 +23,9 @@ trait CreatesQueries
         \Log::Info(request()->ip()." visited create new query page for app id ".$this->app_id);
         $app = App::findOrFail(\Auth::user()->active_app_id);
         $commands = ['ReadAll'=>'all', 'Create'=>'new', 'Read'=>'get', 'Update'=>'mod', 'Delete'=>'del', 
-        'SignUp' => 'signup', 'Login' => 'login', 'FilesUpload' => 'files_upload', 'PushSubscribe' => 'ps', 
-        'PushReadCount' => 'prc'];
+        'SignUp' => 'signup', 'SendEmailVerificationCode' => 'sevc', 'VerifyEmail' => 've', 'Login' => 'login', 
+        'ConditionalLogin' => 'clogin', 'RefreshToken' => 'refresh', 'FilesUpload' => 'files_upload', 'SendMail' => 'mail'
+        , 'PushSubscribe' => 'ps', 'GetAppSecret' => 'secret'];
         $specials = ['pluck', 'count', 'max', 'min', 'avg', 'sum'];
         return view($this->theme.'.q.create_query')->with([
             'auth_providers' => json_decode($app->auth_providers,true)??[], 
@@ -79,8 +80,9 @@ trait CreatesQueries
         $query = Query::findOrFail($id);
         $app = App::findOrFail(\Auth::user()->active_app_id);
         $commands = ['ReadAll'=>'all', 'Create'=>'new', 'Read'=>'get', 'Update'=>'mod', 'Delete'=>'del', 
-        'SignUp' => 'signup', 'Login' => 'login', 'FilesUpload' => 'files_upload', 'PushSubscribe' => 'ps', 
-        'PushReadCount' => 'prc'];
+        'SignUp' => 'signup', 'SendEmailVerificationCode' => 'sevc', 'VerifyEmail' => 've', 'Login' => 'login', 
+        'ConditionalLogin' => 'clogin', 'RefreshToken' => 'refresh', 'FilesUpload' => 'files_upload', 'SendMail' => 'mail'
+        , 'PushSubscribe' => 'ps', 'GetAppSecret' => 'secret'];
         $specials = ['pluck', 'count', 'max', 'min', 'avg', 'sum'];
         return view($this->theme.'.q.update_query')->with([
             'query'=> $query,

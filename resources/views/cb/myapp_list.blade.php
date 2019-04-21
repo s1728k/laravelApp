@@ -12,6 +12,7 @@
 						<th>App Id</th>
             <th>App Name</th>
             <th>App Secret</th>
+            <th>token lifetime</th>
 						<th colspan="5">Actions</th>
 					</tr>
 				</thead>
@@ -22,6 +23,7 @@
             <td>{{$app->id}}</td>
             <td>{{$app->name}}</td>
             <td>{{$app->secret}}</td>
+            <td>{{$app->token_lifetime}}</td>
             <td><a style="cursor:pointer" onclick="activate({{$app->id}}, {{$loop->index}})">Activate</a></td>
             <td><a style="cursor:pointer" onclick="updateApp({{$app->id}}, {{$loop->index}})">Update App</a></td>
             <td><a style="cursor:pointer" href="{{ route('c.app.origins.view', ['id' => $app->id]) }}">Origins</a></td>
@@ -49,6 +51,7 @@
   function updateApp(id, sr){
     $(".app_id").val(id);
     $("input[name='new_app_name']").val($("tr:nth-child("+String(sr + 1)+") td:nth-child(3)").html());
+    $("input[name='token_lifetime']").val($("tr:nth-child("+String(sr + 1)+") td:nth-child(5)").html());
     $("#updateMyApp").modal();
   }
 </script>
@@ -96,7 +99,11 @@
         <div class="modal-body">
           <div class="form-group">
             <label>New app name</label>
-            <input type="text" name="new_app_name" value="" class="form-control">
+            <input type="text" name="new_app_name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>New token liftime (seconds)</label>
+            <input type="number" name="token_lifetime" class="form-control">
           </div>
           <div class="form-group">
             <input type="checkbox" name="request_new_secret" ><label>Request New Secret</label>

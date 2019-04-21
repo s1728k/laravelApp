@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-md-12 table-responsive">
 			<table class="table">
-        <caption>Email Accounts List | for the user id: {{\Auth::user()->id}}<div class="btn-group" style="float:right"> <a class="btn btn-default" href="{{route('c.email.new.account')}}">Add New Email Account</a><a class="btn btn-default" href="{{route('c.domain.list.view')}}">My Domains</a><a class="btn btn-default" href="{{route('c.alias.list.view')}}">My Aliases</a><a class="btn btn-default" href="http://mail.honeyweb.org" target="_blank">Goto Mails</a></caption>
+        <caption>Email Accounts List | for the user id: {{\Auth::user()->id}}<div class="btn-group" style="float:right"> <a class="btn btn-default" href="{{route('c.email.new.account')}}">Add New Email Account</a><a class="btn btn-default" href="{{route('c.domain.list.view')}}">My Domains</a><a class="btn btn-default" href="{{route('c.alias.list.view')}}">My Aliases</a><a class="btn btn-default" href="{{route('c.alias.list.view')}}">My Templates</a><a class="btn btn-default" href="http://mail.honeyweb.org" target="_blank">Goto Mails</a></caption>
 				<thead>
 					<tr>
 						<th>Sr</th>

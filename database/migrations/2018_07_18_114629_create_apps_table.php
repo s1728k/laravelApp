@@ -17,10 +17,12 @@ class CreateAppsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->string('name');
-            $table->string('secret')->unique();
+            $table->string('secret',60)->unique();
+            $table->unsignedInteger('token_lifetime')->default(43200);
             $table->string('db_connection');
             $table->text('auth_providers');
             $table->text('origins');
+            $table->text('can_chat_with');
             $table->boolean('blocked')->default(false);
             $table->timestamps();
         });

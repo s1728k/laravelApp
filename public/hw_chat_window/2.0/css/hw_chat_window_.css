@@ -1,0 +1,113 @@
+  .redborder{
+    border: 1px solid red;
+  }
+  ._hwc_hover_icons:hover{
+    color:black !important;
+  }
+  ._hwc_chats{
+    cursor: pointer;
+  }
+  ._hwc_chats:hover{
+    background: #f1f1f1;
+  }
+  ._hwc_waiting{
+
+  }
+  ._hwc_lmsg{
+    position: absolute;top:30px;color:grey;
+  }
+  ._hwc_date{
+    position: absolute;top:15px;right:0px;color:grey;
+  }
+  ._hwc_bold{
+    font-weight: bold;
+  }
+  ._hwc_main_bar{
+    display: none;
+  }
+  ._hwc_side_bar{
+    display: none;
+  }
+  @media screen and (max-width: 992px) {
+    /*._hwc_side_bar{
+      display: none;
+    }*/
+  }
+  @media screen and (min-width: 992px) {
+   /* ._hwc_main_bar {
+      display: block;
+    }*/
+  }
+  ._hwc_heading{
+    background: #F3F3F3; margin-bottom: 10px;border-bottom: 1px solid #E1E1E1;height: 64px;
+  }
+  #_hwc_first{
+    font-size:27px; font-weight:bold; font-family:Arial, Helvetica, sans-serif
+  }
+  #_hwc_second{
+    font-size:9px; font-weight:bold; font-family:Arial, Helvetica, sans-serif; letter-spacing: .38rem;
+  }
+  ._hwc_new_conversation_button{
+    margin-top: 10px; margin-bottom: 10px; width: 100%;
+  }
+  ._hwc_main_bar1{
+    height: calc(100vh - 80px);border-left: 0px solid lightblue;
+  }
+  ._hwc_name_heading{
+    position: relative;
+  }
+  ._hwc_name_display{
+    position: absolute;top:-8px;left:50px;
+  }
+  ._hwc_back_button_div{
+    padding-top: 0px;
+  }
+  ._hwc_back_button{
+    font-size:48px;color:lightblue;
+  }
+  ._hwc_msg_bar_div{
+    background: lightblue; padding: 10px; border-radius: 10px; display: flex;
+  }
+  ._hwc_smile_icon_div{
+    width: 30px;font-size:30px;color:grey
+  }
+  ._hwc_msg_div{
+    width: 100%;
+  }
+  #_hwc_message{
+    overflow:auto; background: none; border:0px;font-size:15px;width:100%;box-shadow: none;outline: none;
+  }
+  ._hwc_hidden{
+    display: none
+  }
+  ._hwc_status{
+    position: absolute;top:10px;left:-10px;
+  }
+  @media screen and (max-width: 992px) {
+    #_hwc_chat_app_base{
+      width: 100%;height: 100%;position: fixed;top:0px;right:0px;background:white;
+    }
+    #_hwc_message_space{
+      height: calc(100vh - 200px); overflow-y: auto; margin-bottom: 5px;
+    }
+    #_hwc_chat_app_buttton{
+      position: fixed;bottom:20px;right: 20px;z-index: -1;
+    }
+    #close_btn{
+      float:right;margin-top: 10px;
+    }
+  }
+  @media screen and (min-width: 992px) {
+    #_hwc_chat_app_base{
+      width: 350px;height: 500px;position: fixed;bottom:60px;right: 20px;border:1px solid lightblue;background:white;
+    }
+    #_hwc_message_space{
+      height: 300px; overflow-y: auto; margin-bottom: 5px;
+    }
+    #_hwc_chat_app_buttton{
+      position: fixed;bottom:20px;right: 20px;
+    }
+    #close_btn{
+      display: none;
+    }
+  }

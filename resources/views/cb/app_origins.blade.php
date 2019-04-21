@@ -2,6 +2,7 @@
 
 @section("content")
 <div class="container-fluid">
+  <div id="alrt"></div>
 	<div class="row">
 		<div class="col-md-12 table-responsive">
 			<table class="table">
@@ -28,9 +29,12 @@
 </div>
 <script>
   function deleteOrigin(name, i){
-    $.post("{{route('c.app.delete.origin', ['id'=>$id])}}",{"_token":"{{csrf_token()}}","name":name}, function(status){
-      if(status=='success'){
-        $("#r"+String(i)).remove();
+    $.post("{{route('c.app.delete.origin', ['id'=>$id])}}",{"_token":"{{csrf_token()}}","name":name}, function(data){
+      if(data['status'] == 'success'){
+        $('#r'+i).remove();
+        $('#alrt').html('<div class="alert alert-success"><strong>Success!</strong> Origin was successfully removed.</div>');
+      }else{
+        $('#alrt').html('<div class="alert alert-warning"><strong>Warning!</strong> Origin was not removed.</div>');
       }
     });
   }

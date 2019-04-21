@@ -32,7 +32,7 @@
 						<label for="domain">Domain Name:</label>
 					</div>
 					<div class="col-md-6">
-						<select class="form-control" id="domain" >
+						<select class="form-control" id="domain" onchange="setEmail()">
 						@foreach($domains as $d) <option value="{{$d}}">{{$d->name}}</option> @endforeach
 						</select>
 					</div>			
@@ -113,6 +113,7 @@
 		const d = JSON.parse($('#domain').val());
 		$("#did").val(d['id']);
 		$("#email").val($("#user").val()+"@"+d['name']);
+		console.log($("#email").val());
 	}
 	// function saveUser(){
 	// 	let pb = {};

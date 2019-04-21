@@ -13,7 +13,8 @@ class App extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'name', 'secret', 'origins', 'permissions', 'auth_providers', 'table_filters', 'blocked',
+        'user_id', 'name', 'secret', 'token_lifetime', 'db_connection', 'auth_providers', 'origins', 'can_chat_with', 
+        'ccac', 'blocked',
     ];
 
     /**

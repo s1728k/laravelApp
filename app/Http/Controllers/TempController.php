@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Config;
+use App\Session;
 use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
 use App\PushSubscription;
@@ -60,65 +61,6 @@ class TempController extends Controller
         //     $table->string('path');
         //     $table->timestamps();
         // });
-        // $s = PushSubscription::latest()->first();
-        // $subscription = Subscription::create(json_decode($s->subscription, true));
-$auth = array(
-    'VAPID' => array(
-        'subject' => env('VAPID_SUBJECT'),
-        'publicKey' => env('VAPID_PUBLIC_KEY'), // don't forget that your public key also lives in app.js
-        'privateKey' => env('VAPID_PRIVATE_KEY'), // in the real world, this would be in a secret file
-    ),
-);
-$defaultOptions = [
-    'TTL' => 300, // defaults to 4 weeks
-    'urgency' => 'normal', // protocol defaults to "normal"
-    'topic' => 'new_event', // not defined by default,
-    'batchSize' => 200, // defaults to 1000
-];
-$webPush = new WebPush($auth);
-$webPush->setDefaultOptions($defaultOptions);
-// $res = $webPush->sendNotification(
-//     $subscription,
-//     "Hello!"
-// );
-// handle eventual errors here, and remove the subscription from your server if it is expired
-// foreach ($webPush->flush() as $report) {
-//     $endpoint = $report->getRequest()->getUri()->__toString();
-//     if ($report->isSuccess()) {
-//         echo "[v] Message sent successfully for subscription {$endpoint}.";
-//     } else {
-//         echo "[x] Message failed to sent for subscription {$endpoint}: {$report->getReason()}";
-//     }
-// }
-        $s = PushSubscription::latest()->first();
-        \Log::Info($s->subscription);
-        $notifications = [
-            ['subscription' => Subscription::create(json_decode($s->subscription,true)),
-            'payload' => '{"msg":"Hello World!"}',
-            false,
-            ['TTL' => 5000]
-            ],
-        ];
-
-        // $webPush = new WebPush();
-
-        foreach ($notifications as $notification) {
-            $webPush->sendNotification(
-                $notification['subscription'],
-                $notification['payload']
-            );
-        }
-
-        foreach ($webPush->flush() as $report) {
-            $endpoint = $report->getRequest()->getUri()->__toString();
-
-            if ($report->isSuccess()) {
-                echo "[v] Message sent successfully for subscription {$endpoint}.";
-            } else {
-                echo "[x] Message failed to sent for subscription {$endpoint}: {$report->getReason()}";
-            }
-        }
-
     }
 
 

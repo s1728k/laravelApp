@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 class UserController extends CloudController
 {
-    protected $rtype = '';
+    protected $rtype = 'guest';
     protected $auth = 'auth';
     protected $theme = 'cb';
     /**

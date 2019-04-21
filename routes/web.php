@@ -44,6 +44,8 @@ Route::prefix('app')->group(function() {
 	Route::post('/delete/{id}', 'UserController@deleteApp')->name('c.delete.app');
 	Route::get('/sql/{id?}', 'UserController@exportDb')->name('c.app.sql.export');
 	Route::get('/csv', 'UserController@exportAppsToCSV')->name('c.app.csv.export');
+
+	Route::get('/log_view', 'UserController@logView')->name('c.app.log');
 });
 //====================End of App Routes=============
 
@@ -75,7 +77,7 @@ Route::prefix('table')->group(function() {
 	Route::post('/add-record', 'UserController@addRecord')->name('c.db.add.record.submit');
 	Route::get('/edit-record-view', 'UserController@editRecordView')->name('c.db.edit.record');
 	Route::post('/edit-record', 'UserController@editRecord')->name('c.db.edit.record.submit');
-	Route::post('/delete-record', 'UserController@deleteRecord')->name('c.db.delete.record');
+	Route::delete('/delete-record', 'UserController@deleteRecord')->name('c.db.delete.record');
 	Route::post('/rename', 'UserController@renameTable')->name('c.db.rename.table');
 	Route::post('/truncate', 'UserController@truncateTable')->name('c.truncate.table');
 	Route::post('/delete', 'UserController@deleteTable')->name('c.delete.table');
@@ -94,25 +96,6 @@ Route::prefix('query')->group(function() {
 });
 //====================End of License Routes=============
 
-//====================Email Routes====================
-Route::prefix('email')->group(function() {
-	Route::get('/email-users-list', 'UserController@emailListView')->name('c.email.list.view');
-	Route::get('/domain-list', 'UserController@domainListView')->name('c.domain.list.view');
-	Route::post('/domain-new', 'UserController@addNewDomain')->name('c.domain.add.new');
-	Route::get('/domain-verify/{id}', 'UserController@verifyNewDomainView')->name('c.domain.verify');
-	Route::delete('/domain-delete', 'UserController@deleteDomain')->name('c.domain.delete');
-	Route::get('/alias-list', 'UserController@aliasListView')->name('c.alias.list.view');
-	Route::post('/alias-new', 'UserController@addNewAlias')->name('c.alias.add.new');
-	Route::post('/alias-verify', 'UserController@verifyAlias')->name('c.alias.verify');
-	Route::delete('/alias-delete', 'UserController@deleteAlias')->name('c.alias.delete');
-	Route::get('/create-email-account-view', 'UserController@createEmailAccountView')->name('c.email.new.account');
-	Route::post('/new-email-account', 'UserController@addNewUser')->name('c.email.new.user.submit');
-	Route::delete('/delete', 'UserController@deleteEmailAccount')->name('c.email.delete.user');
-	Route::post('/get-txt', 'UserController@getTxtRecord')->name('c.email.get.txt');
-	Route::post('/get-page', 'UserController@getPageContents')->name('c.email.get.page');
-});
-//====================End of Email Routes=============
-
 //====================Files Routes====================
 Route::prefix('files')->group(function() {
 	Route::get('/csv-export/{table}', 'UserController@exportToCSV')->name('c.csv.export');
@@ -130,6 +113,34 @@ Route::prefix('files')->group(function() {
 });
 //====================End of Files Routes=============
 
+//====================Email Routes====================
+Route::prefix('email')->group(function() {
+	Route::get('/email-users-list', 'UserController@emailListView')->name('c.email.list.view');
+
+	Route::get('/domain-list', 'UserController@domainListView')->name('c.domain.list.view');
+	Route::post('/domain-new', 'UserController@addNewDomain')->name('c.domain.add.new');
+	Route::get('/domain-verify/{id}', 'UserController@verifyNewDomainView')->name('c.domain.verify');
+	Route::delete('/domain-delete', 'UserController@deleteDomain')->name('c.domain.delete');
+
+	Route::get('/alias-list', 'UserController@aliasListView')->name('c.alias.list.view');
+	Route::post('/alias-new', 'UserController@addNewAlias')->name('c.alias.add.new');
+	Route::post('/alias-verify', 'UserController@verifyAlias')->name('c.alias.verify');
+	Route::delete('/alias-delete', 'UserController@deleteAlias')->name('c.alias.delete');
+
+	Route::get('/template-list', 'UserController@templateListView')->name('c.template.list.view');
+	Route::post('/template-new', 'UserController@addNewTemplate')->name('c.template.add.new');
+	Route::post('/template-verify', 'UserController@verifyTemplate')->name('c.template.verify');
+	Route::delete('/template-delete', 'UserController@deleteTemplate')->name('c.template.delete');
+
+	Route::get('/create-email-account-view', 'UserController@createEmailAccountView')->name('c.email.new.account');
+	Route::post('/new-email-account', 'UserController@addNewUser')->name('c.email.new.user.submit');
+	Route::delete('/delete', 'UserController@deleteEmailAccount')->name('c.email.delete.user');
+
+	Route::post('/get-txt', 'UserController@getTxtRecord')->name('c.email.get.txt');
+	Route::post('/get-page', 'UserController@getPageContents')->name('c.email.get.page');
+});
+//====================End of Email Routes=============
+
 //====================Push Notification Routes====================
 Route::prefix('push')->group(function() {
 	Route::post('/save-subscription', 'GuestController@saveSubscription')->name('c.push.save_subscription');
@@ -141,7 +152,40 @@ Route::prefix('push')->group(function() {
 	Route::post('/copy_message', 'UserController@copyMessage')->name('c.push.copy.msg');
 	Route::post('/delete_message', 'UserController@deleteMessage')->name('c.push.del.msg');
 	Route::get('/broadcast/{id}', 'UserController@broadcast')->name('c.push.broadcast');
-	Route::get('/test-message', 'GuestController@sendMessage')->name('c.push.test_message');
+});
+//====================End of Push Notification Routes=============
+
+//====================Push Notification Routes====================
+// Route::prefix('chat')->group(function() {
+// 	Route::view('/messages', 'cb.messages');
+// 	Route::post('/save_resource_id', 'UserController@saveChatResourceId')->name('c.chat.srid');
+// 	Route::get('/my_chats', 'UserController@getMyChats')->name('c.chat.my');
+// 	Route::post('/save_message', 'UserController@saveChatMessage')->name('c.chat.save_message');
+// 	Route::get('/chatspace', 'UserController@chatspaceView')->name('c.chat.chatspace');
+//     Route::get('/messages-', 'UserController@messagesView');
+    
+// });
+Route::prefix('chat')->group(function() {
+	Route::get('/messages_view', 'UserController@chatMessagesView')->name('c.chat.messages');
+	Route::get('/requests_view', 'UserController@chatRequestsView')->name('c.chat.requests');
+	Route::put('/update_message', 'UserController@updateChatMessage')->name('c.chat.message.update');
+	Route::delete('/delete_message', 'UserController@deleteChatMessage')->name('c.chat.message.delete');
+	Route::get('/can_chat_with_view', 'UserController@canChatWithView')->name('c.chat.can_chat_with');
+	Route::put('/can_chat_with', 'UserController@canChatWith')->name('c.chat.ccw.submit');
+	Route::get('/customer_care_app_config_view', 'UserController@ccAppConfigView')->name('c.chat.ccac.view');
+	Route::put('/cc_app_config', 'UserController@ccAppConfig')->name('c.chat.ccac.submit');
+	Route::get('/chat_page', 'UserController@chatPage')->name('c.chat.page');
+
+	Route::post('/request_token', 'UserController@requestToken');
+	Route::put('/save_resource_id', 'UserController@saveChatResourceId');
+	Route::post('/my_chats', 'UserController@getMyChats');
+    Route::post('/messages', 'UserController@getMessages');
+	Route::post('/start_chat', 'UserController@saveNullMessage');
+	Route::post('/waiting_chats', 'UserController@getWaitingChats');
+	Route::delete('/delete_chat_request', 'UserController@deleteChatRequest');
+	Route::put('/pick_chat', 'UserController@pickWaitingChat');
+	Route::post('/save_message', 'UserController@saveChatMessage');
+	Route::put('/message_status', 'UserController@updateMessageStatus');
 });
 //====================End of Push Notification Routes=============
 
@@ -161,3 +205,7 @@ Route::prefix('docs')->group(function() {
 	Route::get('/prebuilt-applications', 'GuestController@prebuilt')->name('c.docs.prebuilt');
 });
 //====================End of Files Routes=============
+
+Route::fallback(function(){
+    return view('cb.user_interaction')->with(['msg'=>404]);
+});

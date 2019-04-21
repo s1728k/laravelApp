@@ -55,7 +55,7 @@
 						<div class="row">
 							<div class="col-md-12">
 							@foreach($tables as $table)
-								<div class="checkbox" style="display: inline-flex; margin-right: 10px"><label><input type="checkbox" onchange="t('{{$table}}')" @if(in_array($table, explode(', ', $query->tables))) checked @endif>{{$table}}</label></div>
+								<div class="checkbox" style="display: inline-flex; margin-right: 10px"><label><input type="checkbox" onchange="t1('{{$table}}')" @if(in_array($table, explode(', ', $query->tables))) checked @endif>{{$table}}</label></div>
 							@endforeach
 							</div>
 						</div>
@@ -189,7 +189,6 @@
 									<option value="whereYear">whereYear</option>
 									<option value="whereTime">whereTime</option>
 									<option value="whereColumn">whereColumn</option>
-									<option value="Union">Union</option>
 									<option value="orderBy">orderBy</option>
 									<option value="distinct">distinct</option>
 									<option value="latest">latest</option>
@@ -197,7 +196,8 @@
 									<option value="inRandomOrder">inRandomOrder</option>
 									<option value="groupBy">groupBy</option>
 									<option value="having">having</option>
-									<option value="offset, limit">offset, limit</option>
+									<option value="offset">offset</option>
+									<option value="limit">limit</option>
 								</select>
 							</div>
 							<div class="col-md-4">
@@ -303,7 +303,7 @@
 		$("#auth_providers_selected").html(diff.join(", "));
 		$("#auth_providers").val(diff.join(", "));
 	}
-	function t(v){
+	function t1(v){
 		if(ts.indexOf(v) != -1){
 			ts.splice(ts.indexOf(v),1);
 		}else{
