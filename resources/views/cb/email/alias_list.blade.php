@@ -3,22 +3,26 @@
 @section("content")
 <div class="container-fluid">
   <div id="alrt"></div>
+  @if($errors->has('email'))<div class="alert alert-warning"><strong>Warning!</strong> {{$errors->first('email')}}</div>@endif
+  <div class="row">
+    <div class="col-md-6">
+      My Alias List | for the user id: {{\Auth::user()->id}}
+    </div>
+    <div class="col-md-6">
+        <div class="btn-group" style="float:right;position: relative;">
+          <button class="btn btn-default" data-toggle="modal" data-target="#newAlias">Add New Alias Email</button>
+          <a class="btn btn-default" href="{{route('c.mail.list.view')}}">Back</a>
+        </div>
+    </div>
+  </div>
 	<div class="row">
 		<div class="col-md-12 table-responsive">
 			<table class="table">
-        <caption>My Alias List | for the user id: {{\Auth::user()->id}}
-          <form method="post" action="{{route('c.alias.add.new')}}">
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
-          <div class="input-group" style="float:right;position: relative;">
-              <input style="width:300px;" type="text" name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="Alias Email Address" />@if($errors->has('email'))<p style="color:red;position: absolute;bottom:auto;left:0px;top:30px;right:auto;"> {{$errors->first('email')}} </p>@endif
-          <button class="btn btn-default">Add New Alias Email</button>
-          <a class="btn btn-default" href="{{route('c.email.list.view')}}">Back</a></div></form></caption>
 				<thead>
 					<tr>
 						<th>Sr</th>
 						<th>Alias Email</th>
             <th>Verification Status</th>
-            <th>Expiry Date</th>
             <th>Delete</th>
 					</tr>
 				</thead>
@@ -32,14 +36,12 @@
             @else
             <td id="v{{$alias->id}}"><a style="cursor: pointer;" onclick="vc('{{$alias->id}}')">verify code</a></td>
             @endif
-            <td>{{ $alias->expiry_date }}</td>
-            <td><a style="cursor:pointer" onclick="d('{{$alias->id}}')">Delete</a></td>
+            <td><a href="JavaScript:void(0);" onclick="d('{{$alias->id}}')">Delete</a></td>
           </tr>
           @endforeach
 				</tbody>
 			</table>
-      {{-- {{$aliases->appends(request()->input())->links()}} --}}
-      {{$aliases->links()}}
+      {{$aliases->appends(request()->input())->links()}}
 		</div>
 	</div>
 </div>
@@ -67,4 +69,31 @@
     })
   }
 </script>
+
+
+<!-- Modal -->
+<div id="newAlias" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <form method="post" action="{{route('c.alias.add.new')}}">
+      <input type="hidden" name="_token" value="{{csrf_token()}}" />
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Enter alias name</h4>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <input type="email" name="email" class="form-control" placeholder="user@gmail.com">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default">Add</button>
+      </div>
+      </form>
+    </div>
+
+  </div>
+</div>
 @endsection

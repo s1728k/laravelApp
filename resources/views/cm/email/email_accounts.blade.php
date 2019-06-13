@@ -23,7 +23,7 @@
             <td>{{ $email->user }}</td>
             <td>{{ $email->domain }}</td>
             <td>{{ $email->email }}</td>
-            <td><a style="cursor:pointer" onclick="deleteEmailAccount('{{$email->id}}')">Delete</a></td>
+            <td><a href="JavaScript:void(0);" onclick="deleteEmailAccount('{{$email->id}}')">Delete</a></td>
           </tr>
           @endforeach
 				</tbody>

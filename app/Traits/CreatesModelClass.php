@@ -7,7 +7,7 @@ trait CreatesModelClass
 
 	public function createModelClass($table, $authenticatable = false, $fillable = null, $hidden = null)
 	{
-        \Log::Info(request()->ip()." created model class for table ".$table. " for app id ".$this->app_id);
+        \Log::Info($this->fc.'createModelClass');
 
         $myFilePath = app_path() ."/Models/".$this->tClass($table).".php";
         $myfile = fopen($myFilePath, "w");
@@ -47,7 +47,7 @@ trait CreatesModelClass
 
 	public function deleteModelClass($table)
 	{
-        \Log::Info(request()->ip()." deleted model class for table ".$table. " for app id ".$this->app_id);
+        \Log::Info($this->fc.'deleteModelClass');
 		$myfile = app_path() ."/Models/".$this->tClass($table) .".php";
         if(is_writable($myfile)){
             unlink($myfile);
@@ -59,6 +59,7 @@ trait CreatesModelClass
 
     private function getModelClass()
     {
+        \Log::Info($this->fc.'getModelClass');
         $m = "<?php\nnamespace App\Models;\nuse Illuminate\Database\Eloquent\Model;\nclass %MCN% extends Model\n{\n";
         $m = $m."public $" ."table = '" .'app'.$this->app_id.'_'. $table."';\n";
     }

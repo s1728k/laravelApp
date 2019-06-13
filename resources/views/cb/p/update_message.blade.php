@@ -4,8 +4,8 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<caption class="">Update Push Messsage	<div class="input-group" style="float:right;">
-				<a class="btn btn-default" href="{{route('c.push.messages')}}">Back</a></div></caption>
+			Update Push Messsage	<div class="input-group" style="float:right;">
+				<a class="btn btn-default" href="{{route('c.push.messages')}}">Back</a></div>
 		</div>
 	</div><hr>
 	<div class="row">

@@ -9,6 +9,7 @@ trait Crone
 {
 	public function change_auth_providers_josn_structure11()
 	{
+		\Log::Info($this->fc.'change_auth_providers_josn_structure11');
 		foreach (App::all() as $app) {
 			$a = json_decode($app->auth_providers, true);
 			$arr=[];
@@ -24,7 +25,7 @@ trait Crone
 
 	public function change_auth_providers_josn_structure()
 	{
-		\Log::Info('change_auth_providers_josn_structure');
+		\Log::Info($this->fc.'change_auth_providers_josn_structure');
 		foreach (App::all() as $app) {
 			// $a = json_decode($app->table_filters, true);
 			$t = $this->getTables($app->id);

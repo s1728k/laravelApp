@@ -15,125 +15,110 @@ trait PushesNotifications
 
 	public function saveSubscription(Request $request)
 	{
+		\Log::Info($this->fc.'saveSubscription');
 		$table = "App\\PushSubscription";
 		$exists = $table::where('subscription', json_encode($request->subscription))->first();
 		if(!$exists){
-			$table::create(['subscription' => json_encode($request->subscription)]);
+			$table::create(['app_id' => 1, 'auth_provider'=>'users', 'user_id'=>\Auth::user()->id, 'subscription' => json_encode($request->subscription)]);
 			return ['message' => 'successfully saved'];
 		}else{
 			return ['message' => 'already saved'];
 		}
 	}
 
-	public function messageList(Request $request)
+	public function pushMessageList(Request $request)
 	{
-		// $messages = PushMessage::paginate(10);
-		return view('cb.p.messages')->with([
-			'messages' => PushMessage::where('app_id', $this->app_id)->paginate(10), 
-			'page'=>$page??1
-		]);
+		\Log::Info($this->fc.'pushMessageList');
+		$push_messages = PushMessage::where('app_id', $this->app_id)->paginate(10);
+		return view('cb.p.messages')->with(['push_messages' => $push_messages, 'page'=>$page??1]);
 	}
 
 	public function createMessageView(Request $request)
 	{
-		$title = App::findOrFail($this->app_id)->name;
-		return view('cb.p.create_message')->with(['title' => $title]);
+		\Log::Info($this->fc.'createMessageView');
+		$app = App::findOrFail($this->app_id);
+		$push = [
+			"app_id" => $app->id,
+			"secret" => $app->secret,
+			"to" => ['users' => [1,2]],
+			"message" => [
+				"title" => $app->name,
+				"body" => "Hi, I am push message from ".$app->name.".",
+				"icon" => "https://via.placeholder.com/20",
+				"image" => "https://via.placeholder.com/100",
+				"badge" => "https://via.placeholder.com/10",
+				"sound" => "https://soundcloud.com/secret-service-862007284/old-town-road",
+				"vibrate" => [12, 154, 56, 56, 565, 464, 654, 5646, 54645],
+				"dir" => "",
+				"tag" => "my_tag",
+				"data" => "",
+				"requireInteraction" => "1",
+				"renotify" => "1",
+				"silent" => "0",
+				"actions" => [
+					['action'=>'/app/app-list', 'title'=>'Visit Site', 'icon'=>'']
+				],
+				"timestamp" => "",
+				"lang" => "",
+			],
+		];
+		return view($this->theme.'.p.push_json')->with(['push' => json_encode($push)]);
 	}
 
 	public function createMessage(Request $request)
 	{
-		$arr = [];
-		foreach ($request->all() as $key => $value) {
-			if(!empty($value)){
-				if(in_array($key, ['title', 'vibrate', 'dir', 'tag', 'lang', 'data'])){
-					$request->validate([$key => 'string|max:255']);
-				}
-				if(in_array($key, ['body', 'icon', 'image', 'badge', 'sound', 'actions'])){
-					$request->validate([$key => 'string|max:65536']);
-				}
-			}
-			$arr[$key] = $value;
-		}
-		PushMessage::create($arr);
-		return redirect()->route('c.push.messages');
+		\Log::Info($this->fc.'createMessage');
+		$request->validate(['push' => 'required|json']);
+		PushMessage::create(['app_id'=>$this->app_id, 'push_message'=>$request->push]);
+		return ['status' => 'success', 'message'=>'Push message was successfully created.'];
 	}
 
 	public function updateMessageView(Request $request, $id)
 	{
-		return view('cb.p.update_message')->with(['message' => PushMessage::findOrFail($id)]);
+		\Log::Info($this->fc.'updateMessageView');
+		return view('cb.p.push_json')->with(['push' => PushMessage::findOrFail($id)->push_message, 'id'=>$id]);
 	}
 
 	public function updateMessage(Request $request)
 	{
-		$arr = [];
-		foreach ($request->all() as $key => $value) {
-			if(!empty($value)){
-				if(in_array($key, ['title', 'vibrate', 'dir', 'tag', 'lang', 'data'])){
-					$request->validate([$key => 'string|max:255']);
-				}
-				if(in_array($key, ['body', 'icon', 'image', 'badge', 'sound', 'actions'])){
-					$request->validate([$key => 'string|max:65536']);
-				}
-			}
-			$arr[$key] = $value;
-		}
-		PushMessage::findOrFail($request->id)->update($arr);
-		return redirect()->route('c.push.messages');
+		\Log::Info($this->fc.'updateMessage');
+		$request->validate(['push' => 'required|json']);
+		PushMessage::findOrFail($request->id)->update(['push_message' => $request->push]);
+		return ['status' => 'success', 'message'=>'Push message was successfully updated.'];
 	}
 
 	public function copyMessage(Request $request)
 	{
-		PushMessage::findOrFail($request->id)->replicate()->save();;
+		\Log::Info($this->fc.'copyMessage');
+		PushMessage::findOrFail($request->id)->replicate()->save();
 		return redirect()->route('c.push.messages');
 	}
 
     public function deleteMessage(Request $request)
     {
-        \Log::Info(request()->ip()." deleted push message ".$request->id." for app id ".$this->app_id);
+    	\Log::Info($this->fc.'deleteMessage');
         if(!empty($request->id)){
             PushMessage::destroy($request->id);
         }
-        return ['status' => 'success'];
+        return ['status' => 'success', 'message'=>'Push message was successfully deleted.'];
     }
 
 	public function broadcast(Request $request, $id)
 	{
+		\Log::Info($this->fc.'broadcast');
 		$push = PushMessage::findOrFail($id);
 		if($this->app_id != $push->app_id){
 			return ['status' => 'invalid app'];
 		}
 
-		$auth = array(
-		    'VAPID' => array(
-		        'subject' => env('VAPID_SUBJECT'),
-		        'publicKey' => env('VAPID_PUBLIC_KEY'), // don't forget that your public key also lives in app.js
-		        'privateKey' => env('VAPID_PRIVATE_KEY'), // in the real world, this would be in a secret file
-		    ),
-		);
-		$defaultOptions = [
-		    'TTL' => 300, // defaults to 4 weeks
-		    'urgency' => 'normal', // protocol defaults to "normal"
-		    'topic' => 'new_event', // not defined by default,
-		    'batchSize' => 200, // defaults to 1000
-		];
-		$webPush = new WebPush($auth);
-		$webPush->setDefaultOptions($defaultOptions);
+		return $this->sendPushMessageObject(json_decode($push->push_message, true));
+	}
 
-		$subscriptions = PushSubscription::where('app_id', $this->app_id)->latest()->pluck('subscription');
-		$notifications = [];
-		foreach ($subscriptions as $s) {
-            $webPush->sendNotification(Subscription::create(json_decode($s,true)), json_encode($push) );
-		}
-
-        foreach ($webPush->flush() as $report) {
-            $endpoint = $report->getRequest()->getUri()->__toString();
-
-            if ($report->isSuccess()) {
-                echo "[v] Message sent successfully for subscription {$endpoint}.";
-            } else {
-                echo "[x] Message failed to sent for subscription {$endpoint}: {$report->getReason()}";
-            }
-        }
+	public function pushSubscriptionList(Request $request)
+	{
+		\Log::Info($this->fc.'pushSubscriptionList');
+		$subscriptions = PushSubscription::select(['auth_provider','user_id'])->where('app_id',$this->app_id)->paginate(10);
+		return view('cb.p.push_subscribers')->with(['subscriptions' => $subscriptions, 'page'=>$request->page??1]);
 	}
 	
 }

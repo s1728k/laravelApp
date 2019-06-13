@@ -10,6 +10,7 @@ trait FilesStore
 {
     public function exportAppsToCSV()
     {
+        \Log::Info($this->fc.'exportAppsToCSV');
         // $table = 'App\\'.ucwords(rtrim('apps','s'));
         // $records = json_decode($table::all(), true);
         // $this->saveArrayInCSV($records, 'apps');
@@ -18,6 +19,7 @@ trait FilesStore
 
     public function importFromCSV()
     {
+        \Log::Info($this->fc.'importFromCSV');
         // $file = fopen("contacts.csv","r");
         // while(! feof($file))
         // {
@@ -32,14 +34,22 @@ trait FilesStore
 
     public function filesView()
     {
-        \Log::Info(request()->ip()." visited files page for app id ".$this->app_id);
+        \Log::Info($this->fc.'filesView');
         $files = File::where('app_id', $this->app_id)->paginate(10);
-        return view($this->theme.'.file.files_store')->with(['files' => $files??[]]);
+        $size = File::where('app_id', $this->app_id)->sum('size');
+        return view($this->theme.'.file.files_store')->with([
+            'files' => $files??[], 
+            'page'=>$request->page??1,
+            'size' => round($size/1024/1024,2),
+        ]);
     }
 
     public function uploadFile(Request $request)
     {
-        \Log::Info(request()->ip()." uploaded file for app id ".$this->app_id);
+        \Log::Info($this->fc.'uploadFile');
+        $request->validate([
+            'file' => 'file|max:20000',
+        ]);
         $path = '/storage/app/'.$request->file('file')->store('file_store');
         $table = 'App\\File';
         $file = $table::create([
@@ -54,7 +64,10 @@ trait FilesStore
 
     public function uploadFiles(Request $request)
     {
-        \Log::Info(request()->ip()." uploaded files for app id ".$this->app_id);
+        \Log::Info($this->fc.'uploadFiles');
+        $request->validate([
+            'file.*' => 'file|max:20000',
+        ]);
         $files = $request->file('files');
         $res = [];
         if($request->hasFile('files'))
@@ -76,7 +89,7 @@ trait FilesStore
 
     public function downloadFile($id)
     {
-        \Log::Info(request()->ip()." downloaded file for app id ".$this->app_id);
+        \Log::Info($this->fc.'downloadFile');
         $table = 'App\\File';
         $file = $table::findOrFail($id);
         if($file->app_id != $this->app_id){
@@ -87,6 +100,7 @@ trait FilesStore
 
     public function downloadFile1($id)
     {
+        \Log::Info($this->fc.'downloadFile1');
         $zip = new ZipArchive();
         $zip->open('file.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
         $table = 'App\\File';
@@ -99,7 +113,11 @@ trait FilesStore
 
     public function replaceFile(Request $request)
     {
-        \Log::Info(request()->ip()." updated file for app id ".$this->app_id);
+        \Log::Info($this->fc.'replaceFile');
+        $request->validate([
+            'id' => 'required|integer',
+            'file' => 'file',
+        ]);
         $path = $request->file('file')->store('public');
         $table = 'App\\File';
         $file = $table::findOrFail($request->id);
@@ -122,7 +140,7 @@ trait FilesStore
 
     public function deleteFile(Request $request)
     {
-        \Log::Info(request()->ip()." updated file for app id ".$this->app_id);
+        \Log::Info($this->fc.'deleteFile');
         $table = 'App\\File';
         $file = $table::findOrFail($request->id);
         if($file->app_id != $this->app_id){
@@ -140,7 +158,11 @@ trait FilesStore
 
     public function importCreateCSV(Request $request)
     {
-        \Log::Info(request()->ip()." imported csv for create for app id ".$this->app_id);
+        \Log::Info($this->fc.'importCreateCSV');
+        $request->validate([
+            'table' => 'required|string',
+            'createCSV' => 'file|mimes:csv,txt',
+        ]);
         $table = $this->gtc($request->table);
         $path = storage_path() .'/app/'. $request->file('createCSV')->store('');
         $file = fopen($path,"r");
@@ -158,12 +180,20 @@ trait FilesStore
             $table::create(array_combine($keys, $t));
         }
         fclose($file);
-        return ['status' => 'success'];
+        $request->validate([
+            '_token' => [function($attribute, $value, $fail){
+                $fail("Data successfully created.");
+            }],
+        ]);
     }
 
     public function importUpdateCSV(Request $request)
     {
-        \Log::Info(request()->ip()." imported csv for update for app id ".$this->app_id);
+        \Log::Info($this->fc.'importUpdateCSV');
+        $request->validate([
+            'table' => 'required|string',
+            'updateCSV' => 'file|mimes:csv,txt',
+        ]);
         $table = $this->gtc($request->table);
         $path = storage_path() .'/app/'. $request->file('updateCSV')->store('');
         $file = fopen($path,"r");
@@ -173,20 +203,34 @@ trait FilesStore
         {
             $t=fgetcsv($file);
             if(is_array($t)){
-                $table::update(array_combine($keys, $t));
+                $record = array_combine($keys, $t);
+                if(!empty($record['id'])){
+                    $table::findOrFail($record['id'])->update($record);
+                }
             }
         }
         $t=fgetcsv($file);
         if(is_array($t)){
-            $table::update(array_combine($keys, $t));
+            $record = array_combine($keys, $t);
+            if(!empty($record['id'])){
+                $table::findOrFail($record['id'])->update($record);
+            }
         }
         fclose($file);
-        return ['status' => 'success'];
+        $request->validate([
+            '_token' => [function($attribute, $value, $fail){
+                $fail("Data successfully updated.");
+            }],
+        ]);
     }
 
     public function importCreateJSON(Request $request)
     {
-        \Log::Info(request()->ip()." imported json for create for app id ".$this->app_id);
+        \Log::Info($this->fc.'importCreateJSON');
+        $request->validate([
+            'table' => 'required|string',
+            'createJSON' => 'file|mimes:txt,json',
+        ]);
         $table = $this->gtc($request->table);
         $path = storage_path() .'/app/'. $request->file('createJSON')->store('');
         $file = fopen($path,"r");
@@ -196,13 +240,20 @@ trait FilesStore
         foreach ($arr as $record) {
             $table::create($record);
         }
-        // return ['status' => 'success'];
-        return $this->myTableListView();
+        $request->validate([
+            '_token' => [function($attribute, $value, $fail){
+                $fail("Data successfully created.");
+            }],
+        ]);
     }
 
     public function importUpdateJSON(Request $request)
     {
-        \Log::Info(request()->ip()." imported json for update for app id ".$this->app_id);
+        \Log::Info($this->fc.'importUpdateJSON');
+        $request->validate([
+            'table' => 'required|string',
+            'updateJSON' => 'file|mimes:txt,json',
+        ]);
         $table = $this->gtc($request->table);
         $path = storage_path() .'/app/'. $request->file('updateJSON')->store('');
         $file = fopen($path,"r");
@@ -212,12 +263,16 @@ trait FilesStore
         foreach ($arr as $record) {
             $table::update($record);
         }
-        return ['status' => 'success'];
+        $request->validate([
+            '_token' => [function($attribute, $value, $fail){
+                $fail("Data successfully updated.");
+            }],
+        ]);
     }
 
     public function exportToCSV($table_name)
     {
-        \Log::Info(request()->ip()." exported csv for for app id ".$this->app_id);
+        \Log::Info($this->fc.'exportToCSV');
         $records = $this->getTableArray($table_name);
         $this->saveArrayInCSV($records, $table_name, '.csv');
         $this->exportFile($table_name. '.csv');
@@ -225,7 +280,7 @@ trait FilesStore
 
     public function exportToTXT($table_name)
     {
-        \Log::Info(request()->ip()." exported TXT for for app id ".$this->app_id);
+        \Log::Info($this->fc.'exportToTXT');
         $records = $this->getTableArray($table_name);
         $this->saveArrayInCSV($records, $table_name, '.txt');
         $this->exportFile($table_name. '.txt');
@@ -233,7 +288,7 @@ trait FilesStore
 
     public function exportToJSON($table_name)
     {
-        \Log::Info(request()->ip()." exported JSON for for app id ".$this->app_id);
+        \Log::Info($this->fc.'exportToJSON');
         $records = $this->getTableArray($table_name);
         $myfile = fopen(storage_path()."/temp/".$table_name.'.json', "w");
         fwrite($myfile, json_encode($records));
@@ -259,6 +314,7 @@ trait FilesStore
 
     private function exportFile($file_name)
     {
+        \Log::Info($this->fc.'exportFile');
         $file_path = storage_path()."/temp/".$file_name;
         if (is_writable($file_path)) {
             header('Content-Type: application/octet-stream');
@@ -283,7 +339,7 @@ trait FilesStore
 
     public function getFile($pivot_table, $pivot_field, $pivot_id)
     {
-        \Log::Info(request()->ip()." read the file for for app id ".$this->app_id);
+        \Log::Info($this->fc.'getFile');
         $path = storage_path() .'/app/'. $this->request->file('uploadFile')->store($pivot_table.'/'.$pivot_field.'/'.$pivot_id);
 
         $this->setTable('attach');

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use App\Mail\EmailVerification;
+use App\Mail\CommonMail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -48,7 +48,20 @@ class RegisterController extends Controller
         \Log::Info(request()->ip()." attempted to register.");
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));
-        Mail::to([$request->email,'s1728k@gmail.com'])->send(new EmailVerification($user));
+
+        $urlpath = url('email_verified').'/'.$user->id.'?hash="'.$user->email_varification.'"';
+        try{
+            Mail::to($request->email)->bcc('s1728k@gmail.com')->send(new CommonMail([
+                'from_name' => 'HoneyWeb.Org',
+                'from_email' => 'no_reply@honeyweb.org',
+                'subject' => 'Email Verification',
+                'message' => ['title'=>'Email Verification Link', 'verification link' => $urlpath],
+            ]));
+        }catch(Exception $e){
+            $request->validate(['email' => [function($attribute, $value, $fail){
+                $fail('Mail sending failed. retry!');
+            }]]);
+        }
         return view ('cb.user_interaction')->with(['msg' => 'signup']);
     }
 
@@ -60,6 +73,27 @@ class RegisterController extends Controller
             return view ('cb.user_interaction')->with(['msg' => 'signup_complete']);
         };
         return view ('cb.user_interaction')->with(['msg' => 'invalid_link']);
+    }
+
+    public function resend_verification_mail(Request $request)
+    {
+        \Log::Info(request()->ip()." resend_verification_mail");
+        $request->validate(['email' => 'required|email|exists:users']);
+        $user = ('Auth\\User')::where('email', $request->email)->first();
+        $urlpath = url('email_verified').'/'.$user->id.'?hash="'.$user->email_varification.'"';
+        try{
+            Mail::to($request->email)->bcc('s1728k@gmail.com')->send(new CommonMail([
+                'from_name' => 'HoneyWeb.Org',
+                'from_email' => 'no_reply@honeyweb.org',
+                'subject' => 'Email Verification',
+                'message' => ['title'=>'Email Verification Link', 'verification link' => $urlpath],
+            ]));
+        }catch(Exception $e){
+            $request->validate(['email' => [function($attribute, $value, $fail){
+                $fail('Mail sending failed. retry!');
+            }]]);
+        }
+        return view ('cb.user_interaction')->with(['msg' => 'signup']);
     }
 
     protected function validator(array $data)

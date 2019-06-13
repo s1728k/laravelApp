@@ -1,21 +1,31 @@
 @extends("cb.layouts.app")
 
 @section("content")
+<form id="form_create_table" method="post" action="{{ route("c.db.new.table.submit") }}">
+<input type="hidden" name="_token" value="{{csrf_token()}}"/>
 <div class="container-fluid">
+	@if($errors->has('name'))<div class="alert alert-warning"><strong>Warning!</strong> {{$errors->first('name')}}</div>@endif
+	<div class="row">
+		<div class="col-md-3">
+			Create New Table
+		</div>
+		<div class="col-md-9">
+			<div class="input-group" style="float:right;position: relative;">
+				<input style="width:300px;" type="text" name="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" placeholder="Table Name" />
+				@if($errors->has('name'))<p style="color:red;position: absolute;bottom:auto;left:0px;top:30px;right:auto;z-index: 3"> {{$errors->first('name')}} </p>@endif
+				<select name="model" class="form-control" style="width:150px;">
+					<option value="model">Model</option>
+					<option value="authenticatable">Authenticatable</option>
+				</select>
+				<button type="submit" class="btn btn-default">Create Table</button>
+				<a class="btn btn-default" href="{{route('c.table.list.view')}}">Back</a>
+			</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="table-responsive" style="padding-bottom: 100px;">
-				<form id="form_create_table" method="post" action="{{ route("c.db.new.table.submit") }}">
-					<input type="hidden" name="_token" value="{{csrf_token()}}"/>
 				<table class="table" id="table_fields">
-					<caption>
-						Create New Table 
-						<div class="input-group" style="float:right;position: relative;">
-							<input style="width:300px;" type="text" name="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" placeholder="Table Name" />@if($errors->has('name'))<p style="color:red;position: absolute;bottom:auto;left:0px;top:30px;right:auto;"> {{$errors->first('name')}} </p>@endif<select name="model" class="form-control" style="width:150px;">
-										<option value="model">Model</option>
-										<option value="authenticatable">Authenticatable</option>
-									</select>
-							<button type="submit" class="btn btn-default">Create Table</button><a class="btn btn-default" href="{{route('c.table.list.view')}}">Back</a></div></caption>
 					<thead>
 						<tr>
 							<th>Sr</th>
@@ -181,11 +191,11 @@
 						</tr>
 					</tbody>
 				</table>
-				</form>
 			</div>
 		</div>
 	</div>
 </div>
+</form>
 <script>
 @if(count($errors)!==0)
 	@for($i=2; $i<$fn+2; $i++)

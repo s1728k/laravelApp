@@ -23,37 +23,37 @@ class GuestController extends CloudController
 
     public function homeView()
     {
-        \Log::Info(request()->ip()." visited welcome page.");
+        \Log::Info($this->fc.'homeView');
         return view($this->theme.'.welcome');
     }
 
     public function docsView()
     {
-        \Log::Info(request()->ip()." visited docs page.");
+        \Log::Info($this->fc.'docsView');
         return view($this->theme.'.docs');
     }
 
     public function loginView()
     {
-        \Log::Info(request()->ip()." visited login page.");
+        \Log::Info($this->fc.'loginView');
         return view($this->theme.'.auth.login');
     }
 
     public function signupView()
     {
-        \Log::Info(request()->ip()." visited signup page.");
+        \Log::Info($this->fc.'signupView');
         return view($this->theme.'.auth.signup');
     }
 
     public function passwordResetRequestFormView()
     {
-        \Log::Info(request()->ip()." visited password reset request page.");
+        \Log::Info($this->fc.'passwordResetRequestFormView');
         return view($this->theme.'.auth.passwords.email');
     }
 
     public function passwordResetFormView(Request $request, $id)
     {
-        \Log::Info(request()->ip()." visited password reset page.");
+        \Log::Info($this->fc.'passwordResetFormView');
         $table = 'App\\User';
         $record = $table::findOrFail($id);
         $precord = PasswordReset::where("email", $record->email)->first();
@@ -68,7 +68,7 @@ class GuestController extends CloudController
 
     public function passwordResetRequest(Request $request)
     {
-        \Log::Info(request()->ip()." requested password reset.");
+        \Log::Info($this->fc.'passwordResetRequest');
         $request->validate([
             'email' => 'required|string|max:255|'
         ]);
@@ -101,7 +101,7 @@ class GuestController extends CloudController
 
     public function passwordReset(Request $request, $id)
     {
-        \Log::Info(request()->ip()." changed password.");
+        \Log::Info($this->fc.'passwordReset');
         $request->validate([
             'password' => 'required|string|min:6|confirmed'
         ]);

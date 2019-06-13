@@ -80,6 +80,13 @@ Route::post('/get-license-key', 'GuestController@getLicenseKey')->name('l.get.li
 
 //==================End License Routes ===============
 
+// =================No prefix Routes====================
+
+Route::post('/email', 'ApiController@sendMail');
+Route::post('/push', 'ApiController@sendPushMessage');
+
+//==================End No prefix Routes ===============
+
 // =================Chat Routes====================
 
 Route::middleware('jst.auth')->prefix('chat')->group(function() {
@@ -124,7 +131,10 @@ Route::middleware('jst.auth')->prefix('chat')->group(function() {
 // =================App Client Routes====================
 
 Route::middleware('jst.auth')->prefix('{query_id}')->group(function() {
-	Route::match(['get', 'post', 'put', 'delete'], '/{id?}', 'ApiController@junction')->where('id', '[0-9]+');
+	Route::match(['get', 'post', 'put', 'delete'], '/{id?}', 'ApiController@junction')->where([
+		'query_id' => '[0-9]+', 
+		'id' => '[0-9]+',
+	]);
 });
 
 // =================End App Client Routes====================

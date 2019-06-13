@@ -28,9 +28,9 @@
               <td>{{$licenseDetail->computer_name}}</td>
               <td>{{$licenseDetail->computer_user}}</td>
               @if($licenseDetail->hardware_code == "Empty")
-              <td><a style="cursor:pointer" onclick="sr({{$loop->index}})" data-toggle="modal" data-target="#manualActivation">Activate</a></td>
+              <td><a href="JavaScript:void(0);" onclick="sr({{$loop->index}})" data-toggle="modal" data-target="#manualActivation">Activate</a></td>
               @else
-              <td><a style="cursor:pointer" onclick="sr({{$loop->index}})" >De-Activate</a></td>
+              <td><a href="JavaScript:void(0);" onclick="sr({{$loop->index}})" >De-Activate</a></td>
               @endif
             </tr>
           @endforeach
@@ -75,7 +75,7 @@
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(4)').html($('#hardware_code1').val());
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(5)').html($('#computer_name1').val());
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(6)').html($('#computer_user1').val());
-        btn = '<a style="cursor:pointer" onclick="sr('+String(tri)+')">De-Activate</a>';
+        btn = '<a href="JavaScript:void(0);" onclick="sr('+String(tri)+')">De-Activate</a>';
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(7)').html(btn);
       }
       console.log(data['status']);
@@ -91,7 +91,7 @@
     $.post("{{route('l.deactivate.licnese')}}", dinp, function(data){
       if(data['status'] == "De-Activated"){
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(4)').html("Empty");
-        btn = '<a style="cursor:pointer" onclick="sr('+String(tri)+')" data-toggle="modal" data-target="#manualActivation">Activate</a>';
+        btn = '<a href="JavaScript:void(0);" onclick="sr('+String(tri)+')" data-toggle="modal" data-target="#manualActivation">Activate</a>';
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(7)').html(btn);
       }
     });

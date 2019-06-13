@@ -4,8 +4,8 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<caption class="">Create New Email Account	<div class="input-group" style="float:right;">
-				<a id="back" class="btn btn-default" href="{{route('c.email.list.view')}}">Back</a></div></caption>
+			Create New Email Account	<div class="input-group" style="float:right;">
+				<a id="back" class="btn btn-default" href="{{route('c.email.list.view')}}">Back</a></div>
 		</div>
 	</div><hr>
 	<div class="row">

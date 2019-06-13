@@ -3,10 +3,20 @@
 @section("content")
 <div class="container-fluid">
   <div id="alrt"></div>
+  <div class="row">
+    <div class="col-md-5">
+      Email Accounts List | for the user id: {{\Auth::user()->id}}
+    </div>
+    <div class="col-md-7">
+      <div class="btn-group" style="float:right"> 
+        <a class="btn btn-default" href="{{route('c.email.new.account')}}">Add New Email Account</a>
+        <a class="btn btn-default" href="{{route('c.mail.list.view')}}">Back</a>
+      </div>
+    </div>
+  </div>
 	<div class="row">
 		<div class="col-md-12 table-responsive">
 			<table class="table">
-        <caption>Email Accounts List | for the user id: {{\Auth::user()->id}}<div class="btn-group" style="float:right"> <a class="btn btn-default" href="{{route('c.email.new.account')}}">Add New Email Account</a><a class="btn btn-default" href="{{route('c.domain.list.view')}}">My Domains</a><a class="btn btn-default" href="{{route('c.alias.list.view')}}">My Aliases</a><a class="btn btn-default" href="{{route('c.alias.list.view')}}">My Templates</a><a class="btn btn-default" href="http://mail.honeyweb.org" target="_blank">Goto Mails</a></caption>
 				<thead>
 					<tr>
 						<th>Sr</th>
@@ -21,12 +31,12 @@
             <td>{{ ($loop->index + 1) + 10 * ($page-1)}}</td>
             <td>{{ $email->email }}</td>
             <td>{{ $email->alias }}</td>
-            <td><a style="cursor:pointer" onclick="d('{{$email->id}}')">Delete</a></td>
+            <td><a href="JavaScript:void(0);" onclick="d('{{$email->id}}')">Delete</a></td>
           </tr>
           @endforeach
 				</tbody>
 			</table>
-      {{$emails->links()}}
+      {{$emails->appends(request()->input())->links()}}
 		</div>
 	</div>
 </div>

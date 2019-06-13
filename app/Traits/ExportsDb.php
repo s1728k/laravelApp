@@ -8,6 +8,7 @@ trait ExportsDb
 {
     public function exportDb($app_id = null, $db_name = null, $con = null)
     {
+    	\Log::Info($this->fc.'exportDb');
         $app_id = $app_id??$this->app_id;
         $app = App::findOrfail($app_id);
         if($app->user_id != \Auth::user()->id){
@@ -83,6 +84,7 @@ trait ExportsDb
      */
     private function getPDOConnection($host, $db, $username, $password)
     {
+    	\Log::Info($this->fc.'getPDOConnection');
         return new PDO(sprintf('mysql:host=%s;db=%d;', $host, $db), $username, $password);
     }
 }

@@ -62,6 +62,14 @@
           <td></td>
         </tr>
         <tr>
+          <td>"license_no"</td>
+          <td style="width:20px; text-align:center">:</td>
+          <td>"</td>
+          <td><input type="text" id="license_no0" class="form-control" value="" placeholder="License No. (optional)"></td>
+          <td>"</td>
+          <td></td>
+        </tr>
+        <tr>
           <td>{{ '}' }}</td>
           <td></td>
           <td></td>
@@ -286,6 +294,7 @@
     ainp['hardware_code'] = $('#hardware_code1').val();
     ainp['computer_user'] = $('#computer_user1').val();
     ainp['computer_name'] = $('#computer_name1').val();
+    ainp['license_no'] = $('#license_no0').val();
 
     $.post("{{route('l.activate.licnese')}}", ainp, function(data){
       $('#status1').html('"' + String(data['status']) + '"');

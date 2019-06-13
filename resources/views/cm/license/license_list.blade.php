@@ -36,10 +36,10 @@
                 <input type="date" name="expiry_date" class="form-control" value="{{$license->expiry_date}}" />
               </td>
               <td>
-                <a style="cursor:pointer" href="#" id="edb{{$loop->index}}" onclick="ri({{$loop->index}})" data-toggle="modal" data-target="#editLicense">Edit</a>
+                <a href="JavaScript:void(0);" id="edb{{$loop->index}}" onclick="ri({{$loop->index}})" data-toggle="modal" data-target="#editLicense">Edit</a>
               </td>
               <td>
-                <a style="cursor:pointer" href="{{ route('l.license.details.view', ['id' => $license->id]) }}">License Details</a>
+                <a href="{{ route('l.license.details.view', ['id' => $license->id]) }}">License Details</a>
               </td>
             </tr>
             </form>

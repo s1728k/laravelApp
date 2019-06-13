@@ -10,6 +10,7 @@ trait StoresSessionTokens
 
     public function createSessionToken($request, $app_id, $author, $user_id, $user_name)
     {
+        \Log::Info($this->fc.'createSessionToken');
         $new_token = bcrypt(rand());
         $expiry = App::findOrFail($this->app_id)->token_lifetime + time();
         Session::create([
@@ -28,6 +29,7 @@ trait StoresSessionTokens
 
     public function refreshSessionToken($token, $token_lifetime)
     {
+        \Log::Info($this->fc.'refreshSessionToken');
         $session = Session::where('_token', $token)->first();
         if(empty($session)){
             return response()->json(['message' => 'token invalid'], 401);
@@ -45,6 +47,7 @@ trait StoresSessionTokens
 
     public function checkSessionToken($token)
     {
+        \Log::Info($this->fc.'checkSessionToken');
         $session = Session::where('_token', $token)->first();
         if(empty($session)){
             return response()->json(['message' => 'token invalid'], 401);
@@ -62,6 +65,7 @@ trait StoresSessionTokens
 
     public function getAuth($token)
     {
+        \Log::Info($this->fc.'getAuth');
         $session = Session::where('_token',$token)->first();
         if($session){
             $this->app_id = $session->app_id;
@@ -77,6 +81,7 @@ trait StoresSessionTokens
 
     public function getToken($app_id, $auth_provider, $id)
     {
+        \Log::Info($this->fc.'getToken');
         $tokens = $this->getFileContents($app_id, $auth_provider);
 
         $new_token = bcrypt(rand());
@@ -94,6 +99,7 @@ trait StoresSessionTokens
 
     public function refreshToken($app_id, $auth_provider, $token)
     {
+        \Log::Info($this->fc.'refreshToken');
         $tokens = $this->getFileContents($app_id, $auth_provider);
 
         if(!empty($tokens[$token.'_time'])){
@@ -122,6 +128,7 @@ trait StoresSessionTokens
 
     public function checkToken($app_id, $auth_provider, $token)
     {
+        \Log::Info($this->fc.'checkToken');
         $tokens = $this->getFileContents($app_id, $auth_provider);
 
         if(!empty($tokens[$token.'_time'])){
@@ -139,12 +146,14 @@ trait StoresSessionTokens
 
     public function getAuthId($app_id, $auth_provider, $token)
     {
+        \Log::Info($this->fc.'getAuthId');
         $tokens = $this->getFileContents($app_id, $auth_provider);
         return $tokens[$token];
     }
 
     private function getFileContents($app_id, $auth_provider)
     {
+        \Log::Info($this->fc.'getFileContents');
         $myfilepath = storage_path()."/honeyweb/".ucwords(rtrim('app'.$app_id.'_'.$auth_provider,'s')) .".php";
         if(!file_exists($myfilepath)){
             $myfile = fopen($myfilepath, "w");
@@ -159,6 +168,7 @@ trait StoresSessionTokens
 
     private function storeFileContents($app_id, $auth_provider, $tokens)
     {
+        \Log::Info($this->fc.'storeFileContents');
         $myfilepath = storage_path()."/honeyweb/".ucwords(rtrim('app'.$app_id.'_'.$auth_provider,'s')) .".php";
         $myfile = fopen($myfilepath, "w");
         fwrite($myfile, json_encode($tokens));

@@ -4,10 +4,9 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<caption class="">
 			Add new record for table "{{$table}}"
-			<div class="input-group" style="float:right;">
-				<a class="btn btn-default" href="{{route('c.db.crud.table')}}?table={{$table}}">Back</a></div></caption>
+			<div class="btn-group" style="float:right;">
+				<a class="btn btn-default" href="{{route('c.db.crud.table')}}?table={{$table}}">Back</a></div>
 		</div>
 	</div><hr>
 	<div class="row">
@@ -40,17 +39,17 @@
 		            </script>
 					@else
 						@empty($step[$v->Type])
-						<div class="form-group row">
-							<div class="col-md-1"></div>
-							<div class="col-md-4">
-								<label for="{{$v->Field}}">{{$v->Field}}:</label>
+							<div class="form-group row">
+								<div class="col-md-1"></div>
+								<div class="col-md-4">
+									<label for="{{$v->Field}}">{{$v->Field}}:</label>
+								</div>
+								<div class="col-md-6">
+									<input id="{{$v->Field}}" type="{{$inpTyp[$v->Type]}}" class="form-control" name="{{$v->Field}}" value="{{ old($v->Field) }}" placeholder="{{$v->Field}}" >
+									@if($errors->has($v->Field))
+											<p style="color:red">{{$errors->first($v->Field)}}</p> @endif
+								</div>			
 							</div>
-							<div class="col-md-6">
-								<input id="{{$v->Field}}" type="{{$inpTyp[$v->Type]}}" class="form-control" name="{{$v->Field}}" value="{{ old($v->Field) }}" placeholder="{{$v->Field}}" >
-								@if($errors->has($v->Field))
-										<p style="color:red">{{$errors->first($v->Field)}}</p> @endif
-							</div>			
-						</div>
 							@if($v->Field == 'password')
 							<div class="form-group row">
 								<div class="col-md-1"></div>

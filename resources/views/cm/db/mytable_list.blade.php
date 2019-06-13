@@ -30,17 +30,17 @@
         <tr id="r{{($key + 1)}}">
           <td>{{ ($key + 1) }}</td>
           <td>{{ $table }}</td>
-          <td><a style="cursor:pointer" onclick="addFields('{{$table}}')">Add Fields</a></td>
-          <td><a style="cursor:pointer" onclick="renameField('{{$table}}')">Rename Field</a></td>
-          <td><a style="cursor:pointer" onclick="deleteField('{{$table}}')">Delete Field</a></td>
-          <td><a style="cursor:pointer" onclick="addIndex('{{$table}}')">Add Index</a></td>
-          <td><a style="cursor:pointer" onclick="removeIndex('{{$table}}')">Remove Index</a></td>
-          <td><a style="cursor:pointer" href="{{route('c.db.crud.table')}}?table={{$table}}">CRUD</a></td>
-          <td><a style="cursor:pointer" onclick="renameTable('{{$table}}', {{$key}})" >Rename Table</a></td>
-          <td><a style="cursor:pointer" onclick="truncate('{{$table}}', {{$key}})" >Truncate Table</a></td>
-          <td><a style="cursor:pointer" onclick="deleteTable('{{$table}}', {{$key}})" >Delete Table</a></td>
-          <td><a style="cursor:pointer" href="{{route('c.csv.export', ['table'=>$table])}}">CSV</a></td>
-          <td><a style="cursor:pointer" href="{{route('c.json.export', ['table'=>$table])}}">JSON</a></td>
+          <td><a href="JavaScript:void(0);" onclick="addFields('{{$table}}')">Add Fields</a></td>
+          <td><a href="JavaScript:void(0);" onclick="renameField('{{$table}}')">Rename Field</a></td>
+          <td><a href="JavaScript:void(0);" onclick="deleteField('{{$table}}')">Delete Field</a></td>
+          <td><a href="JavaScript:void(0);" onclick="addIndex('{{$table}}')">Add Index</a></td>
+          <td><a href="JavaScript:void(0);" onclick="removeIndex('{{$table}}')">Remove Index</a></td>
+          <td><a href="{{route('c.db.crud.table')}}?table={{$table}}">CRUD</a></td>
+          <td><a href="JavaScript:void(0);" onclick="renameTable('{{$table}}', {{$key}})" >Rename Table</a></td>
+          <td><a href="JavaScript:void(0);" onclick="truncate('{{$table}}', {{$key}})" >Truncate Table</a></td>
+          <td><a href="JavaScript:void(0);" onclick="deleteTable('{{$table}}', {{$key}})" >Delete Table</a></td>
+          <td><a href="{{route('c.csv.export', ['table'=>$table])}}">CSV</a></td>
+          <td><a href="{{route('c.json.export', ['table'=>$table])}}">JSON</a></td>
 
           <td>
             <form id="createCSV{{($key + 1)}}" method="post" action="{{route('c.csv.import.create')}}" enctype="multipart/form-data" autocomplete="off" style="display: none;">

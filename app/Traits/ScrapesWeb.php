@@ -9,6 +9,7 @@ trait ScrapesWeb
 	
 	public function curl_get_contents($url)
 	{
+		\Log::Info($this->fc.'curl_get_contents');
 		$ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -20,6 +21,7 @@ trait ScrapesWeb
 
 	public function httpPost($url, $data, $cookie = "")
 	{
+		\Log::Info($this->fc.'httpPost');
 		$options = array(
 		    'http' => array(
 		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n".$cookie,
@@ -35,6 +37,7 @@ trait ScrapesWeb
 
 	public function httpGet($url, $data = array())
 	{
+		\Log::Info($this->fc.'httpGet');
 		$options = array(
 		    'http' => array(
 		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -50,6 +53,7 @@ trait ScrapesWeb
 
 	public function get3DigitAphabets($s="AAA", $e="ZZZ")
 	{
+		\Log::Info($this->fc.'get3DigitAphabets');
 		$arr = [];
 		for($i=0; $i<26; $i++){
 			for($j=0; $j<26; $j++){
@@ -65,6 +69,7 @@ trait ScrapesWeb
 
 	public function strpos_rev($page, $search, $pos = -1)
 	{
+		\Log::Info($this->fc.'strpos_rev');
 		$pos = $pos==-1?strlen($page):$pos;
 		$vStart=strpos($page, $search, 1);
 		$i=0;
@@ -85,6 +90,7 @@ trait ScrapesWeb
 
 	public function getScrapeValue($page, $search_start, $search_end, $offset = 0)
 	{
+		\Log::Info($this->fc.'getScrapeValue');
 		if(!strpos($page, $search_start)){
 			return ['v' => "", 'nPage' => $page];
 		}else{
@@ -98,6 +104,7 @@ trait ScrapesWeb
 
 	public function getPageByBounds($page, $search, $fbound, $lbound)
 	{
+		\Log::Info($this->fc.'getPageByBounds');
 		$sPos = strpos($page, $search);
 		$vStart=$this->strpos_rev($page, $fbound, $sPos);
         $vEnd = strpos($page, $lbound, $sPos) + strlen($lbound);
@@ -107,6 +114,7 @@ trait ScrapesWeb
 
 	public function checkLimits()
 	{
+		\Log::Info($this->fc.'checkLimits');
 		if(empty($request->start_at) || empty($request->end_at)){
             if(is_numeric($request->start_at) || is_numeric($request->end_at)){
                 return false;

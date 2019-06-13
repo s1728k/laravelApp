@@ -2,12 +2,14 @@
 
 namespace App\Traits;
 
+use App\ValidationRule;
 use Illuminate\Support\Facades\Schema;
 
 trait ValidatesRequests
 {
 	public function validateCreateAppRequest($request)
 	{
+        \Log::Info($this->fc.'validateCreateAppRequest');
 		$request->validate([
 			'name' => 'required|string|max:255',
 		]);
@@ -15,6 +17,7 @@ trait ValidatesRequests
 
     public function validateCreateTableRequest($request)
     {
+        \Log::Info($this->fc.'validateCreateTableRequest');
         $request->validate([
             "name" => ['required','string','max:255', function($attribute, $value, $fail){
                 if(Schema::connection($this->con)->hasTable($this->table($value))){
@@ -28,6 +31,7 @@ trait ValidatesRequests
 
     public function validateAddColumnsRequest($request)
     {
+        \Log::Info($this->fc.'validateAddColumnsRequest');
         $request->validate([
             'name' => 'required|string|max:255',
             "field_name.*" => "required|string|max:255",
@@ -94,39 +98,61 @@ trait ValidatesRequests
         }
     }
 
-    public function validateGenericInputs($request, $table, $skips=[], $mandatory=[], $pc=false)
+    public function validateFileInputs($request)
     {
-        $td = $this->getDescriptions($table, $skips);
+        \Log::Info($this->fc.'validateFileInputs');
         $rules = [];
+        $additional_rules = ValidationRule::where('app_id',$this->app_id)->pluck('rule','field');
+    }
+
+    public function validateGenericInputs($request, $table, $login = false)
+    {
+        \Log::Info($this->fc.'validateGenericInputs');
+        $td = $this->getDescriptions($table, ['id', 'created_at', 'updated_at']);
+        $rules = [];
+        $additional_rules = ValidationRule::where('app_id',$this->app_id)->pluck('rule','field');
+        
+        $auth_providers = json_decode(App::findOrFail($this->app_id)->auth_providers, true);
+        $user_name_fields = json_decode(App::findOrFail($this->app_id)->user_name_fields, true);
+        $users = [];
+        if(in_array($table, $auth_providers)){
+            $users = $user_name_fields[$table];
+            if(count($users)==0){
+                $users = ['email'];
+            }
+        }
+
         foreach ($td as $k => $v) {
-                if($v->Field == 'password' && $pc == true){
-                    $rules[$v->Field] = 'required|min:6|'.$this->getValidationString($v->Type).'|confirmed';
+                if($v->Field == 'password' && !$login && in_array($table, $auth_providers)){
+                    $rules[$v->Field] = 'required|'.$this->getValidationString($v->Type).'|min:6|confirmed';
+                }else if($login && in_array($v->Field, $users) && in_array($table, $auth_providers)){
+                    $rules[$v->Field] = 'required|'.$this->getValidationString($v->Type).'|exists:'.$this->con.'.app'.$this->app_id.'_'.$table;
+                    if($v->Field == 'email'){
+                        $rules[$v->Field] = $rules[$v->Field] .'|email';
+                    }
                 }else{
-                    if(in_array($v->Field, $mandatory)){
-                        $rules[$v->Field] = 'required|'.$this->getValidationString($v->Type);
+                    if(!empty($request->input($v->Field))){
+                        $rules[$v->Field] = $this->getValidationString($v->Type);
                         if($v->Field == 'email'){
                             $rules[$v->Field] = $rules[$v->Field] .'|email';
                         }
-                    }else{
-                        if(!empty($request->input($v->Field))){
-                            $rules[$v->Field] = $this->getValidationString($v->Type);
-                            if($v->Field == 'email'){
-                                $rules[$v->Field] = $rules[$v->Field] .'|email';
-                            }
+                        if(in_array($table, $auth_providers) && in_array($v->Field, $users) || $v->Key == 'UNI' && !$login){
+                            $rules[$v->Field] = $rules[$v->Field] .'|unique:'.$this->con.'.app'.$this->app_id.'_'.$table;
                         }
                     }
                 }
-                if($v->Key == 'UNI' && $pc == true){
-                    $rules[$v->Field] = $rules[$v->Field] .'|unique:'.$this->con.'.app'.$this->app_id.'_'.$table;
+                if(!empty($rules[$v->Field]) && !empty($additional_rules[$v->Field])){
+                    $rules[$v->Field] = $additional_rules[$v->Field].'|'.$rules[$v->Field];
+                }else if(!empty($additional_rules[$v->Field])){
+                    $rules[$v->Field] = $additional_rules[$v->Field];
                 }
         }
-        \Log::Info($rules);
-        $request->validate($rules);
-        \Log::Info(request()->ip()." validation passed for end user create request for app id ".$this->app_id);
+        $request->validate($rules, $this->custom_error_messages());
     }
 
     public function getDataTypeString($dt, $len="")
     {
+        \Log::Info($this->fc.'getDataTypeString');
         $arr = [
             'increments' => 'int(10) unsigned',
             'tinyIncrements' => 'tinyint(3) unsigned',
@@ -192,6 +218,7 @@ trait ValidatesRequests
 
 	public function getValidationString($dt)
 	{
+        \Log::Info($this->fc.'getValidationString');
         // string max:21,844
 		$arr = [
             'tinyint(4)' => 'numeric|non_fraction|tinyInteger',
@@ -210,7 +237,7 @@ trait ValidatesRequests
             'double' => 'numeric',
             'tinyint(1)' => 'boolean',
             'date' => 'date_multi_format:Y-m-d,y-m-d',
-            'datetime' => 'date_multi_format:Y-m-d H:i:s,Y-m-d H:i,y-m-d H:i:s,y-m-d H:i',
+            'datetime' => 'date_multi_format:Y-m-d H:i:s,Y-m-d H:i,y-m-d H:i:s,y-m-d H:i,Y-m-d\TH:i',
             'time' => 'date_multi_format:H:i:s,H:i',
             'char(255)' => 'char:10',
             'varchar(255)' => 'string|max:255',
@@ -230,7 +257,7 @@ trait ValidatesRequests
             'varchar(17)' => 'string|max:17',
             'char(36)' => 'char:36',
             'year(4)' => 'numeric|non_fraction|year',
-            'timestamp' => 'date_multi_format:Y-m-d H:i:s,Y-m-d H:i,y-m-d H:i:s,y-m-d H:i',
+            'timestamp' => 'date_multi_format:Y-m-d H:i:s,Y-m-d H:i,y-m-d H:i:s,y-m-d H:i,Y-m-d\TH:i',
         ];
         if(empty($arr[$dt])){
             if(strpos($dt, 'ecimal')){
@@ -256,6 +283,7 @@ trait ValidatesRequests
 
     public function getInputTypeArray($td)
     {
+        \Log::Info($this->fc.'getInputTypeArray');
         $arr = [
             'tinyint(4)' => 'number',
             'tinyint(3) unsigned' => 'number',
@@ -272,7 +300,7 @@ trait ValidatesRequests
             'double(8,2)' => 'number',
             'double' => 'number',
             'tinyint(1)' => 'number',
-            'datetime' => 'text',
+            'datetime' => 'datetime-local',
             'date' => 'date',
             'time' => 'time',
             'char(255)' => 'text',
@@ -293,7 +321,7 @@ trait ValidatesRequests
             'varchar(17)' => 'text',
             'char(36)' => 'text',
             'year(4)' => 'number',
-            'timestamp' => 'text'
+            'timestamp' => 'datetime-local'
         ];
         foreach ($td as $k => $v) {
             if(empty($arr[$v->Type])){
@@ -317,6 +345,7 @@ trait ValidatesRequests
 
     public function getTextAreaTypes()
     {
+        \Log::Info($this->fc.'getTextAreaTypes');
         return [
             'text' => '2',
             'mediumtext' => '3',
@@ -327,6 +356,7 @@ trait ValidatesRequests
 
     public function getDecimalTypes()
     {
+        \Log::Info($this->fc.'getDecimalTypes');
         return $this->deciArr;
     }
 

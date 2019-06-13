@@ -14,12 +14,13 @@ trait SendsChatMessages
 {
     public function chatMessagesView(Request $request)
     {
+        \Log::Info($this->fc.'chatMessagesView');
         $query = Chat::where(['app_id'=>$this->app_id, ['message','!=',null]]);
         foreach (['message','fid','fap','fname','tid','tap','tname','style','status'] as $key => $value) {
             $query = $request->{$value}?$query->where($value,'LIKE','%'.$request->{$value}.'%'):$query;
         }
         $query = $this->dateFilter($request, $query);
-        return view($this->theme.'.chat_messages')->with([
+        return view($this->theme.'.chat.chat_messages')->with([
             'messages' => $query->latest()->paginate(10),
             'page'=>$request->page??1,
         ]);
@@ -27,13 +28,14 @@ trait SendsChatMessages
 
     public function chatRequestsView(Request $request)
     {
+        \Log::Info($this->fc.'chatRequestsView');
         $query = Chat::whereIn('status', ['waiting', 'chatting', 'closed'])->where([
             'app_id'=>$this->app_id, 'message' => null]);
         foreach (['fid','fap','fname','tid','tap','tname','status'] as $key => $value) {
             $query = $request->{$value}?$query->where($value,'LIKE','%'.$request->{$value}.'%'):$query;
         }
         $query = $this->dateFilter($request, $query);
-        return view($this->theme.'.chat_requests')->with([
+        return view($this->theme.'.chat.chat_requests')->with([
             'requests' => $query->paginate(10),
             'page'=>$request->page??1,
         ]);
@@ -41,6 +43,7 @@ trait SendsChatMessages
 
     public function updateChatMessage(Request $request)
     {
+        \Log::Info($this->fc.'updateChatMessage');
         \Log::Info($request->all());
         if($request->cmd == 'status_only'){
             Chat::findOrFail($request->id)->update(['status' => $request->status]);
@@ -58,6 +61,7 @@ trait SendsChatMessages
 
     public function deleteChatMessage(Request $request)
     {
+        \Log::Info($this->fc.'deleteChatMessage');
         $record = Chat::findOrFail($request->id);
         if($record->app_id == $this->app_id){
             Chat::destroy($request->id);
@@ -68,28 +72,32 @@ trait SendsChatMessages
 
     public function canChatWithView(Request $request)
     {
+        \Log::Info($this->fc.'canChatWithView');
         $ap = json_decode(App::findOrFail(\Auth::user()->active_app_id)->auth_providers,true)??[];
         $ap = array_slice($ap,1);
         $ccw = json_decode(App::findOrFail(\Auth::user()->active_app_id)->can_chat_with,true)??[];
-        return view($this->theme.'.can_chat_with')->with(['ap' => $ap,'ccw'=>$ccw,
-            'ca'=>$ccw['chat_admins']?explode(', ', $ccw['chat_admins']):[] ]);
+        return view($this->theme.'.chat.can_chat_with')->with(['ap' => $ap,'ccw'=>$ccw,
+            'ca'=>empty($ccw['chat_admins'])?[]:explode(', ', $ccw['chat_admins']) ]);
     }
 
     public function canChatWith(Request $request)
     {
+        \Log::Info($this->fc.'canChatWith');
         App::findOrFail(\Auth::user()->active_app_id)->update(['can_chat_with' => json_encode($request->can_chat_with)]);
         return ['message' => 'updated can_chat_with'];
     }
 
     public function ccAppConfigView(Request $request)
     {
-        return view('cb.chat_cc_app_config')->with([
+        \Log::Info($this->fc.'ccAppConfigView');
+        return view('cb.chat.chat_cc_app_config')->with([
             'ccac' => json_decode(App::findOrFail($this->app_id)->ccac,true)??[],
         ]);
     }
 
     public function ccAppConfig(Request $request)
     {
+        \Log::Info($this->fc.'ccAppConfig');
         $request->validate([
             'signup' => 'required|numeric|non_fraction|integerCustomUnsigned',
             'login' => 'required|numeric|non_fraction|integerCustomUnsigned',
@@ -114,11 +122,13 @@ trait SendsChatMessages
 
     public function chatPage(Request $request)
     {
-        return view('cb.chatpage');
+        \Log::Info($this->fc.'chatPage');
+        return view('cb.chat.chatpage');
     }
 
     public function apiChatRouteGuard(Request $request)
     {
+        \Log::Info($this->fc.'apiChatRouteGuard');
         if($request->_token){
             $this->app_id = $this->checkSessionToken($request->_token);
             if(!is_numeric($this->app_id)){ return $this->app_id; }
@@ -143,6 +153,7 @@ trait SendsChatMessages
 
     public function checkCanChatWith($command, $tid, $tap)
     {
+        \Log::Info($this->fc.'checkCanChatWith');
         $can_chat_with = json_decode($this->app->can_chat_with,true);
         // $this->chat_admins = explode(', ', $can_chat_with['chat_admins']);
         $this->group_chat = $can_chat_with['group_chat'];
@@ -178,6 +189,7 @@ trait SendsChatMessages
 
     public function chat_junction($request)
     {
+        \Log::Info($this->fc.'chat_junction');
         switch ($request['command']) {
             case 'customer_care_app_config':
                 return $this->ccAppConfigGet($request);
@@ -209,6 +221,7 @@ trait SendsChatMessages
 
     public function ccAppConfigGet($request)
     {
+        \Log::Info($this->fc.'ccAppConfigGet');
         return json_decode(App::findOrFail($request['app_id'])->ccac,true);
     }
 
@@ -252,6 +265,7 @@ trait SendsChatMessages
 
     public function saveChatResourceId($request)
     {
+        \Log::Info($this->fc.'saveChatResourceId');
         \Log::Info('chat_resource_id: '.$request['chat_resource_id']);
         Session::where('_token', $request['_token'])->update(['chat_resource_id'=>$request['chat_resource_id']]);
         return ['message' => 'chat resource id saved'];
@@ -321,6 +335,7 @@ trait SendsChatMessages
 
 	public function getMessages($request)
     {
+        \Log::Info($this->fc.'getMessages');
         $cid = $this->getCID($request);
         $nom = $request['nom'];
         $mc = Chat::where([
@@ -375,11 +390,13 @@ trait SendsChatMessages
 
     public function getWaitingChats()
     {
+        \Log::Info($this->fc.'getWaitingChats');
         return Chat::where(['app_id' => $this->aid])->where('status', 'waiting')->get();
     }
 
     public function deleteChatRequest($request)
     {
+        \Log::Info($this->fc.'deleteChatRequest');
         $record = Chat::where([
             'app_id' => $this->aid,
             'fid'=>$this->fid, 
@@ -444,7 +461,7 @@ trait SendsChatMessages
 
     public function saveChatMessage($request)
     {
-        \Log::Info('saveChatMessage');
+        \Log::Info($this->fc.'saveChatMessage');
         if(!$request['message']){
             return ['message' => 'message empty'];
         }
@@ -489,6 +506,7 @@ trait SendsChatMessages
 
     public function updateMessageStatus($request)
     {
+        \Log::Info($this->fc.'updateMessageStatus');
         $message = Chat::findOrFail($request['id']);
         if($message->app_id == $this->aid && $message->fap == $this->fap && $message->fid == $this->fid){
             $message->update(['status' => 'sent']);
@@ -502,6 +520,7 @@ trait SendsChatMessages
 
     public function getCID($request)
     {
+        \Log::Info($this->fc.'getCID');
         $cid_record = Chat::where([
             'app_id' => $this->aid,
             'fid' => $this->fid, 

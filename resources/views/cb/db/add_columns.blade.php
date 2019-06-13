@@ -1,18 +1,25 @@
 @extends("cb.layouts.app")
 
 @section("content")
+<form id="form_create_table" method="post" action="{{ route("c.db.add.columns.submit") }}">
+<input type="hidden" name="_token" value="{{csrf_token()}}"/>
+<input type="hidden" name="name" value="{{$table}}"/>
 <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-6">
+			Add Columns To Table "{{$table}}"
+		</div>
+		<div class="col-md-6">
+			<div class="btn-group" style="float:right;">
+				<button type="submit" class="btn btn-default">Update Table</button>
+				<a class="btn btn-default" href="{{route('c.table.list.view')}}">Back</a>
+			</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="table-responsive" style="padding-bottom: 100px;">
-				<form id="form_create_table" method="post" action="{{ route("c.db.add.columns.submit") }}">
-					<input type="hidden" name="_token" value="{{csrf_token()}}"/>
-					<input type="hidden" name="name" value="{{$table}}"/>
 				<table class="table" id="table_fields">
-					<caption>
-						Add Columns To Table "{{$table}}"
-						<div class="input-group" style="float:right;">
-							<button type="submit" class="btn btn-default">Update Table</button><a class="btn btn-default" href="{{route('c.table.list.view')}}">Back</a></div></caption>
 					<thead>
 						<tr>
 							<th>Sr.No.</th>
@@ -140,11 +147,11 @@
 						@endfor
 					</tbody>
 				</table>
-				</form>
 			</div>
 		</div>
 	</div>
 </div>
+</form>
 <script>
 	var tt={!! $errors !!};
 @if(count($errors)!==0)

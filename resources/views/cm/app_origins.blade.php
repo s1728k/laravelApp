@@ -28,7 +28,7 @@
         <tr id="r{{$loop->index+1}}">
           <td>{{ ($loop->index + 1) }}</td>
           <td>{{$origin}}</td>
-          <td><a style="cursor:pointer" onclick="deleteOrigin('{{$origin}}', '{{$loop->index+1}}')">Delete</a></td>
+          <td><a href="JavaScript:void(0);" onclick="deleteOrigin('{{$origin}}', '{{$loop->index+1}}')">Delete</a></td>
         </tr>
         @endforeach
 			</tbody>

@@ -35,6 +35,15 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'paytm-wallet' => [
+        'env' => 'production', // values : (local | production)
+        'merchant_id' => env('PAYTM_MERCHANT_ID'),
+        'merchant_key' => env('PAYTM_MERCHANT_KEY'),
+        'merchant_website' => env('PAYTM_WEBSITE'),
+        'channel' => env('PAYTM_CHANNEL'),
+        'industry_type' => env('PAYTM_INDUSTRY_TYPE'),
+    ],
+
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),         // Your GitHub Client ID
         'client_secret' => env('GITHUB_CLIENT_SECRET'), // Your GitHub Client Secret

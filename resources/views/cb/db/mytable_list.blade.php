@@ -3,75 +3,108 @@
 @section("content")
 <div class="container-fluid">
   <div id="alrt"></div>
+  @if($errors->has('table'))<div class="alert alert-warning"><strong>Warning!</strong> {{$errors->first('table')}}</div>@endif
+  @if($errors->has('createCSV'))<div class="alert alert-warning"><strong>Warning!</strong> {{$errors->first('createCSV')}}</div>@endif
+  @if($errors->has('updateCSV'))<div class="alert alert-warning"><strong>Warning!</strong> {{$errors->first('updateCSV')}}</div>@endif
+  @if($errors->has('_token'))<div class="alert alert-success"><strong>Success!</strong> {{$errors->first('_token')}}</div>@endif
+  <div class="row">
+    <div class="col-md-6">
+      <div class="well well-sm"> Table List | for the app id: {{\Auth::user()->active_app_id}}, Space Used: {{$size}} MB</div>
+    </div>
+    <div class="col-md-6">
+      <div class="btn-group" style="float:right">
+        <a class="btn btn-default" onclick="createTable()">Create New Table</a>
+      </div>
+    </div>
+  </div>
 	<div class="row">
-		<div class="col-md-12 table-responsive">
-			<table class="table">
-        <caption>Table List | for the app id: {{\Auth::user()->active_app_id}}<div class="btn-group" style="float:right"> <a class="btn btn-default" onclick="createTable()">Create New Table</a></caption>
-				<thead>
-					<tr>
-						<th>Sr</th>
-						<th>Table Name</th>
-            <th colspan="9">Actions</th>
-            <th colspan="2">Export</th>
-            <th colspan="2">Import - Create</th>
-            <th colspan="2">Import - Update</th>
-					</tr>
-				</thead>
-				<tbody>
-          @foreach($tables as $key => $table)
-          <tr id="r{{($key + 1)}}">
-            <td>{{ ($key + 1) }}</td>
-            <td>{{ $table }}</td>
-            <td><a style="cursor:pointer" onclick="addFields('{{$table}}')">Add Fields</a></td>
-            <td><a style="cursor:pointer" onclick="renameField('{{$table}}')">Rename Field</a></td>
-            <td><a style="cursor:pointer" onclick="deleteField('{{$table}}')">Delete Field</a></td>
-            <td><a style="cursor:pointer" onclick="addIndex('{{$table}}')">Add Index</a></td>
-            <td><a style="cursor:pointer" onclick="removeIndex('{{$table}}')">Remove Index</a></td>
-            <td><a style="cursor:pointer" href="{{route('c.db.crud.table')}}?table={{$table}}">CRUD</a></td>
-            <td><a style="cursor:pointer" onclick="renameTable('{{$table}}', {{$key}})" >Rename Table</a></td>
-            <td><a style="cursor:pointer" onclick="truncate('{{$table}}', {{$key}})" >Truncate Table</a></td>
-            <td><a style="cursor:pointer" onclick="deleteTable('{{$table}}', {{$key}})" >Delete Table</a></td>
-            <td><a style="cursor:pointer" href="{{route('c.csv.export', ['table'=>$table])}}">CSV</a></td>
-            <td><a style="cursor:pointer" href="{{route('c.json.export', ['table'=>$table])}}">JSON</a></td>
+		<div class="col-md-12">
+      <div class="well well-sm table-responsive">
+  			<table class="table">
+  				<thead>
+  					<tr>
+  						<th>Sr</th>
+  						<th>Table Name</th>
+              <th>Size (MB)</th>
+              <th colspan="9">Actions</th>
+              <th colspan="2">Export</th>
+              <th colspan="2">Import - Create</th>
+              <th colspan="2">Import - Update</th>
+  					</tr>
+  				</thead>
+  				<tbody>
+            @foreach($tables as $key => $table)
+            <tr id="r{{($key + 1)}}">
+              <td>{{ ($loop->index + 1) + 2 * ($page-1)}}</td>
+              <td>{{ $table['name'] }}</td>
+              <td>{{ $table['size'] }}</td>
+              <td><a href="JavaScript:void(0);" onclick="addFields('{{$table['name']}}')">Add Fields</a></td>
+              <td><a href="JavaScript:void(0);" onclick="renameField('{{$table['name']}}')">Rename Field</a></td>
+              <td><a href="JavaScript:void(0);" onclick="deleteField('{{$table['name']}}')">Delete Field</a></td>
+              <td><a href="JavaScript:void(0);" onclick="addIndex('{{$table['name']}}')">Add Index</a></td>
+              <td><a href="JavaScript:void(0);" onclick="removeIndex('{{$table['name']}}')">Remove Index</a></td>
+              <td><a href="{{route('c.db.crud.table')}}?table={{$table['name']}}">CRUD</a></td>
+              <td><a href="JavaScript:void(0);" onclick="renameTable('{{$table['name']}}', {{$key}})" >Rename Table</a></td>
+              <td><a href="JavaScript:void(0);" onclick="truncate('{{$table['name']}}', {{$key}})" >Truncate Table</a></td>
+              <td><a href="JavaScript:void(0);" onclick="deleteTable('{{$table['name']}}', {{$key}})" >Delete Table</a></td>
+              <td><a href="{{route('c.csv.export', ['table'=>$table['name']])}}">CSV</a></td>
+              <td><a href="{{route('c.json.export', ['table'=>$table['name']])}}">JSON</a></td>
 
-            <td>
-              <form id="createCSV{{($key + 1)}}" method="post" action="{{route('c.csv.import.create')}}" enctype="multipart/form-data" autocomplete="off" style="display: none;">
-                          <input type="hidden" name="_token" value="{{csrf_token()}}">
-                          <input type="hidden" name="table" value="{{$table}}">
-                          <input type="file" name="createCSV" id="ccf{{($key + 1)}}" onchange="$('#createCSV{{($key + 1)}}').submit()">
-                      </form>
-              <label for="ccf{{($key + 1)}}" class="link"><a>CSV</a></label>
-            </td>
-            <td>
-              <form id="createJSON{{($key + 1)}}" method="post" action="{{route('c.json.import.create')}}" enctype="multipart/form-data" autocomplete="off" style="display: none;">
-                          <input type="hidden" name="_token" value="{{csrf_token()}}">
-                          <input type="hidden" name="table" value="{{$table}}">
-                          <input type="file" name="createJSON" id="cjf{{($key + 1)}}" onchange="$('#createJSON{{($key + 1)}}').submit()">
-                      </form>
-              <label for="cjf{{($key + 1)}}" class="link"><a>JSON</a></label>
-            </td>
+              <td>
+                <form id="createCSV{{($key + 1)}}" method="post" action="{{route('c.csv.import.create')}}" enctype="multipart/form-data" autocomplete="off" style="display: none;">
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="table" value="{{$table['name']}}">
+                            <input type="file" name="createCSV" id="ccf{{($key + 1)}}" onchange="$('#createCSV{{($key + 1)}}').submit()">
+                        </form>
+                <label for="ccf{{($key + 1)}}" class="link"><a>CSV</a></label>
+              </td>
+              <td>
+                <form id="createJSON{{($key + 1)}}" method="post" action="{{route('c.json.import.create')}}" enctype="multipart/form-data" autocomplete="off" style="display: none;">
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="table" value="{{$table['name']}}">
+                            <input type="file" name="createJSON" id="cjf{{($key + 1)}}" onchange="$('#createJSON{{($key + 1)}}').submit()">
+                        </form>
+                <label for="cjf{{($key + 1)}}" class="link"><a>JSON</a></label>
+              </td>
 
-            <td>
-              <form id="updateCSV{{($key + 1)}}" method="post" action="{{route('c.csv.import.update')}}" enctype="multipart/form-data" autocomplete="off" style="display: none;">
-                          <input type="hidden" name="_token" value="{{csrf_token()}}">
-                          <input type="hidden" name="table" value="{{$table}}">
-                          <input type="file" name="updateCSV" id="ucf{{($key + 1)}}" onchange="$('#updateCSV{{($key + 1)}}').submit()">
-                      </form>
-              <label for="ucf{{($key + 1)}}" class="link"><a>CSV</a></label>
-            </td>
-            <td>
-              <form id="updateJSON{{($key + 1)}}" method="post" action="{{route('c.json.import.update')}}" enctype="multipart/form-data" autocomplete="off" style="display: none;">
-                          <input type="hidden" name="_token" value="{{csrf_token()}}">
-                          <input type="hidden" name="table" value="{{$table}}">
-                          <input type="file" name="updateJSON" id="ujf{{($key + 1)}}" onchange="$('#updateJSON{{($key + 1)}}').submit()">
-                      </form>
-              <label for="ujf{{($key + 1)}}" class="link"><a>JSON</a></label>
-            </td>
-          </tr>
-          @endforeach
-				</tbody>
-			</table>
-      {{-- {{$tables->links()}} --}}
+              <td>
+                <form id="updateCSV{{($key + 1)}}" method="post" action="{{route('c.csv.import.update')}}" enctype="multipart/form-data" autocomplete="off" style="display: none;">
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="table" value="{{$table['name']}}">
+                            <input type="file" name="updateCSV" id="ucf{{($key + 1)}}" onchange="$('#updateCSV{{($key + 1)}}').submit()">
+                        </form>
+                <label for="ucf{{($key + 1)}}" class="link"><a>CSV</a></label>
+              </td>
+              <td>
+                <form id="updateJSON{{($key + 1)}}" method="post" action="{{route('c.json.import.update')}}" enctype="multipart/form-data" autocomplete="off" style="display: none;">
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="table" value="{{$table['name']}}">
+                            <input type="file" name="updateJSON" id="ujf{{($key + 1)}}" onchange="$('#updateJSON{{($key + 1)}}').submit()">
+                        </form>
+                <label for="ujf{{($key + 1)}}" class="link"><a>JSON</a></label>
+              </td>
+            </tr>
+            @endforeach
+  				</tbody>
+  			</table>
+      </div>
+      @if($np>1)
+      <div class="pagination">
+        @if($page==1)<a class="disabled">&laquo;</a>@endif
+        @if($page!=1)<a href="{{$urls[$page-2]}}" rel="prev">&laquo;</a>@endif
+
+        @foreach($urls as $url)
+        @if($loop->index + 1 == $page)
+        <a class="active">{{ $page }}</a>
+        @else
+        <a href="{{ $url }}">{{$loop->index+1}}</a>
+        @endif
+        @endforeach
+
+        @if($page==$np)<a class="disabled">&raquo;</a>@endif
+        @if($page!=$np)<a href="{{$urls[$page]}}" rel="next">&raquo;</a>@endif
+      </div>
+      @endif
 		</div>
 	</div>
 </div>

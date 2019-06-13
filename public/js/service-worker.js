@@ -2,30 +2,18 @@
 
 self.addEventListener('push', function(event) {
   var push = event.data.json();
-  var options = {};
-  for(var p in push){
-    if(p !== 'title'){
-      if(push[p]){options[p] = push[p];}
-    }
-  }
-  if(push['vibrate']){options['vibrate'] = push['vibrate'].split(',').map(x => Number(x));}
-  if(push['actions']){
-    options['actions'] = [];
-    var temp = push['actions'].split('|');
-    for (var i = 0; i < temp.length; i++) {
-      var t = temp[i].split(',');
-      var ob = {};
-      ob['action'] = t[0];ob['title'] = t[1];ob['icon'] = t[2];
-      options['actions'].push(ob);
-    };
-  }
+  var title = push['title'];
+  var options = push;
+  delete options['title'];
+  if(options['vibrate']){options['vibrate'] = options['vibrate'].map(x => Number(x));}
   event.waitUntil(
-    self.registration.showNotification(push['title'], options)
+    self.registration.showNotification(title, options)
   );
 });
 
 self.addEventListener('notificationclick', function(event) {
   if (!event.action) {
+    clients.openWindow('/');
     event.notification.close();
     return;
   }

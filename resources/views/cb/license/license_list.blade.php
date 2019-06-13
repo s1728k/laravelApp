@@ -3,10 +3,20 @@
 @section("content")
 <div class="container-fluid">
   <div class="row">
+    <div class="col-md-6">
+      Licenses List | for the app id: {{\Auth::user()->active_app_id}}
+    </div>
+    <div class="col-md-6">
+      <div class="btn-group" style="float:right">
+        <button class="btn btn-default" data-toggle="modal" data-target="#createNewLicense">Create New License</button>
+        <a class="btn btn-default" href="{{ route('l.test.bench.view') }}" target="_blank">Test Bench</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-12">
       <div class="table-responsive" style="padding-bottom: 50px;">
       <table class="table">
-        <caption>Licenses List | for the app id: {{\Auth::user()->active_app_id}}<div class="btn-group" style="float:right"> <button class="btn btn-default" data-toggle="modal" data-target="#createNewLicense">Create New License</button><a class="btn btn-default" href="{{ route('l.test.bench.view') }}" target="_blank">Test Bench</a></div></caption>
         <thead>
           <tr>
             <th>Sr.</th>
@@ -36,10 +46,10 @@
                 <input type="date" name="expiry_date" class="form-control" value="{{$license->expiry_date}}" />
               </td>
               <td>
-                <a style="cursor:pointer" href="#" id="edb{{$loop->index}}" onclick="ri({{$loop->index}})" data-toggle="modal" data-target="#editLicense">Edit</a>
+                <a href="JavaScript:void(0);" id="edb{{$loop->index}}" onclick="ri({{$loop->index}})" data-toggle="modal" data-target="#editLicense">Edit</a>
               </td>
               <td>
-                <a style="cursor:pointer" href="{{ route('l.license.details.view', ['id' => $license->id]) }}">License Details</a>
+                <a href="{{ route('l.license.details.view', ['id' => $license->id]) }}">License Details</a>
               </td>
             </tr>
             </form>
@@ -48,7 +58,7 @@
         </tbody>
       </table>
       </div>
-      {{$licenses->links()}}
+      {{$licenses->appends(request()->input())->links()}}
     </div>
   </div>
 </div>

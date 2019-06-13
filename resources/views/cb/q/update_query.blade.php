@@ -4,8 +4,8 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<caption class="">Update Query	<div class="input-group" style="float:right;">
-				<a class="btn btn-default" href="{{route('c.query.list.view')}}">Back</a></div></caption>
+			Update Query	<div class="input-group" style="float:right;">
+				<a class="btn btn-default" href="{{route('c.query.list.view')}}">Back</a></div>
 		</div>
 	</div><hr>
 	<div class="row">
@@ -131,7 +131,7 @@
 						<div class="well well-sm" id="jfields">none</div>
 						<div class="row">
 							<div class="col-md-8">
-								<select id="jt" class="form-control">
+								<select id="jt" class="form-control" onchange="joinTableIndexFields()">
 									@foreach($tables as $table)
 									<option>{{$table}}</option>
 									@endforeach
@@ -234,7 +234,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								@foreach($specials as $sp)
-								<div class="checkbox" style="display: inline-flex; margin-right: 10px"><label><input type="checkbox" onchange="s('{{$sp}}')" @if(in_array($sp, explode(',', $query->specials))) checked @endif>{{$sp}}</label></div>
+								<div class="checkbox" style="display: inline-flex; margin-right: 10px"><label><input type="checkbox" onchange="s('{{$sp}}')" @if(in_array($sp, explode(', ', $query->specials))) checked @endif>{{$sp}}</label></div>
 								@endforeach
 							</div>
 						</div>
@@ -359,7 +359,7 @@
 		$("#mid").val(diff.join(", "));
 	}
 	function j(){
-		const v = $("#jt").val() + "," + $("#tf").val() + "," + $("#jo").val() + "," + $("#jf").val();
+		const v = $("#jt").val() + ", " + $("#tf").val() + ", " + $("#jo").val() + ", " + $("#jf").val();
 		if(jf.indexOf(v) != -1){
 			jf.splice(jf.indexOf(v),1);
 		}else{
@@ -371,7 +371,7 @@
 		$("#jid").val(jf.join("|"));
 	}
 	function f(){
-		const v = $("#ft").val() + "," + $("#ff").val() + "," + $("#fo").val() + "," + $("#fv").val();
+		const v = $("#ft").val() + ", " + $("#ff").val() + ", " + $("#fo").val() + ", " + $("#fv").val();
 		if(ff.indexOf(v) != -1){
 			ff.splice(ff.indexOf(v),1);
 		}else{
@@ -425,5 +425,8 @@
 		});
 	}
 	getFiels();
+	function joinTableIndexFields(){
+	    $.get("{{route('c.db.get.columns')}}", {"table":$("#jt").val()}, function(data){$("#jf").html(data);});
+	}
 </script>
 @endsection

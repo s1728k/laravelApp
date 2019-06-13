@@ -34,7 +34,7 @@
             <td>{{ $file->pivot_id }}</td>
             <td>{{ $file->sr_no }}</td>
             <td><a>Preview</a></td>
-            <td><a style="cursor:pointer" href="/files/{{$file->pivot_table}}/{{$file->pivot_field}}/{{$file->pivot_id}}/{{$file->sr_no}}">Download</a></td>
+            <td><a href="/files/{{$file->pivot_table}}/{{$file->pivot_field}}/{{$file->pivot_id}}/{{$file->sr_no}}">Download</a></td>
             <td><form id="replaceFile{{($key + 1)}}" method="post" action="{{route('c.files.replace')}}" enctype="multipart/form-data" style="display: none;">
                           <input type="hidden" name="_token" value="{{csrf_token()}}">
                           <input type="hidden" name="pivot_table" value="{{$file->pivot_table}}">

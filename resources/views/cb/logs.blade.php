@@ -3,10 +3,14 @@
 @section("content")
 <div class="container-fluid">
     <div id="alrt"></div>
+    <div class="row">
+        <div class="col-md-12">
+            Log | for the app id: {{\Auth::user()->active_app_id}}<div class="btn-group" style="float:right"></div>
+        </div>
+    </div>
 	<div class="row">
 		<div class="col-md-12 table-responsive">
 			<table class="table">
-        <caption>Log | for the app id: {{\Auth::user()->active_app_id}}<div class="btn-group" style="float:right"></div></caption>
 				<thead>
 					<tr>
 						<th>Sr</th>

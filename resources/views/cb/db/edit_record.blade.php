@@ -4,10 +4,9 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<caption>
 			Edit record for table "{{$table}}"
 			<div class="input-group" style="float:right;">
-				<a class="btn btn-default" href="{{route('c.db.crud.table')}}?table={{$table}}">Back</a></div></caption>
+				<a class="btn btn-default" href="{{route('c.db.crud.table')}}?table={{$table}}">Back</a></div>
 		</div>
 	</div><hr>
 	<div class="row">

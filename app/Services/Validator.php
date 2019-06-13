@@ -29,11 +29,11 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function _set_custom_stuff() {
-        $this->setCustomMessages( $this->_custom_messages );
+        // $this->setCustomMessages( $this->_custom_messages );
     }
 
     protected function validateNonFraction( $attribute, $value ) {     
-        if( !strpos($value, ".") ){
+        if( !strpos($value, ".") || empty($value) ){
             return true;
         } else {
             return false;
@@ -41,7 +41,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateYear( $attribute, $value ) {     
-        if( $value >= 1901 && $value <= 2155 || $value == 0 ){
+        if( $value >= 1901 && $value <= 2155 || $value == 0 || empty($value) ){
             return true;
         } else {
             return false;
@@ -49,7 +49,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateTinyInteger( $attribute, $value ) {     
-        if( $value>=-128 && $value<= 127 ){
+        if( $value>=-128 && $value<= 127 || empty($value) ){
             return true;
         } else {
             return false;
@@ -57,7 +57,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateTinyIntegerUnsigned( $attribute, $value ) {     
-        if( $value>=0 && $value<= 255 ){
+        if( $value>=0 && $value<= 255 || empty($value) ){
             return true;
         } else {
             return false;
@@ -65,7 +65,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateSmallInteger( $attribute, $value ) {     
-        if( $value>=-32768 && $value<= 32767 ){
+        if( $value>=-32768 && $value<= 32767 || empty($value) ){
             return true;
         } else {
             return false;
@@ -73,7 +73,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateSmallIntegerUnsigned( $attribute, $value ) {     
-        if( $value>=0 && $value<= 65535 ){
+        if( $value>=0 && $value<= 65535 || empty($value) ){
             return true;
         } else {
             return false;
@@ -81,7 +81,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateMediumInteger( $attribute, $value ) {     
-        if( $value>=-8388608 && $value<= 8388607 ){
+        if( $value>=-8388608 && $value<= 8388607 || empty($value) ){
             return true;
         } else {
             return false;
@@ -89,7 +89,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateMediumIntegerUnsigned( $attribute, $value ) {     
-        if( $value>=0 && $value<= 16777215 ){
+        if( $value>=0 && $value<= 16777215 || empty($value) ){
             return true;
         } else {
             return false;
@@ -97,7 +97,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateIntegerCustom( $attribute, $value ) {     
-        if( $value>=-2147483648 && $value<= 2147483647 ){
+        if( $value>=-2147483648 && $value<= 2147483647 || empty($value) ){
             return true;
         } else {
             return false;
@@ -105,7 +105,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateIntegerCustomUnsigned( $attribute, $value ) {     
-        if( $value>=0 && $value<= 4294967295 ){
+        if( $value>=0 && $value<= 4294967295 || empty($value) ){
             return true;
         } else {
             return false;
@@ -113,7 +113,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateBigInteger( $attribute, $value ) {     
-        if( $value>=-9223372036854775808 && $value<= 9223372036854775807 ){
+        if( $value>=-9223372036854775808 && $value<= 9223372036854775807 || empty($value) ){
             return true;
         } else {
             return false;
@@ -121,7 +121,7 @@ class Validator extends \Illuminate\Validation\Validator{
     }
 
     protected function validateBigIntegerUnsigned( $attribute, $value ) {     
-        if( $value>=0 && $value<= 18446744073709551615 ){
+        if( $value>=0 && $value<= 18446744073709551615 || empty($value) ){
             return true;
         } else {
             return false;
@@ -131,7 +131,7 @@ class Validator extends \Illuminate\Validation\Validator{
     protected function validateDateMultiFormat( $attribute, $value, $formats ) {     
         foreach($formats as $format) {
             $parsed = date_parse_from_format($format, $value);
-            if ($parsed['error_count'] === 0 && $parsed['warning_count'] === 0) {
+            if ($parsed['error_count'] === 0 && $parsed['warning_count'] === 0 || empty($value) ) {
               return true;
             }
         }
@@ -140,9 +140,11 @@ class Validator extends \Illuminate\Validation\Validator{
 
     protected function validateDecimal( $attribute, $value, $parameters, $validator)
     {
+        \Log::Info('validateDecimal');
         $validator->addReplacer('decimal', function($message, $attribute, $rule, $parameters){
             return str_replace([8,2],[$parameters[0],$parameters[1]],$message);
         });
+        if( empty($value) ){return true;}
         if( strlen(str_replace('.','',$value))<=$parameters[0] ){
             if(!strpos('0'.$value,".")){
                 return true;
@@ -161,7 +163,7 @@ class Validator extends \Illuminate\Validation\Validator{
 
     protected function validateChar( $attribute, $value, $parameters, $validator)
     {
-        if( strlen(str_replace(' ','',$value))==$parameters[0] ){
+        if( strlen(str_replace(' ','',$value))==$parameters[0] || empty($value) ){
             return true;
         } else {
             $validator->addReplacer('char', function($message, $attribute, $rule, $parameters){
@@ -173,7 +175,7 @@ class Validator extends \Illuminate\Validation\Validator{
 
     protected function validateFieldParam( $attribute, $value, $parameters, $validator)
     {
-        \Log::Info($parameters);
+        if( empty($value) ){return true;}
         if(in_array($request->field_type[$key], ['char','string'])){
             if(is_numeric($value)){
                 if($value>21844){

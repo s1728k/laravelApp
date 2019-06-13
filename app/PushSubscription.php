@@ -16,7 +16,7 @@ class PushSubscription extends Model
      * @var array
      */
     protected $fillable = [
-        'subscription',
+        'app_id', 'auth_provider', 'user_id', 'subscription',
     ];
 
 }

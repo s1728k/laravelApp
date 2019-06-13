@@ -30,6 +30,7 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
+        \Log::Info('middleware::jst.auth');
         if(empty($request->route('query_id'))){
             return $next($request);
         }
@@ -82,7 +83,7 @@ class Authenticate
             }
         }
 
-        if(in_array($command, ['signup','ve','sevc','login','clogin'])){
+        if(in_array($command, ['signup','ve','sevc','login','clogin','mail'])){
             if($app->secret !== $request->secret){
                 return response()->json(['message' => 'un-authorized'], 401);
             }
@@ -90,13 +91,21 @@ class Authenticate
             return response($app->secret);
         }
 
-        if($request->hidden){
-            $hiddens = explode(', ', $query->hiddens);
-            $arr = explode(',', $request->hidden);
-            if(array_intersect($hiddens, $arr) !== $hiddens){
-                return response()->json(['message' => 'un-authorized'], 401);
-            }
-        }
+        // if($request->fillable){
+        //     $fillables = explode(', ', $query->fillables);
+        //     $arr = explode(',', $request->fillable);
+        //     if(array_intersect($arr, $fillables) !== $arr){
+        //         return response()->json(['message' => 'un-authorized'], 401);
+        //     }
+        // }
+
+        // if($request->hidden){
+        //     $hiddens = explode(', ', $query->hiddens);
+        //     $arr = explode(',', $request->hidden);
+        //     if(array_intersect($hiddens, $arr) !== $hiddens){
+        //         return response()->json(['message' => 'un-authorized'], 401);
+        //     }
+        // }
 
         if($request->special){
             $specials = explode(', ', $query->specials);
@@ -107,8 +116,9 @@ class Authenticate
     
         $origins = json_decode($app->origins, true)??[];
 
-        if(!in_array($request->header("Origin"), $origins)){
-            \Log::Info("Origin:".$request->header("Origin"));
+        if(!in_array('*', $origins) && !in_array($request->header("Origin"), $origins) && !in_array(request()->ip(), $origins)){
+            \Log::Info("Request Origin:".$request->header("Origin"));
+            \Log::Info("Request IP:".request()->ip());
             return response()->json('oops! something is wrong');
         }
 

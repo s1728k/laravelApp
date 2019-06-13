@@ -14,22 +14,36 @@ trait CreatesTables
     use SchemaFunctions;
     use CreatesModelClass;
 
-    public function myTableListView()
+    public function myTableListView(Request $request)
     {
-        \Log::Info(request()->ip()." visited table list page for app id ".$this->app_id);
-        $tables = $this->getTables();
-        return view($this->theme.'.db.mytable_list')->with(['tables' => $tables]);
+        \Log::Info($this->fc.'myTableListView');
+        // $tables = $this->getTables();
+        $tables = $this->getTablesWithSizes();
+        $size = 0;
+        foreach ($tables as $table) {
+            $size = $size + $table['size'];
+        }
+        $page = $request->page;
+        $urls = $this->paginate_urls($tables, 10, $page);
+        $np = count($urls);
+        return view($this->theme.'.db.mytable_list')->with([
+            'tables' => $this->paginate_arr($tables, 10, $page), 
+            'page' => $page?max(1,min($page,$np)):1,
+            'urls' => $urls,
+            'np' => $np,
+            'size' => $size,
+        ]);
     }
 
     public function createNewTableView(Request $request)
     {
-        \Log::Info(request()->ip()." visited create new table page for app id ".$this->app_id);
+        \Log::Info($this->fc.'createNewTableView');
         return view($this->theme.'.db.create_table')->with(['fn' => $request->fn]);
     }
 
 	public function createNewTable(Request $request)
     {
-        \Log::Info(request()->ip()." created new table ".$request->name." for app id ".$this->app_id);
+        \Log::Info($this->fc.'createNewTable');
         $this->validateCreateTableRequest($request);
         $this->createTableSchema($request, $request->name);
         // $this->createModelClass($request->name, $request->model == "authenticatable");
@@ -41,14 +55,14 @@ trait CreatesTables
 
     public function addColumnsView(Request $request)
     {
-        \Log::Info(request()->ip()." visited add columns pages for the table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'addColumnsView');
         $fields = $this->getAfterFields($request->table);
         return view($this->theme.'.db.add_columns')->with(['fn' => $request->fn??0, 'table' => $request->table??'', 'fields' => $fields]);
     }
 
     public function addColumns(Request $request)
     {
-        \Log::Info(request()->ip()." added columns for the table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'addColumns');
         $this->validateAddColumnsRequest($request);
         $this->addColumnsSchema($request, $request->name);
         // $this->createModelClass($request->name);
@@ -57,13 +71,13 @@ trait CreatesTables
 
     public function getColumns(Request $request)
     {
-        \Log::Info(request()->ip()." requested columns for the table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'getColumns');
         return $this->getFieldsSelectOptions($request->table);
     }
 
     public function renameColumn(Request $request)
     {
-        \Log::Info(request()->ip()." renamed column ".$request->old_field_name." to ".$request->new_field_name." for the table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'renameColumn');
         $this->renameSchemaColumn($request->table, $request->old_field_name, $request->new_field_name);
         // $this->createModelClass($request->table);
         return ['status' => 'success'];
@@ -71,7 +85,7 @@ trait CreatesTables
 
     public function deleteColumn(Request $request)
     {
-        \Log::Info(request()->ip()." deleted column ".$request->field_name." for the table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'deleteColumn');
         $this->deleteSchemaColumn($request->table, $request->field_name);
         // $this->createModelClass($request->table);
         return ['status' => 'success'];
@@ -79,21 +93,21 @@ trait CreatesTables
 
     public function addIndex(Request $request)
     {
-        \Log::Info(request()->ip()." added index ".$request->index_name." to field ".$request->field_name." for the table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'addIndex');
         $this->addIndexToSchemaColumn($request->table, $request->field_name, $request->index_name);
         return ['status' => 'success'];
     }
 
     public function removeIndex(Request $request)
     {
-        \Log::Info(request()->ip()." removed index ".$request->index_name." from field ".$request->field_name." for the table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'removeIndex');
         $this->removeIndexFromSchemaColumn($request->table, $request->field_name, $request->index_name);
         return ['status' => 'success'];
     }
 
     public function renameTable(Request $request)
     {
-        \Log::Info(request()->ip()." renamed table ".$request->table." to ".$request->new_name." for app id ".$this->app_id);
+        \Log::Info($this->fc.'renameTable');
         $this->renameTableSchema($request->table, $request->new_name);
         $this->removeUserTypeFromApp($request->table, $request->new_name);
         // $return = $this->deleteModelClass($request->table);
@@ -102,7 +116,7 @@ trait CreatesTables
     }
 
     public function truncateTable(Request $request){
-        \Log::Info(request()->ip()." truncated table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'truncateTable');
         $table = $this->gtc($request->table);
         $table::truncate();
         return ['status' => 'success'];
@@ -110,7 +124,7 @@ trait CreatesTables
 
     public function deleteTable(Request $request)
     {
-        \Log::Info(request()->ip()." deleted table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'deleteTable');
         Schema::connection($this->con)->table($this->table($request->table), function (Blueprint $table){
             $table->drop();
         });
@@ -120,7 +134,7 @@ trait CreatesTables
 
     public function crudTableView(Request $request)
     {
-        \Log::Info(request()->ip()." visited CRUD view for table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'crudTableView');
         // $td = \DB::select(\DB::raw('DESCRIBE app'.$this->app_id.'_'.$request->table));
         $td = $this->getDescriptions($request->table, []);
         $table = $this->gtc($request->table);
@@ -142,7 +156,7 @@ trait CreatesTables
 
     public function addRecordView(Request $request)
     {
-        \Log::Info(request()->ip()." visited add record page for table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'addRecordView');
         $td = $this->getDescriptions($request->table, ['id', 'created_at', 'updated_at', 'remember_token']);
         return view($this->theme.'.db.add_record')->with([
             'td'=> $td, 
@@ -155,7 +169,7 @@ trait CreatesTables
 
     public function addRecord(Request $request)
     {
-        \Log::Info(request()->ip()." added record for table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'addRecord');
         $this->validateGenericInputs($request, $request->table);
         $table = $this->gtc($request->table);
         $table::create($request->all());
@@ -164,7 +178,7 @@ trait CreatesTables
 
     public function editRecordView(Request $request)
     {
-        \Log::Info(request()->ip()." visited edit record page for table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'editRecordView');
         $table = $this->gtc($request->table);
         $td = $this->getDescriptions($request->table, ['created_at', 'updated_at', 'remember_token']);
         return view($this->theme.'.db.edit_record')->with([
@@ -179,7 +193,7 @@ trait CreatesTables
 
     public function editRecord(Request $request)
     {
-        \Log::Info(request()->ip()." edited record ".$request->id." for table ".$request->table." for app id ".$this->app_id);
+        \Log::Info($this->fc.'editRecord');
         $this->validateGenericInputs($request, $request->table);
         $table = $this->gtc($request->table);
         $table::findOrFail($request->id)->update($request->all());
@@ -188,8 +202,7 @@ trait CreatesTables
 
     public function deleteRecord(Request $request)
     {
-        \Log::Info(request()->ip()." deleted record ".$request->id." for table ".$request->table." for app id ".$this->app_id);
-        $table = $this->gtc($request->table);
+        \Log::Info($this->fc.'deleteRecord');
         if(!empty($request->id)){
             $table::destroy($request->id);
         }
@@ -198,14 +211,14 @@ trait CreatesTables
 
     private function createDefaultUsersTable($id)
     {
-        \Log::Info(request()->ip()." created default users table for app id ".$id);
+        \Log::Info($this->fc.'createDefaultUsersTable');
         $this->createUsersSchema($id);
         // $this->createModelClass('users', true);
     }
 
     public function addUserTypeToApp($auth_provider)
     {
-        \Log::Info(request()->ip()." added auth_provider ".$auth_provider." for app id ".$this->app_id);
+        \Log::Info($this->fc.'addUserTypeToApp');
         $app = App::findOrFail($this->app_id);
         $arr = json_decode($app->auth_providers, true)??[];
         array_push($arr, $auth_provider);
@@ -214,13 +227,13 @@ trait CreatesTables
 
     public function removeUserTypeFromApp($auth_provider, $new_auth_provider = null)
     {
-        \Log::Info(request()->ip()." removed auth_provider ".$auth_provider." for app id ".$this->app_id);
+        \Log::Info($this->fc.'removeUserTypeFromApp');
         $app = App::findOrFail($this->app_id);
         $arr = json_decode($app->auth_providers, true)??[];
         if(!empty($new_auth_provider)){
             array_push($arr, $new_auth_provider);
         }
-        unset($arr[$auth_provider]);
+        array_splice($arr, array_search($auth_provider, $arr), 1);
         $app->update(['auth_providers' => json_encode($arr)]);
     }
 

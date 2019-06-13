@@ -3,10 +3,17 @@
 @section("content")
 <div class="container-fluid">
   <div class="row">
+    <div class="col-md-6">
+      License Usage Detail 
+    </div>
+    <div class="col-md-6">
+      <a class="btn btn-default" style="float:right" href="{{route('l.license.list.view')}}">Back</a> 
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
       <table class="table">
-        <caption>License Usage Detail <a class="btn btn-default" style="float:right" href="{{route('l.license.list.view')}}">Back</a></caption>
         <thead>
           <tr>
             <th>Sr.</th>
@@ -28,15 +35,15 @@
               <td>{{$licenseDetail->computer_name}}</td>
               <td>{{$licenseDetail->computer_user}}</td>
               @if($licenseDetail->hardware_code == "Empty")
-              <td><a style="cursor:pointer" onclick="sr({{$loop->index}})" data-toggle="modal" data-target="#manualActivation">Activate</a></td>
+              <td><a href="JavaScript:void(0);" onclick="sr({{$loop->index}})" data-toggle="modal" data-target="#manualActivation">Activate</a></td>
               @else
-              <td><a style="cursor:pointer" onclick="sr({{$loop->index}})" >De-Activate</a></td>
+              <td><a href="JavaScript:void(0);" onclick="sr({{$loop->index}})" >De-Activate</a></td>
               @endif
             </tr>
           @endforeach
         </tbody>
       </table>
-      {{$licenseDetails->links()}}
+      {{$licenseDetails->appends(request()->input())->links()}}
       </div>
     </div>
   </div>
@@ -75,7 +82,7 @@
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(4)').html($('#hardware_code1').val());
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(5)').html($('#computer_name1').val());
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(6)').html($('#computer_user1').val());
-        btn = '<a style="cursor:pointer" onclick="sr('+String(tri)+')">De-Activate</a>';
+        btn = '<a href="JavaScript:void(0);" onclick="sr('+String(tri)+')">De-Activate</a>';
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(7)').html(btn);
       }
       console.log(data['status']);
@@ -91,7 +98,7 @@
     $.post("{{route('l.deactivate.licnese')}}", dinp, function(data){
       if(data['status'] == "De-Activated"){
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(4)').html("Empty");
-        btn = '<a style="cursor:pointer" onclick="sr('+String(tri)+')" data-toggle="modal" data-target="#manualActivation">Activate</a>';
+        btn = '<a href="JavaScript:void(0);" onclick="sr('+String(tri)+')" data-toggle="modal" data-target="#manualActivation">Activate</a>';
         $('tr:nth-child('+String(tri+1)+')  td:nth-child(7)').html(btn);
       }
     });
@@ -125,9 +132,9 @@
             <label for="expiry_date1">New Expiry Date (Optional - Required when expiry date completes)</label>
             <input type="date" id="expiry_date1" class="form-control" value="" placeholder="New Expiry Date (optional)">
           </div>
-          <div class="form-group"><button class="btn btn-primary" data-dismiss="modal" onclick="activate()">Activate</button></div>
       </div>
       <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal" onclick="activate()">Activate</button>
         {{-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> --}}
       </div>
     </div>

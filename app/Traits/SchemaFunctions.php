@@ -10,7 +10,7 @@ trait SchemaFunctions
 {
 	public function createUsersSchema($app_id)
 	{
-		\Log::Info(request()->ip()." created users schema for app id ".$app_id);
+		\Log::Info($this->fc.'createUsersSchema');
 		Schema::connection($this->con)->create('app'.$app_id.'_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -27,7 +27,7 @@ trait SchemaFunctions
 
 	public function createTableSchema($request, $table)
 	{
-		\Log::Info(request()->ip()." created table schema for app id ".$this->app_id);
+		\Log::Info($this->fc.'createTableSchema');
 		Schema::connection($this->con)->create($this->table($table), function (Blueprint $table) use ($request) {
             $this->schemaColumnsDeveloper($request, $table);
         });
@@ -35,7 +35,7 @@ trait SchemaFunctions
 
 	public function renameTableSchema($from, $to)
 	{
-		\Log::Info(request()->ip()." renamed table schema for app id ".$this->app_id);
+		\Log::Info($this->fc.'renameTableSchema');
 		if(!Schema::connection($this->con)->hasTable($this->table($from))){
 			return ['status' => 'table name doest not exist.'];
 		}
@@ -44,7 +44,7 @@ trait SchemaFunctions
 
 	public function addColumnsSchema($request, $table)
 	{
-		\Log::Info(request()->ip()." added columns to table schema for app id ".$this->app_id);
+		\Log::Info($this->fc.'addColumnsSchema');
 		Schema::connection($this->con)->table($this->table($table), function (Blueprint $table) use ($request) {
 			$this->schemaColumnsDeveloper($request, $table);
         }); 
@@ -52,7 +52,7 @@ trait SchemaFunctions
 
 	public function renameSchemaColumn($table, $from, $to)
 	{
-		\Log::Info(request()->ip()." renamed column to table schema for app id ".$this->app_id);
+		\Log::Info($this->fc.'renameSchemaColumn');
 		if(!Schema::connection($this->con)->hasColumn($this->table($table), $from)){
 			\Log::Info('hasColumn');
 			return ['status' => 'column desnot exist.'];
@@ -66,7 +66,7 @@ trait SchemaFunctions
 
 	public function deleteSchemaColumn($table, $column)
 	{
-		\Log::Info(request()->ip()." deleted column to table schema for app id ".$this->app_id);
+		\Log::Info($this->fc.'deleteSchemaColumn');
 		if(!Schema::connection($this->con)->hasColumn($this->table($table), $column)){
 			return ['status' => 'column desnot exist.'];
 		}
@@ -77,7 +77,7 @@ trait SchemaFunctions
 
 	public function addIndexToSchemaColumn($table_name, $column_name, $index_name)
 	{
-		\Log::Info(request()->ip()." added index to column to table schema for app id ".$this->app_id);
+		\Log::Info($this->fc.'addIndexToSchemaColumn');
 		Schema::connection($this->con)->table($this->table($table_name), function (Blueprint $table) use($table_name, $column_name, $index_name){
 		    $sm = Schema::connection($this->con)->getConnection()->getDoctrineSchemaManager();
 		    $indexesFound = $sm->listTableIndexes($table_name);
@@ -107,7 +107,7 @@ trait SchemaFunctions
 
 	public function removeIndexFromSchemaColumn($table_name, $column_name, $index_name)
 	{
-		\Log::Info(request()->ip()." removed index to column to table schema for app id ".$this->app_id);
+		\Log::Info($this->fc.'removeIndexFromSchemaColumn');
         Schema::connection($this->con)->table($this->table($table_name), function (Blueprint $table) use($table_name, $column_name, $index_name){
 		    $sm = Schema::connection($this->con)->getConnection()->getDoctrineSchemaManager();
 		    $indexesFound = $sm->listTableIndexes($table_name);
@@ -138,6 +138,7 @@ trait SchemaFunctions
 
 	public function schemaColumnsDeveloper($request, $table)
 	{
+		\Log::Info($this->fc.'schemaColumnsDeveloper');
 		foreach ($request->field_type as $key => $value) {
             $params = $this->schemaColumnsParamCondetions($request, $key, $value);
             \Log::Info($params);
@@ -181,6 +182,7 @@ trait SchemaFunctions
 
 	public function addIndexToColumns($table, $column_name, $index_name)
 	{
+		\Log::Info($this->fc.'addIndexToColumns');
 		if(in_array($index_name, ['primary','unique','index'])){
 
             switch ($index_name) {
@@ -202,6 +204,7 @@ trait SchemaFunctions
 
 	public function schemaColumnsParamCondetions($request, $key, $value)
 	{
+		\Log::Info($this->fc.'schemaColumnsParamCondetions');
 		$params = ['length'=>null, 'autoIncrement'=>null, 'unsigned'=>null, 'total'=>null, 'places'=>null];
 
         if(strpos($value, 'Integer')){
@@ -260,6 +263,7 @@ trait SchemaFunctions
 
 	private function lookupTypes($type)
 	{
+		\Log::Info($this->fc.'lookupTypes');
 		$arr = [
 			'tinyInteger' => 'tinyInteger',
 			'unsignedTinyInteger' => 'tinyInteger',

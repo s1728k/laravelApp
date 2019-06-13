@@ -11,7 +11,7 @@ trait LicensesSoftwares
 {
 	public function createNewLicense(Request $request)
     {
-        \Log::Info(request()->ip()." created license for app id ".$this->app_id);
+        \Log::Info($this->fc.'createNewLicense');
         $id = License::create([
             'license_key' => bcrypt(uniqid(rand(), true)),
             'total_licenses' => $request->total_licenses,
@@ -34,7 +34,7 @@ trait LicensesSoftwares
 
     public function getLicenseKey(Request $request)
     {
-        \Log::Info(request()->ip()." requested for license key for app id ".$this->app_id);
+        \Log::Info($this->fc.'getLicenseKey');
         if($request->app_secret == App::findOrFail($request->app_id)->secret){
             $license = License::create([
                 'license_key' => bcrypt(uniqid(rand(), true)),
@@ -59,7 +59,7 @@ trait LicensesSoftwares
 
     public function licenseListView(Request $request)
     {
-        \Log::Info(request()->ip()." visited license list page for app id ".$this->app_id);
+        \Log::Info($this->fc.'licenseListView');
         $licenses = License::where('created_by', $this->app_id)->paginate(10);
         return view($this->theme.'.license.license_list')->with([
             'licenses' => $licenses,
@@ -70,7 +70,7 @@ trait LicensesSoftwares
 
     public function licenseDetailsView(Request $request, $id)
     {
-        \Log::Info(request()->ip()." visited license details page for app id ".$this->app_id);
+        \Log::Info($this->fc.'licenseDetailsView');
         $licenseDetails = LicenseDetail::where('license_id', $id)->paginate(10);
         return view($this->theme.'.license.license_detail')->with([
             'licenseDetails' => $licenseDetails, 
@@ -82,13 +82,13 @@ trait LicensesSoftwares
 
     public function testBenchView()
     {
-        \Log::Info(request()->ip()." visited license test bench page for app id ".$this->app_id);
+        \Log::Info($this->fc.'testBenchView');
         return view($this->theme.'.license.test_bench');
     }
 
     public function updateLicense(Request $request, $id)
     {
-        \Log::Info(request()->ip()." updated license for app id ".$this->app_id);
+        \Log::Info($this->fc.'updateLicense');
         $license = License::findOrFail($id);
         if($request->total_licenses < $license->total_licenses ){
             return redirect()->route('l.license.list.view');
@@ -113,7 +113,7 @@ trait LicensesSoftwares
 
     public function deleteLicense(Request $request, $id)
     {
-        \Log::Info(request()->ip()." deleted license for app id ".$this->app_id);
+        \Log::Info($this->fc.'deleteLicense');
         // if(!empty($request->_token)){
         //     $licenseDetails = LicenseDetail::where('license_id', $id)->get();
         //     foreach ($licenseDetails as $licenseDetail) {
@@ -126,7 +126,7 @@ trait LicensesSoftwares
 
     public function activateLicense(Request $request)
     {
-        \Log::Info(request()->ip()." activated license for app id ".$this->app_id);
+        \Log::Info($this->fc.'activateLicense');
         $status = "License key with this serial number did not match";
         $license_no = 0;
         $license = License::findOrFail($request->serial_no);
@@ -156,6 +156,11 @@ trait LicensesSoftwares
                     $status = "No license available for this key";
                 }
             }else{
+                $existsLicense = LicenseDetail::where([
+                    'license_id' => $license->id, 'hardware_code' => $request->hardware_code])->first();
+                if(!empty($existsLicense)){
+                    return ["status" => "error"];
+                }
                 $emptyLicense = LicenseDetail::where(['license_id' => $license->id, 'hardware_code' => 'Empty'])->first();
                 if(!empty($emptyLicense)){
                     foreach (json_decode(LicenseDetail::where(['license_id' => $license->id])->get(), true) as $key => $value) {
@@ -187,7 +192,7 @@ trait LicensesSoftwares
 
     public function deactivateLicense(Request $request)
     {
-        \Log::Info(request()->ip()." de-activated license for app id ".$this->app_id);
+        \Log::Info($this->fc.'deactivateLicense');
         $status = "License key with this serial number did not match";
         $license = License::findOrFail($request->serial_no);
         $status = ucwords($request->hardware_code) == "Empty" ? "Hardware code cannot be empty" : $status;

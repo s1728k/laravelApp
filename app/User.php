@@ -16,8 +16,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'email', 'password', 'name', 'avatar', 'api_token', 'active_app_id', 'online_status', 'chat_resource_id', 
-        'email_varification', 'blocked', 'is_verified'
+        'email', 'password', 'name', 'avatar', 'api_token', 'active_app_id', 'invited_apps', 'online_status', 
+        'chat_resource_id', 'chat_friends', 'email_varification', 'blocked', 'recharge_balance', 'recharge_expiry_date'
     ];
 
     /**

@@ -11,7 +11,10 @@
   </div>
   <div class="col s12 m8">
     <div class="input-group" style="float:right;position: relative;">
-						<input style="width:300px;" type="text" name="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" placeholder="Table Name" />@if($errors->has('name'))<p style="color:red;position: absolute;bottom:auto;left:0px;top:30px;right:auto;"> {{$errors->first('name')}} </p>@endif<select name="model" class="form-control" style="width:150px;">
+						<input style="width:300px;" type="text" name="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" placeholder="Table Name" />
+						@if($errors->has('name'))<p style="color:red;position: absolute;bottom:auto;left:0px;top:30px;right:auto;"> {{$errors->first('name')}} </p>@endif
+						<input style="width:300px;" type="text" name="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" placeholder="Table Name" />
+						<select name="model" class="form-control" style="width:150px;">
 									<option value="model">Model</option>
 									<option value="authenticatable">Authenticatable</option>
 								</select>

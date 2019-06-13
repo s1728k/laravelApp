@@ -13,7 +13,7 @@ class VirtualDomain extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'name', 'type', 'verified', 'expiry_date', 
+        'user_id', 'name', 'dns', 'expiry_date', 
     ];
 
 }

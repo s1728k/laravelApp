@@ -4,15 +4,20 @@
 <div class="container-fluid">
 	<div id="alrt"></div>
 	<div class="row">
+		<div class="col-md-6">
+			CRUD Table "{{$table}}"
+		</div>
+		<div class="col-md-6">
+			<div class="btn-group" style="float:right;">
+				<a class="btn btn-default" href="{{route('c.db.add.record')}}?table={{$table}}">Add New Record</a>
+				<a class="btn btn-default" href="{{route('c.table.list.view')}}">Back</a>
+			</div>
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-md-12">
 			<div class="table-responsive" style="padding-bottom: 100px;">
 				<table class="table">
-					<caption>
-						CRUD Table "{{$table}}"
-						<div class="input-group" style="float:right;">
-							<a class="btn btn-default" href="{{route('c.db.add.record')}}?table={{$table}}">Add New Record</a>
-							<a class="btn btn-default" href="{{route('c.table.list.view')}}">Back</a>
-						</div></caption>
 					<thead>
 						<tr>
 							@foreach($td as $k => $v)
@@ -32,7 +37,7 @@
 						@endforeach
 					</tbody>
 				</table>
-				{{$records->appends(request()->except('page'))->links()}}
+				{{$records->appends(request()->input())->links()}}
 			</div>
 		</div>
 	</div>
