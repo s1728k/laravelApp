@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\App;
 use App\ValidationRule;
 use Illuminate\Support\Facades\Schema;
 
@@ -82,12 +83,15 @@ trait ValidatesRequests
         ]);
 
         $rules = [];
-        foreach ($request->field_default as $key => $value) {
-            if(!empty($value)){
-                $val=$this->getValidationString($this->getDataTypeString($request->field_type[$key], $request->field_param[$key]));
-                $rules["field_default.".$key] = $val;
+        if(count($request->field_default)!=0){
+            foreach ($request->field_default as $key => $value) {
+                if(!empty($value)){
+                    $val=$this->getValidationString($this->getDataTypeString($request->field_type[$key], $request->field_param[$key]));
+                    $rules["field_default.".$key] = $val;
+                }
             }
         }
+        
         $request->validate($rules);
 
         $fields = $this->getAfterFields($request->name);

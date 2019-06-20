@@ -218,12 +218,14 @@ trait UtilityFunctions
         $urls = [];
         for($i=1; $i<=ceil(count($arr)/$ppc); $i++){
             $url = request()->fullUrl();
-            if(strpos($url,'?')==false){
-                $url = str_replace(['&page='.$page,'?page='.$page],'',$url);
-                $url = $url . '&page='. $i;
+            if(str_replace('page='.$page,'',$url)!==$url){
+                $url = str_replace('page='.$page,'page='. $i,$url);
             }else{
-                $url = str_replace(['&page='.$page,'?page='.$page],'',$url);
-                $url = $url . '?page='. $i;
+                if(str_replace('?','',$url)==$url){
+                    $url = $url . '?page='. $i;
+                }else{
+                    $url = $url . '&page='. $i;
+                }
             }
             $urls[] = $url;
         }

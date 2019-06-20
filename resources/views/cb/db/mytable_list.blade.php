@@ -35,7 +35,7 @@
   				<tbody>
             @foreach($tables as $key => $table)
             <tr id="r{{($key + 1)}}">
-              <td>{{ ($loop->index + 1) + 2 * ($page-1)}}</td>
+              <td>{{ ($loop->index + 1) + 10 * ($page-1)}}</td>
               <td>{{ $table['name'] }}</td>
               <td>{{ $table['size'] }}</td>
               <td><a href="JavaScript:void(0);" onclick="addFields('{{$table['name']}}')">Add Fields</a></td>

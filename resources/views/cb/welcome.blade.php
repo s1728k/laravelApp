@@ -39,6 +39,61 @@
       stroke-dashoffset: 0;
     }
   }
+  .fa-ficon {
+    /*padding: 12.5px;*/
+    font-size: 25px;
+    /*width: 50px;*/
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 2px;
+    border-radius: 50%;
+    color: #55ACEE;
+  }
+
+  .fa-social {
+    padding: 12.5px;
+    font-size: 25px;
+    width: 50px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 2px;
+    border-radius: 50%;
+  }
+
+  /* Add a hover effect if you want */
+  .fa-social:hover {
+    opacity: 0.7;
+    text-decoration: none;
+  }
+
+  /* Set a specific color for each brand */
+
+  /* Facebook */
+  .fa-facebook {
+    background: #3B5998;
+    color: white;
+  }
+
+  /* Twitter */
+  .fa-twitter {
+    background: #55ACEE;
+    color: white;
+  }
+
+  .fa-linkedin {
+    background: #007bb5;
+    color: white;
+  }
+
+  .fa-pinterest {
+    background: #cb2027;
+    color: white;
+  }
+
+  .fa-github {
+    background: #000000;
+    color: white;
+  }
 </style>
 @endsection
 @section("content")
@@ -70,7 +125,7 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-6">
-            <svg width="100%" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" viewBox="0 0 410 220">
               <text x="100" y="30" fill="grey" style="font-size: 10px;">HoneyWeb.Org</text>
               <path  fill="grey" d="M100 50 l0 140 l80 0 l0 -140 l-80 0"/>
               <path  fill="#EEEEEE" d="M105 55 l0 130 l70 0 l0 -130 l-70 0"/>
@@ -120,7 +175,7 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-6 top_img">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <text x="20" y="20" fill="grey" style="font-size: 10px;">HoneyWeb.Org</text>
               <path stroke="grey" d="M50 30 L50 210 Z"/>
               <text x="320" y="20" fill="grey" style="font-size: 10px;">Your Frontend App</text>
@@ -145,7 +200,7 @@
             <p>Session management is achieved with <strong>_token</strong> variable. _token hash is changed on <strong>refresh token</strong> request by user. App secret and app id is used only on login and signup. <strong>CSRF protection</strong> is also achieved. <strong>GET, POST</strong> methods are allowed. <strong>PUT and DELETE</strong> methods are allowed with <strong>method spoofing</strong>.</p>
           </div>
           <div class="col-md-6 btm_img">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <text x="20" y="20" fill="grey" style="font-size: 10px;">HoneyWeb.Org</text>
               <path stroke="grey" d="M50 30 L50 210 Z"/>
               <text x="320" y="20" fill="grey" style="font-size: 10px;">Your Frontend App</text>
@@ -174,7 +229,7 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-6">
-            <svg width="100%" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" viewBox="0 0 410 220">
               <text x="8" y="198" fill="grey" transform="rotate(-90 10,200)" style="font-size: 10px;">HoneyWeb.Org Managed Databases</text>
               <ellipse cx="30" cy="40" rx="20" ry="10" style="fill:grey;stroke:purple;stroke-width:0" />
               <path  fill="grey" stroke="grey" d="M10 46 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
@@ -226,7 +281,7 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-6 top_img">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <path stroke="grey" d="M110 30 q0 100 100 190 q100 -90 100 -190 q-70 -25 -100 -25 q-25 0 -100 25 Z"/>
               <text x="180" y="130" fill="lightgrey" style="font-size: 120px;">?</text>
             </svg>
@@ -236,7 +291,7 @@
             <p>You can create <strong>any number of queries</strong>. queries are similar to <strong>routing</strong> in any framework. queries achieve <strong>authentication</strong>. You can define your own <strong>validation</strong> super to basic datatype validation. You can customize the <strong>validation error messages</strong>.</p>
           </div>
           <div class="col-md-6 btm_img">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <path stroke="grey" d="M110 30 q0 100 100 190 q100 -90 100 -190 q-70 -25 -100 -25 q-25 0 -100 25 Z"/>
               <text x="180" y="130" fill="lightgrey" style="font-size: 120px;">?</text>
             </svg>
@@ -250,7 +305,7 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-6">
-            <svg fill="grey" width="100%" viewBox="0 0 410 220">
+            <svg fill="grey" width="100%" height="100%" viewBox="0 0 410 220">
               <text x="60" y="30" fill="grey" style="font-size: 10px;">HoneyWeb.Org</text>
               <path d="M20 50 l0 150 l140 0 l0 -150 l-140 0"/>
               <path fill="#EEEEEE" d="M25 55 l0 140 l130 0 l0 -140 l-130 0"/>
@@ -292,7 +347,7 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-6 top_img">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <path stroke="grey" d="M10 210 l0 -190 q3 -10 12 0 l182 182 q6 6 12 0 l184 -184 q10 -10 10 10 l0 182 q0 10 -10 10 l-390 0 q-10 0 -10 -10 l0 -200 q0 -10 10 -10 l400 0 l0 5 l-400 0 q-5 0 -5 5 l0 200 q0 5 5 5 l390 0 q5 0 5 -5 l0 -190 l-185 185 q-10 10 -20 0 l-185 -185 l0 190 Z" />
               <text x="160" y="80" fill="grey" style="font-size: 30px;">E - Mail</text>
               <text x="130" y="110" fill="grey" style="font-size: 20px;">@yourdomain.tld</text>
@@ -304,7 +359,7 @@
             <p>You can create <strong>any number of email address</strong> @ your domain.tld. <strong>Domain name verification</strong> is done to ensure you own your domain. You need to <strong>point MX record</strong> to our ip address. You can use <strong>gmail client</strong> to send and receive mails. You can also send mails using <strong>simple api request</strong> from you mobile app.</p>
           </div>
           <div class="col-md-6 btm_img">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <path stroke="grey" d="M10 210 l0 -190 q3 -10 12 0 l182 182 q6 6 12 0 l184 -184 q10 -10 10 10 l0 182 q0 10 -10 10 l-390 0 q-10 0 -10 -10 l0 -200 q0 -10 10 -10 l400 0 l0 5 l-400 0 q-5 0 -5 5 l0 200 q0 5 5 5 l390 0 q5 0 5 -5 l0 -190 l-185 185 q-10 10 -20 0 l-185 -185 l0 190 Z" />
               <text x="160" y="80" fill="grey" style="font-size: 30px;">E - Mail</text>
               <text x="130" y="110" fill="grey" style="font-size: 20px;">@yourdomain.tld</text>
@@ -320,7 +375,7 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-6">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <path fill="lightgrey" stroke="lightgrey" d="M30 10 l350 0 l0 130 l-350 0 l0 -130 Z"/>
               <path stroke="grey" d="M30 140 l350 0 l0 80 l-350 0 l0 -80 Z"/>
               <path fill="lightgrey" stroke="lightgrey" d="M40 150 l40 0 l0 40 l-40 0 l0 -40 Z"/>
@@ -346,7 +401,7 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-6 top_img">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <path stroke="grey" d="M150 10 l0 210 Z"/>
               <path stroke="grey" d="M150 80 l260 0 Z"/>
               <path stroke="grey" d="M150 150 l260 0 Z"/>
@@ -374,7 +429,7 @@
             <p>We provide <strong>chat window</strong> to embed in you application. We also provide <strong>customer care application</strong> to engage your clients. Owner level user can monitor chat messages and requests from our <strong>control panel</strong>. You can <strong>configure</strong> many other options in our control panel.</p>
           </div>
           <div class="col-md-6 btm_img">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <path stroke="grey" d="M150 10 l0 210 Z"/>
               <path stroke="grey" d="M150 80 l260 0 Z"/>
               <path stroke="grey" d="M150 150 l260 0 Z"/>
@@ -406,7 +461,7 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-6">
-            <svg width="100%" fill="grey" viewBox="0 0 410 220">
+            <svg width="100%" height="100%" fill="grey" viewBox="0 0 410 220">
               <text x="20" y="20" fill="grey" style="font-size: 10px;">HoneyWeb.Org</text>
               <path stroke="grey" d="M50 30 L50 210 Z"/>
               <text x="280" y="20" fill="grey" style="font-size: 10px;">Your digital downloads App</text>
@@ -433,6 +488,74 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="row text-center" style="background: grey; padding: 50px 150px; color:white">
+    <div class="col-md-4">
+      <h3>Honeyweb Internet LLP</h3>
+      <br><br><p><strong>Mission:</strong> Our mission is to serve our customers with cloud products to meet their needs in cost effective manner.</p>
+      <br><br><p><strong>Vision:</strong> Our vision is to deliver best cloud based services to customers to meet their needs in cost effective manner without compromising quality.</p>
+    </div>
+    <div class="col-md-4">
+      <h3>Navigational</h3>
+      <p><a style="color:white" href="{{route('c.docs.home')}}"><i class="fa fa-book"></i> Docs</a></p>
+      <p><a style="color:white" href="{{route('register')}}"><i class="fa fa-user"></i> Sign Up</a></p>
+      <p><a style="color:white" href="{{route('login')}}"><i class="fa fa-sign-in"></i> Login</a></p>
+    </div>
+    <div class="col-md-4 text-left">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-1">
+          <i class="fa-ficon fa fa-map-marker"></i>
+        </div>
+        <div class="col-md-9" style="margin-top: 10px">
+          <p>#72, Kittaganahalli Village</p>
+          <p>Bommasandra Industrial Area Post</p>
+          <p>Bangalore, Karnataka, India</p>
+        </div>
+      </div><br>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-1">
+          <i class="fa-ficon fa fa-phone"></i>
+        </div>
+        <div class="col-md-9" style="margin-top: 10px">
+          <p>+91 8904993723</p>
+        </div>
+      </div><br>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-1">
+          <i class="fa-ficon fa fa-envelope"></i>
+        </div>
+        <div class="col-md-9" style="margin-top: 10px">
+          <p>info@honeyweb.org</p>
+        </div>
+      </div><br>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-1">
+          <i class="fa-ficon fa fa-clock-o"></i>
+        </div>
+        <div class="col-md-9" style="margin-top: 10px">
+          <p> Saturday — Sunday</p>
+          <p> 8:00am - 5:00pm</p>
+        </div>
+      </div><br><br>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <a href="javascript:void(0)" class="fa-social fa fa-facebook"></a>
+          <a href="javascript:void(0)" class="fa-social fa fa-twitter"></a>
+          <a href="javascript:void(0)" class="fa-social fa fa-linkedin"></a>
+          <a href="javascript:void(0)" class="fa-social fa fa-github"></a>
+          <a href="javascript:void(0)" class="fa-social fa fa-pinterest"></a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <br><br><p>Copyright ©2019 All rights reserved | Honeyweb Internet LLP, Bangalore, Karnataka, India</p>
+      <p>Note:- The website is under review please contact admin@honeyweb.org</p>
     </div>
   </div>
  {{--  <div class="row text-center align-middle">
