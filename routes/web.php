@@ -45,7 +45,7 @@ Route::prefix('user')->group(function() {
 	Route::get('/usage_report', 'UserController@usageReportView')->name('c.user.usage_report.view');
 	Route::get('/recharge_offers', 'UserController@rechargeOffersView')->name('c.user.recharge_offers.view');
 	Route::post('/recharge', 'UserController@recharge')->name('c.user.recharge');
-	Route::post('/payment/status', 'UserController@paymentCallback');
+	Route::post('/payment/status', 'UserController@paymentCallback')->name('c.payment.callback');
 	Route::get('/payment/status/{id}', 'UserController@statusCheck')->name('c.recharge.status')->where(['id'=>'[0-9]+']);
 	Route::get('/payment/refund/{id}', 'UserController@refund')->name('c.refund.payment')->where(['id'=>'[0-9]+']);
 	Route::get('/payment/refund_status/{id}', 'UserController@refundStatus')->name('c.refund.status')->where(['id'=>'[0-9]+']);
@@ -238,17 +238,25 @@ Route::prefix('docs')->group(function() {
 	Route::get('/routemap', 'GuestController@routeMap')->name('c.docs.routemap');
 	Route::get('/{index}', 'GuestController@docIndex')->name('c.docs.index');
 	Route::get('/{index}/{sub_index}', 'GuestController@docArticle')->name('c.docs.article');
-	Route::get('/apps', 'GuestController@apps')->name('c.docs.apps');
-	Route::get('/licenses', 'GuestController@licenses')->name('c.docs.licenses');
-	Route::get('/sessions', 'GuestController@sessions')->name('c.docs.sessions');
-	Route::get('/auth', 'GuestController@auth')->name('c.docs.auth');
-	Route::get('/tables', 'GuestController@tables')->name('c.docs.tables');
-	Route::get('/files', 'GuestController@files')->name('c.docs.files');
-	Route::get('/emails', 'GuestController@emails')->name('c.docs.emails');
-	Route::get('/chat', 'GuestController@chat')->name('c.docs.chat');
-	Route::get('/alerts', 'GuestController@alerts')->name('c.docs.alerts');
-	Route::get('/push-notifications', 'GuestController@pushNotifications')->name('c.docs.push');
-	Route::get('/prebuilt-applications', 'GuestController@prebuilt')->name('c.docs.prebuilt');
+	// Route::get('/apps', 'GuestController@apps')->name('c.docs.apps');
+	// Route::get('/licenses', 'GuestController@licenses')->name('c.docs.licenses');
+	// Route::get('/sessions', 'GuestController@sessions')->name('c.docs.sessions');
+	// Route::get('/auth', 'GuestController@auth')->name('c.docs.auth');
+	// Route::get('/tables', 'GuestController@tables')->name('c.docs.tables');
+	// Route::get('/files', 'GuestController@files')->name('c.docs.files');
+	// Route::get('/emails', 'GuestController@emails')->name('c.docs.emails');
+	// Route::get('/chat', 'GuestController@chat')->name('c.docs.chat');
+	// Route::get('/alerts', 'GuestController@alerts')->name('c.docs.alerts');
+	// Route::get('/push-notifications', 'GuestController@pushNotifications')->name('c.docs.push');
+	// Route::get('/prebuilt-applications', 'GuestController@prebuilt')->name('c.docs.prebuilt');
+});
+//====================End of Files Routes=============
+
+//====================Docs Routes====================
+Route::prefix('blog')->group(function() {
+	Route::get('/', 'GuestController@categoryHome')->name('c.blog.home');
+	Route::get('/{category}', 'GuestController@blogCategory')->name('c.blog.category');
+	Route::get('/{category}/{sub_category}', 'GuestController@blogArticle')->name('c.blog.article');
 });
 //====================End of Files Routes=============
 

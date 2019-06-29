@@ -94,6 +94,24 @@
     background: #000000;
     color: white;
   }
+
+  #fcopywrite{
+    background: #606060; padding: 10px 0px; color:white
+  }
+
+  #footer{
+    background: grey; padding: 50px 0px; color:white
+  }
+
+  @media only screen and (min-width: 900px) {
+    #faddress {
+      text-align: left;
+    }
+    #fmission{
+      text-align: right;
+    }
+  }
+
 </style>
 @endsection
 @section("content")
@@ -120,6 +138,7 @@
       {{-- </div> --}}
     </div>
   </div>
+
   <div class="row">
     <div class="col-md-12 text-center align-middle">
       <div class="jumbotron">
@@ -490,19 +509,20 @@
       </div>
     </div>
   </div>
-  <div class="row text-center" style="background: grey; padding: 50px 150px; color:white">
-    <div class="col-md-4">
+  <div id="footer" class="row text-center">
+    <div class="col-md-4" id="fmission">
       <h3>Honeyweb Internet LLP</h3>
       <br><br><p><strong>Mission:</strong> Our mission is to serve our customers with cloud products to meet their needs in cost effective manner.</p>
       <br><br><p><strong>Vision:</strong> Our vision is to deliver best cloud based services to customers to meet their needs in cost effective manner without compromising quality.</p>
     </div>
     <div class="col-md-4">
       <h3>Navigational</h3>
+      <p><a style="color:white" href="{{route('c.blog.home')}}"><i class="fa fa-edit"></i> Blog</a></p>
       <p><a style="color:white" href="{{route('c.docs.home')}}"><i class="fa fa-book"></i> Docs</a></p>
       <p><a style="color:white" href="{{route('register')}}"><i class="fa fa-user"></i> Sign Up</a></p>
       <p><a style="color:white" href="{{route('login')}}"><i class="fa fa-sign-in"></i> Login</a></p>
     </div>
-    <div class="col-md-4 text-left">
+    <div class="col-md-4" id="faddress">
       <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-1">
@@ -553,8 +573,10 @@
         </div>
       </div>
     </div>
+  </div>
+  <div id="fcopywrite" class="row text-center">
     <div class="col-md-12">
-      <br><br><p>Copyright ©2019 All rights reserved | Honeyweb Internet LLP, Bangalore, Karnataka, India</p>
+      <p>Copyright ©2019 All rights reserved | Honeyweb Internet LLP, Bangalore, Karnataka, India</p>
       <p>Note:- The website is under review please contact admin@honeyweb.org</p>
     </div>
   </div>

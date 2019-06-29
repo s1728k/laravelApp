@@ -5,12 +5,14 @@ use Carbon\Carbon;
 use App\PasswordReset;
 use App\Mail\ResetPasswordMail;
 use App\Traits\Docs;
+use App\Traits\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class GuestController extends CloudController
 {
     use Docs;
+    use Blog;
     /**
      * Create a new controller instance.
      *

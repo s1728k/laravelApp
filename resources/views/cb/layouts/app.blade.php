@@ -14,9 +14,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
-  <meta name="description" content="Backend Solutions for Single Page Websites and Mobile Applications Licenses | Session | Database | Email | Assets Store | CDN | Chat | Cloud Messaging | Push Notifications | Code Obfuscation also Prebuild Applications">
+  <meta name="description" content="Backend Solutions for Single Page Websites and Mobile Applications Session | Database | Email | Assets Store | CDN | Chat | Cloud Messaging | Push Notifications | Licenses also Prebuild Applications">
 
   <title>HoneyWeb.Org - Delightful Web Creations</title>
+  <meta name="keywords" content="Licenses,Database,Email,Files,CDN,Chat,Push Notifications" />
+  <meta name="robots" content="index,follow,archive" />
+
+  <meta name="geo.position" content="," />
+  <meta name="geo.placename" content="" />
+  <meta name="geo.region" content="" />
+
   <base href="/">
   {{-- <link href="{{ asset('images/honeyweb.svg') }}" rel="icon" type="image/x-icon" >
   <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
@@ -342,6 +349,7 @@
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
         @guest
+          <li><a href="{{route('c.blog.home')}}"><i class="fa fa-edit"></i> Blog</a></li>
           <li><a href="{{route('c.docs.home')}}"><i class="fa fa-book"></i> Docs</a></li>
           <li><a href="{{route('register')}}"><i class="fa fa-user"></i> Sign Up</a></li>
           <li><a href="{{route('login')}}"><i class="fa fa-sign-in"></i> Login</a></li>
