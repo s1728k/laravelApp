@@ -29,7 +29,7 @@
 						@foreach($records as $record)
 						<tr id="r{{$record->id}}">
 							@foreach($td as $k => $v)
-							<td>{{$record[$v->Field]}}</td>
+							<td style="word-break: break-all;">{{$record[$v->Field]}}</td>
 							@endforeach
 							<td><a href="{{route('c.db.edit.record')}}?table={{$table}}&id={{$record->id??''}}" >Edit</a></td>
 							<td><a style="cursor: pointer;" onclick="d('{{$record->id}}', '{{$table}}')">Delete</a></td>
