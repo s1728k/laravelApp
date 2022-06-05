@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="grey" viewBox="0 0 410 220">
+  <text x="20" y="20" fill="grey" style="font-size: 10px;">HoneyWeb.Org</text>
+  <path stroke="grey" d="M50 30 L50 210 Z"/>
+  <text x="320" y="20" fill="grey" style="font-size: 10px;">Your Frontend App</text>
+  <path stroke="grey" d="M360 30 L360 210 Z"/>
+  <text x="70" y="46" fill="grey" style="font-size: 10px;">For all your non public guest routes like signup etc.</text>
+  <text x="70" y="59" fill="grey" style="font-size: 10px;">use app id and app secret</text>
+  <path stroke="grey" d="M360 50 l-310 0 l10 5 l0 -10 l-10 5 Z"/>
+  <text x="70" y="86" fill="grey" style="font-size: 10px;">For login use app id and secret</text>
+  <path stroke="grey" d="M360 90 l-310 0 l10 5 l0 -10 l-10 5 Z"/>
+  <text x="70" y="106" fill="grey" style="font-size: 10px;">login success get you _token value save it in session storage</text>
+  <path stroke="grey" d="M50 110 l310 0 l-10 -5 l0 10 l10 -5 Z"/>
+  <text x="70" y="146" fill="grey" style="font-size: 10px;">For all auth routes use _token</text>
+  <path stroke="grey" d="M360 150 l-310 0 l10 5 l0 -10 l-10 5 Z"/>
+  <text x="70" y="186" fill="grey" style="font-size: 10px;">Request a refresh token</text>
+  <path stroke="grey" d="M360 190 l-310 0 l10 5 l0 -10 l-10 5 Z"/>
+  <text x="70" y="206" fill="grey" style="font-size: 10px;">save new _token in session storage</text>
+  <path stroke="grey" d="M50 210 l310 0 l-10 -5 l0 10 l10 -5 Z"/>
+</svg>

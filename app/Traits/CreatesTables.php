@@ -173,7 +173,10 @@ trait CreatesTables
         \Log::Info($this->fc.'addRecord');
         $this->validateGenericInputs($request, $request->table);
         $table = $this->gtc($request->table);
-        $table::create($request->all());
+        $record = $table::create($request->all());
+        if($request->password){
+            $record->update(['password' => bcrypt($request->password)]);
+        }
         return redirect()->route('c.db.crud.table', ['table' => $request->table]);
     }
 
@@ -195,9 +198,10 @@ trait CreatesTables
     public function editRecord(Request $request)
     {
         \Log::Info($this->fc.'editRecord');
-        $this->validateGenericInputs($request, $request->table);
+        $this->validateGenericInputs($request, $request->table, true);
         $table = $this->gtc($request->table);
-        $table::findOrFail($request->id)->update($request->all());
+        $record = $table::findOrFail($request->id);
+        $record->update($request->all());
         return redirect()->route('c.db.crud.table', ['table' => $request->table]);
     }
 
@@ -205,6 +209,7 @@ trait CreatesTables
     {
         \Log::Info($this->fc.'deleteRecord');
         if(!empty($request->id)){
+            $table = $this->gtc($request->table);
             $table::destroy($request->id);
         }
         return ['status' => 'success'];

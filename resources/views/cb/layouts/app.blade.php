@@ -3,8 +3,8 @@
     $t = (strtotime(date("Y-m-d"))-strtotime("2010-01-01"))/86400 % count($arr_fonts);
     $font_family = $arr_fonts[$t];
 
-  $color = ['background-color'=>'#F8F8F8','border-color'=>'#E7E7E7','default'=>'#777','hover'=>'#333','bhover'=>'#5E5E5E','active'=>'#555','active-background'=>'#D5D5D5', 'default-background'=>'white'];
-  $color = ['background-color'=>'#31B0D5','border-color'=>'#7DC4F5','default'=>'white','hover'=>'#e1e1e1','bhover'=>'#5E5E5E','active'=>'#d3d3d3','active-background'=>'#006BFF', 'default-background'=>'white'];
+  $color = ['background-color'=>'#F8F8F8','background-shade-color'=>'#EEEEEE','border-color'=>'#E7E7E7','default'=>'#777','hover'=>'#333','bhover'=>'#5E5E5E','active'=>'#555','active-background'=>'#D5D5D5', 'default-background'=>'white'];
+  $color = ['background-color'=>'#31B0D5','background-shade-color'=>'#EEEEEE','border-color'=>'#7DC4F5','default'=>'white','hover'=>'#e1e1e1','bhover'=>'#5E5E5E','active'=>'#d3d3d3','active-background'=>'#006BFF', 'default-background'=>'white'];
 @endphp
 
 <!doctype html>
@@ -40,249 +40,22 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
-    body {
-        font-family:{{$font_family}}; font-size: 15px;
+    :root{
+      --font-family:{{$font_family}};
+      --nav-bg-color: {{$color['background-color']}}; 
+      --nav-bg-shade-color: {{$color['background-shade-color']}}; 
+      --nav-border-color: {{$color['border-color']}}; 
+      --nav-link-color: {{$color['default']}}; 
+      --nav-hover-color: yellow; 
+      --nav-brand-hover-color: {{$color['bhover']}}; 
+      --nav-active-link-color: {{$color['active']}}; 
+      --nav-active-link-bg-color: {{$color['active-background']}}; 
+      --nav-brand-hover-color: {{$color['default-background']}}; 
+      --nav-toggle-color: #3B5998; 
+      --nav-toggle-lines-color: {{$color['background-shade-color']}}; 
     }
-    a.btn, button.btn{
-      border-radius: 0px;
-    }
-    a.btn-default, button.btn-default{
-      background-color: {{$color['default']}};
-      color:{{$color['background-color']}};
-    }
-    a.btn-default:hover, button.btn-default:hover{
-      border-color: {{$color['background-color']}};
-      background-color: {{$color['background-color']}};
-      color:{{$color['default']}};
-    }
-    a.btn-default:active, button.btn-default:active{
-      border-color: {{$color['background-color']}} !important;
-      background-color: {{$color['background-color']}} !important;
-      color:{{$color['default']}} !important;
-    }
-    a.btn-default:focus, button.btn-default:focus{
-      border-color: {{$color['background-color']}} !important;
-      background-color: {{$color['background-color']}} !important;
-      color:{{$color['default']}} !important;
-    }
-    a.btn-default, button.btn-default, input.form-control, select.form-control, div.well, div.alert {
-      border-radius: 0px;
-      border:1px solid {{$color['border-color']}};
-      box-shadow: 0px 0px 0.3px 0.02px {{$color['border-color']}};
-    }
-    div.well{
-      background-color: {{$color['default']}};
-    }
-
-    .pagination {
-      display: inline-block;
-    }
-
-    .pagination a:nth-child(1) {
-      border-left: 1px solid {{$color['border-color']}};
-    }
-
-    .pagination a {
-      color: black;
-      float: left;
-      padding: 8px 16px;
-      text-decoration: none;
-      transition: background-color .3s;
-      border-right: 1px solid {{$color['border-color']}};
-      border-top: 1px solid {{$color['border-color']}};
-      border-bottom: 1px solid {{$color['border-color']}};
-      font-size: 15px;
-      color: {{$color['background-color']}};
-      box-shadow: 0px 0px 0.3px 0.02px {{$color['border-color']}};
-    }
-
-    .pagination a.active {
-      background-color: {{$color['background-color']}};
-      color: {{$color['default']}};
-      border: 1px solid {{$color['background-color']}};
-    }
-
-    .pagination a:hover:not(.active) {background-color: #ddd;}
-
-    .pagination a.disabled {
-      pointer-events: none;
-      cursor: default;
-      color: grey;
-    }
-
-    tbody tr:hover{
-      background: #f9f9f9;
-    }
-    .inputfile {
-      width: 0.1px;
-      height: 0.1px;
-      opacity: 0;
-      overflow: hidden;
-      position: absolute;
-      z-index: -1;
-    }
-    .link{
-      font-weight: normal;
-    }
-    .is-invalid{
-      background: #FAFFBD;
-    }
-    #doc_h_u{
-      list-style: none;
-    }
-    .sublist{
-      list-style: none;
-      padding-left: 10px;
-    }
-    .doc_h{
-      border-bottom: 1px dashed grey;
-      color:grey;
-      font-size: 15px;
-    }
-    .doc_h:hover{
-      cursor: pointer;
-      color:darkgrey;
-    }
-    .doc_h::after{
-      content: "\f0da";
-      font-family: "FontAwesome";
-      width: 5px;
-      height: 5px;
-      margin-right: 5px;
-      float: right;
-    }
-    .doc_h.is-active::after{
-      content: "\f0d7";
-    }
-    .hidden{
-      display: none;
-    }
-    .avatar{
-      width: 120px;
-    }
-    .padded-dropcap {
-      padding-left: 5px;
-      padding-right: 10px;
-      float: left;
-      position: relative;
-      top: -0.0em;
-      margin-bottom: -0.5em;
-      margin-left: -6px;
-      margin-right: 2px;
-      font-size: 40px;
-    }
-    @media screen and (max-width: 810px) {
-      #doc_h_u  {
-          margin-left:0px;
-          padding-left: 0px;
-      }
-    }
-    .loader {
-        position: absolute;
-        right:50%;
-        top:40vh;
-        display:none;
-        border: 16px solid #f3f3f3; /* Light grey */
-        border-top: 16px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    @media screen and (min-width: 992px) {
-      .top_img {
-        display: none;
-      }
-      .btm_img {
-        display: block;
-      }
-    }
-    @media screen and (max-width: 992px) {
-      .top_img {
-        display: block;
-      }
-      .btm_img {
-        display: none;
-      }
-    }
-
-    /* navbar */
-.navbar-default {
-    background-color: {{$color['background-color']}};
-    border-color: {{$color['border-color']}};
-}
-/* Title */
-.navbar-default .navbar-brand {
-    color: {{$color['default']}};
-}
-.navbar-default .navbar-brand:hover,
-.navbar-default .navbar-brand:focus {
-    color: {{$color['bhover']}};
-}
-/* Link */
-.navbar-default .navbar-nav > li > a {
-    color: {{$color['default']}};
-}
-.navbar-default .navbar-nav > li > a:hover,
-.navbar-default .navbar-nav > li > a:focus {
-    color: {{$color['hover']}};
-}
-.navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover,
-.navbar-default .navbar-nav > .active > a:focus {
-    color: {{$color['active']}};
-    background-color: {{$color['background-color']}};
-}
-.navbar-default .navbar-nav > .open > a,
-.navbar-default .navbar-nav > .open > a:hover,
-.navbar-default .navbar-nav > .open > a:focus {
-    color: {{$color['active']}};
-    background-color: {{$color['active-background']}};
-}
-/* Caret */
-.navbar-default .navbar-nav > .dropdown > a .caret {
-    border-top-color: {{$color['default']}};
-    border-bottom-color: {{$color['default']}};
-}
-.navbar-default .navbar-nav > .dropdown > a:hover .caret,
-.navbar-default .navbar-nav > .dropdown > a:focus .caret {
-    border-top-color: {{$color['hover']}};
-    border-bottom-color: {{$color['hover']}};
-}
-.navbar-default .navbar-nav > .open > a .caret,
-.navbar-default .navbar-nav > .open > a:hover .caret,
-.navbar-default .navbar-nav > .open > a:focus .caret {
-    border-top-color: {{$color['active']}};
-    border-bottom-color: {{$color['active']}};
-}
-/* Mobile version */
-.navbar-default .navbar-toggle {
-    border-color: #DDD;
-}
-.navbar-default .navbar-toggle:hover,
-.navbar-default .navbar-toggle:focus {
-    background-color: #DDD;
-}
-.navbar-default .navbar-toggle .icon-bar {
-    background-color: #CCC;
-}
-@media (max-width: 767px) {
-    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
-        color: {{$color['default']}};
-    }
-    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
-    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-          color: {{$color['hover']}};
-    }
-}
-
   </style>
+  <link rel="stylesheet" href="public/css/app.css">
   @guest
   @else
   <link rel="stylesheet" href="public/hw_chat_window/2.0/css/hw_chat_window_.css">

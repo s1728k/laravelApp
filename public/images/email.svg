@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="grey" viewBox="0 0 410 220">
+  <path stroke="grey" d="M10 210 l0 -190 q3 -10 12 0 l182 182 q6 6 12 0 l184 -184 q10 -10 10 10 l0 182 q0 10 -10 10 l-390 0 q-10 0 -10 -10 l0 -200 q0 -10 10 -10 l400 0 l0 5 l-400 0 q-5 0 -5 5 l0 200 q0 5 5 5 l390 0 q5 0 5 -5 l0 -190 l-185 185 q-10 10 -20 0 l-185 -185 l0 190 Z" />
+  <text x="160" y="80" fill="grey" style="font-size: 30px;">E - Mail</text>
+  <text x="130" y="110" fill="grey" style="font-size: 20px;">@yourdomain.tld</text>
+  <text x="160" y="140" fill="grey" style="font-size: 20px;">gmail client</text>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="grey" viewBox="0 0 410 220">
+  <path fill="lightgrey" stroke="lightgrey" d="M30 10 l350 0 l0 130 l-350 0 l0 -130 Z"/>
+  <path stroke="grey" d="M30 140 l350 0 l0 80 l-350 0 l0 -80 Z"/>
+  <path fill="lightgrey" stroke="lightgrey" d="M40 150 l40 0 l0 40 l-40 0 l0 -40 Z"/>
+  <text x="190" y="80" fill="grey" style="font-size: 10px;">Image</text>
+  <text x="50" y="173" fill="grey" style="font-size: 10px;">Logo</text>
+  <text x="90" y="163" fill="lightgrey" style="font-size: 20px;">Title comes here</text>
+  <text x="90" y="173" fill="lightgrey" style="font-size: 10px;">Body text comes here</text>
+  <text x="90" y="183" fill="lightgrey" style="font-size: 7px;">[time] * You Website Name</text>
+  <path fill="lightgrey" stroke="lightgrey" d="M230 190 l130 0 l0 20 l-130 0 l0 -20 Z"/>
+  <text x="260" y="203" fill="grey" style="font-size: 10px;">Action Button</text>
+</svg>

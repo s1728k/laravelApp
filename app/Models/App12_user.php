@@ -7,6 +7,6 @@ class App12_user extends Authenticatable
 use Notifiable;
 public $table = 'app12_users';
 protected $connection = 'apps_db';
-protected $fillable = ['chat_resource_id'];
+protected $fillable = ['name', 'email', 'password', 'session', 'srid', 'email_varification', 'blocked'];
 protected $hidden = ['password', 'remember_token',];
 }

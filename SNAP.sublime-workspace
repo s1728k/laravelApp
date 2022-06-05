@@ -1,0 +1,2407 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"last",
+				"last_name"
+			],
+			[
+				"pass",
+				"password"
+			],
+			[
+				"is",
+				"is_admin_inventory"
+			],
+			[
+				"vendor_",
+				"vendor_id"
+			],
+			[
+				"vendor",
+				"vendor_id"
+			],
+			[
+				"vendo",
+				"vendor_id"
+			],
+			[
+				"find",
+				"findOrFail"
+			],
+			[
+				"act",
+				"active_status"
+			],
+			[
+				"para",
+				"parameter"
+			],
+			[
+				"cate",
+				"category_name"
+			],
+			[
+				"cat",
+				"category_id"
+			],
+			[
+				"sub",
+				"sub_category_id"
+			],
+			[
+				"catego",
+				"categories_infos"
+			],
+			[
+				"product_ver",
+				"product_varient_parameters"
+			],
+			[
+				"head",
+				"head_category"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"resp",
+				"response"
+			],
+			[
+				"vend",
+				"vendor_id"
+			],
+			[
+				"order",
+				"order_status"
+			],
+			[
+				"where",
+				"whereRaw"
+			],
+			[
+				"jso",
+				"json_encode"
+			],
+			[
+				"pay",
+				"payment_array"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"creat",
+				"created_at"
+			],
+			[
+				"Se",
+				"SearchKeyword"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"key",
+				"keyword"
+			],
+			[
+				"back",
+				"background-color\tproperty"
+			],
+			[
+				"ba",
+				"background-color\tproperty"
+			],
+			[
+				"text",
+				"text-align\tproperty"
+			],
+			[
+				"fon",
+				"font-size\tproperty"
+			],
+			[
+				"bu",
+				"button\t<button>"
+			],
+			[
+				"bor",
+				"border-radius\tproperty"
+			],
+			[
+				"w",
+				"width\tproperty"
+			],
+			[
+				"margn",
+				"margin-bottom\tproperty"
+			],
+			[
+				"app",
+				"app_id"
+			],
+			[
+				"ap",
+				"app_ids"
+			],
+			[
+				"rech",
+				"recharge_offers"
+			],
+			[
+				"fu",
+				"fun\tfunction …"
+			],
+			[
+				"active",
+				"active_app_id"
+			],
+			[
+				"re",
+				"replicate"
+			],
+			[
+				"new",
+				"new_app_id"
+			],
+			[
+				"quer",
+				"queries"
+			],
+			[
+				"user",
+				"user_id"
+			],
+			[
+				"font",
+				"font-size\tproperty"
+			],
+			[
+				"onk",
+				"onkeyup\tAttr"
+			],
+			[
+				"sc",
+				"script\t<script>"
+			],
+			[
+				"ta",
+				"table\t<table>"
+			],
+			[
+				"stat",
+				"status"
+			],
+			[
+				"succ",
+				"successfully"
+			],
+			[
+				"va",
+				"validate"
+			],
+			[
+				"scr",
+				"script\tTag"
+			],
+			[
+				"margin",
+				"margin\tproperty"
+			],
+			[
+				"border",
+				"border-color\tproperty"
+			],
+			[
+				"inli",
+				"inline-table\tdisplay"
+			],
+			[
+				"inl",
+				"inline-grid\tdisplay"
+			],
+			[
+				"style",
+				"style\tAttr"
+			],
+			[
+				"time",
+				"timestamp"
+			],
+			[
+				"get",
+				"getTables"
+			],
+			[
+				"fir",
+				"findOrFail"
+			],
+			[
+				"tyni",
+				"tinyInteger"
+			],
+			[
+				"min",
+				"min_width"
+			],
+			[
+				"index",
+				"indexOf"
+			],
+			[
+				"field",
+				"fields"
+			],
+			[
+				"na",
+				"name\tAttr"
+			],
+			[
+				"j",
+				"json_decode"
+			],
+			[
+				"p",
+				"push_message"
+			],
+			[
+				"js",
+				"json_encode"
+			],
+			[
+				"push",
+				"push_messages"
+			],
+			[
+				"fi",
+				"findOrFail"
+			],
+			[
+				"mail",
+				"mail_obj"
+			],
+			[
+				"s",
+				"success"
+			],
+			[
+				"plain",
+				"plain_text_mail"
+			],
+			[
+				"pla",
+				"plain_text_mail"
+			],
+			[
+				"invi",
+				"invited_apps"
+			],
+			[
+				"arr",
+				"array_search"
+			],
+			[
+				"array",
+				"array_splice"
+			],
+			[
+				"inv",
+				"invited_apps"
+			],
+			[
+				"sta",
+				"status"
+			],
+			[
+				"succes",
+				"successfully"
+			],
+			[
+				"err",
+				"error_message"
+			],
+			[
+				"vali",
+				"ValidationMessage"
+			],
+			[
+				"sec",
+				"secret"
+			],
+			[
+				"pa",
+				"padding-left\tproperty"
+			],
+			[
+				"table",
+				"table_field"
+			],
+			[
+				"qu",
+				"query_id"
+			],
+			[
+				"pos",
+				"postBody"
+			],
+			[
+				"col",
+				"colspan\tAttr"
+			],
+			[
+				"verif",
+				"verification"
+			],
+			[
+				"email",
+				"email_subject"
+			],
+			[
+				"break",
+				"break-all\tword-break"
+			],
+			[
+				"ma",
+				"margin-top\tproperty"
+			],
+			[
+				"_hwc_",
+				"_hwc_hidden"
+			],
+			[
+				"togg",
+				"toggleClass"
+			],
+			[
+				"bo",
+				"border\tproperty"
+			],
+			[
+				"st",
+				"style"
+			],
+			[
+				"mar",
+				"margin-top\tproperty"
+			],
+			[
+				"z",
+				"z-index\tproperty"
+			],
+			[
+				"scro",
+				"scrollPos"
+			],
+			[
+				"mess",
+				"message"
+			],
+			[
+				"pi",
+				"pickWaitingChat"
+			],
+			[
+				"G",
+				"GuestController"
+			],
+			[
+				"chat",
+				"chat_admins"
+			],
+			[
+				"l",
+				"log\tlog2"
+			],
+			[
+				"up",
+				"update"
+			],
+			[
+				"can",
+				"can_chat_with"
+			],
+			[
+				"chat_",
+				"chat_message"
+			],
+			[
+				"tex",
+				"textarea"
+			],
+			[
+				"scok",
+				"socketMessage"
+			],
+			[
+				"gue",
+				"guest_chat"
+			],
+			[
+				"ms",
+				"msgObj"
+			],
+			[
+				"set",
+				"setItem"
+			],
+			[
+				"wa",
+				"waiting"
+			],
+			[
+				"ip",
+				"ip_address"
+			],
+			[
+				"a",
+				"app_id"
+			],
+			[
+				"token",
+				"token_lifetime"
+			],
+			[
+				"un",
+				"un-authorized"
+			],
+			[
+				"upd",
+				"updateChat"
+			],
+			[
+				"mat",
+				"margin-top\tproperty"
+			],
+			[
+				"bre",
+				"break-all\tword-break"
+			],
+			[
+				"wor",
+				"word-break\tproperty"
+			],
+			[
+				"q",
+				"query"
+			],
+			[
+				"wh",
+				"where"
+			],
+			[
+				"mes",
+				"messages"
+			],
+			[
+				"str",
+				"strtotime"
+			],
+			[
+				"upda",
+				"updated_at"
+			],
+			[
+				"sen",
+				"sendEmailVerificationCode"
+			],
+			[
+				"to",
+				"toRecord"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/E/NextBrainTech/snap-web/app/Model/Users/addresstype.php",
+			"settings":
+			{
+				"buffer_size": 223,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/NextBrainTech/snap-web/app/Model/Users/address.php",
+			"settings":
+			{
+				"buffer_size": 219,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/NextBrainTech/snap-web/app/Model/cities.php",
+			"settings":
+			{
+				"buffer_size": 1258,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/NextBrainTech/snap-web/app/Model/categories.php",
+			"settings":
+			{
+				"buffer_size": 6009,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/NextBrainTech/snap-web/api-docs/Products",
+			"settings":
+			{
+				"buffer_size": 786,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "\n\nSite Name\n\n\n\n Snap\n\nSite URL\n\n\n\nhttp://snap.oceanusdigitalmarketing.com\n\nExpected admin Login \n\nEmail: admin\nPassword: admin.1234!\n\n\n\nPayment gateway information ( Default Paypal)\n\n\n\n\nWill be using one of the payment gateway in Malaysia (iPay88). we are waiting the approver from iPay88\n\nURL: TBC\nUsername:\nPassword:\n\nServer account username and password (We prefer to go with AWS https://aws.amazon.com/ec2/pricing/on-demand  )\n\nURL: http://snap.oceanusdigitalmarketing.com\nUsername: nextbrain\nPassword: nextbrain\n\nFor Staging\nURL : http://staging-snap.oceanusdigitalmarketing.com\nUsername : nextbrain\nPassword : nextbrain\n\nP/S: I have created 2 urls (1 for live and 1 for staging) and pointed to the same server. Is possible 1 server to support 2 environments? If you need to separate the server please let me know, I will set up another 1 server for you. \n\n\n\n\nDomain account username and password\nDue to this, I already set up 2 domains (1 for live and 1 for staging). Do you still need our domain account and password?\n\nURL: TBC\nUsername: \nPassword: \nSSL Purchased account\nExisting the main domain(http://www.oceanusdigitalmarketing.com)  already implemented the SSL. Do we still need to do the SSL for the sub domain?\n\nURL :\nUsername\nPassword\n\nSocial media links\nFacebook – Page URL  : https://www.facebook.com/aihomeMY/\nTwitter – Page URL : Please leave it blank at the moment\nLinkdin – Page URL : Please leave it blank at the moment\nInstagram  – Page URL : Please leave it blank at the moment\n\nFB Account\nFacebook app ID: 344029213258789\nFacebook secret key: 6b5033c48fd1502887328c7e4c593af0\n\nContact information (Address, Email, Phone number)\nVR02-01-02, First Floor, Lingkaran SV3 Sunway Velocity, 55100 Kuala Lumpur\n\nSite Currency\n(Default USD)\n\n\n\nMYR\n\nSMTP (Create the account in https://sendgrid.com and share here)\n\nP/S: due to the sendgrid.com home page I cannot access, so I have registered its alternative SMTP platform which is sendinblue.com. Please let me know if sendinblue.com is not suitable to use. I will try to register the sendgrid.com again. \n\nURL: smtp-relay.sendinblue.com\nSMTP Username: artiste.snap@gmail.com\nSMTP Password: snap.1234!\nPort: 587\n\n\n\nSMS Gateway information ( username, password with account activation)\n\nURL : https://www.isms.com.my/\nUsername : snap\nPassword : snap.1234!\nGoogle Firebase account\nURL: https://www.google.com/firebase \nUsername: artiste.snap@gmail.com\nPassword: snap.1234!\n\n\nGoogle map account\nURL: https://cloud.google.com/maps-platform/ \nUsername: artiste.snap@gmail.com\nPassword: snap.1234!\n\n\n\nCMS page  content\nPlease send the CMS content to Home, Contact us, About us, Press, How it works, FAQ, Privacy policy, Terms and Condition, We are hiring and Blog. Please share it to saran@nextbraintech.com as documents. If additional language applicable, Please send the content in those language too.\n\nPlease put some dummy data 1st, our copywriting is drafting on it \n\nMata information\n\nPlease share your home page meta title, description and keywords. \n\nHome Page Meta Title : Snap It\nDescription : Get every digital product here!\nKeywords : computer store, smartphone, mobile, electronics store near me, apple, huawei, cellphone store near my\n\nLogo\n\nIf you have the logo, Please send the PSD file of logo to saran@nextbraintech.com \n\nPlease use default logo at the moment. will provide you the new PSD or png file once we get from creative team\n\n\n\nGoogle play developer account (If applicable)\n\n\n\nhttps://play.google.com/apps/publish/signup/\n\nUsername: provide later\nPassword: \n\n\n\nApple developer account (If applicable)\n\nhttps://developer.apple.com/programs/enroll/ \n\nUsername: provide later\nPassword:\n\n\n\nChat SDK\n\nURL: https://console.applozic.com/login\nUsername: artiste.snap@gmail.com\nPassword: snap.1234!\n\n\n\n\n\nThanks & we really appreciate your Business!!\n\nNextbrain Technologies Pvt Ltd\nwww.nextbraintech.com \nMail: hello@nextbraintech.com \nSkype:  saranraj84\nPhone:  +91 9952493995\n",
+			"file": "/E/NextBrainTech/snap-web/api-docs/_installation_",
+			"file_size": 4131,
+			"file_write_time": 132467843017035225,
+			"settings":
+			{
+				"buffer_size": 3955,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/NextBrainTech/snap-web/resources/views/admin/brands/list.blade.php",
+			"settings":
+			{
+				"buffer_size": 2920,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/NextBrainTech/snap-web/app/Http/routes.php",
+			"settings":
+			{
+				"buffer_size": 51636,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 490.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"mig",
+				"Laravel Artisan 5: Migrate"
+			],
+			[
+				"rol",
+				"Laravel Artisan 5: Migrate:Rollback"
+			],
+			[
+				"makemig",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"makemi",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"see",
+				"Laravel Artisan 5: DB:Seed"
+			],
+			[
+				"roll",
+				"Laravel Artisan 5: Migrate:Rollback"
+			],
+			[
+				"seed",
+				"Laravel Artisan 5: DB:Seed"
+			],
+			[
+				"makesee",
+				"Laravel Artisan 5: Make:Seeder"
+			],
+			[
+				"mi",
+				"Laravel Artisan 5: Migrate"
+			],
+			[
+				"mrol",
+				"Laravel Artisan 5: Migrate:Rollback"
+			],
+			[
+				"Laravel roll",
+				"Laravel Artisan 5: Migrate:Rollback"
+			],
+			[
+				"Package Control: li",
+				"Package Control: Discover Packages"
+			],
+			[
+				"migro",
+				"Laravel Artisan 5: Migrate:Rollback"
+			],
+			[
+				"migrate",
+				"Laravel Artisan 5: Migrate"
+			],
+			[
+				"make mi",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"miga",
+				"Laravel Artisan 5: Migrate"
+			],
+			[
+				"make m",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"migr",
+				"Laravel Artisan 5: Migrate"
+			],
+			[
+				"makemg",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"makem",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"mgi",
+				"Laravel Artisan 5: Migrate"
+			],
+			[
+				"makeev",
+				"Laravel Artisan 5: Make:Event"
+			],
+			[
+				"evege",
+				"Laravel Artisan 5: Event:Generate"
+			],
+			[
+				"mak",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"maka",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"key",
+				"Laravel Artisan 5: Key:Generate"
+			],
+			[
+				"mkeau",
+				"Laravel Artisan 5: Make:Auth"
+			],
+			[
+				"auth",
+				"Laravel Artisan 5: Make:Auth"
+			],
+			[
+				"migrol",
+				"Laravel Artisan 5: Migrate:Rollback"
+			],
+			[
+				"makmi",
+				"ReactIDE: Make import for current file"
+			],
+			[
+				"makese",
+				"Laravel Artisan 5: Make:Seeder"
+			],
+			[
+				"migt",
+				"Laravel Artisan 5: Migrate"
+			],
+			[
+				"make mig",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"makmig",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"",
+				"Angular CLI: generate class"
+			],
+			[
+				"lreset",
+				"Laravel Artisan 5: Migrate:Reset"
+			],
+			[
+				"rese",
+				"Laravel Artisan 5: Migrate:Reset"
+			],
+			[
+				"reset",
+				"Laravel Artisan 5: Migrate:Reset"
+			],
+			[
+				"migrate:reset",
+				"Laravel Artisan 5: Migrate:Reset"
+			],
+			[
+				"migrate:fresh",
+				"Laravel Artisan 5: Migrate:Refresh"
+			],
+			[
+				"migrate:refresh",
+				"Laravel Artisan 5: Migrate:Refresh"
+			],
+			[
+				"mi rese",
+				"Laravel Artisan 5: Migrate:Reset"
+			],
+			[
+				"makem i",
+				"Laravel Artisan 5: Make:Migration"
+			],
+			[
+				"lare au",
+				"Laravel Artisan 5: Make:Auth"
+			],
+			[
+				"make",
+				"Laravel Artisan 5: Make:Console"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"addb",
+				"SublimeBookmarks: Add Bookmark"
+			],
+			[
+				"subli",
+				"SublimeGoogle: search selection"
+			],
+			[
+				"ps",
+				"Git: Push"
+			],
+			[
+				"pull",
+				"Git: Pull"
+			],
+			[
+				"gc",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add All"
+			],
+			[
+				"gs",
+				"Git: Status"
+			],
+			[
+				"gp",
+				"Git: Push"
+			],
+			[
+				"gadd",
+				"Git: Add All"
+			],
+			[
+				"push",
+				"Git: Push"
+			],
+			[
+				"commi",
+				"Git: Commit"
+			],
+			[
+				"add",
+				"Git: Add All"
+			],
+			[
+				"com",
+				"Git: Commit"
+			],
+			[
+				"git psh",
+				"Git: Push"
+			],
+			[
+				"git c",
+				"Git: Commit"
+			],
+			[
+				"ang enum",
+				"Angular CLI: generate enum"
+			],
+			[
+				"psh",
+				"Git: Push"
+			],
+			[
+				"comm",
+				"Git: Commit"
+			],
+			[
+				"git  c",
+				"Git: Pull Current Branch"
+			],
+			[
+				"git p",
+				"Git: Pull"
+			],
+			[
+				"git pll",
+				"Git: Pull"
+			],
+			[
+				"git pull",
+				"Git: Pull"
+			],
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git a",
+				"Git: Add All"
+			],
+			[
+				"p",
+				"Package Control: Discover Packages"
+			],
+			[
+				"ge",
+				"Angular CLI: generate pipe"
+			],
+			[
+				"serv",
+				"Angular CLI: serve"
+			],
+			[
+				"gen",
+				"Angular CLI: generate component"
+			],
+			[
+				"serve",
+				"Angular CLI: serve"
+			]
+		],
+		"width": 653.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/E/NextBrainTech/snap-web",
+		"/E/NextBrainTech/snap-web/app",
+		"/E/NextBrainTech/snap-web/app/Http",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers",
+		"/E/NextBrainTech/snap-web/public",
+		"/E/NextBrainTech/snap-web/public/assets",
+		"/E/NextBrainTech/snap-web/public/assets/admin",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base/js",
+		"/E/NextBrainTech/snap-web/resources",
+		"/E/NextBrainTech/snap-web/resources/views",
+		"/E/NextBrainTech/snap-web/resources/views/admin",
+		"/E/NextBrainTech/snap-web/resources/views/admin/brands"
+	],
+	"file_history":
+	[
+		"/E/NextBrainTech/snap-web/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Relations/HasMany.php",
+		"/E/NextBrainTech/snap-web/app/Model/categories.php",
+		"/E/NextBrainTech/snap-web/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php",
+		"/E/NextBrainTech/snap-web/.env",
+		"/E/NextBrainTech/snap-web/resources/views/includes/admin/sidebar.blade.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Category.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Controller.php",
+		"/E/NextBrainTech/snap-web/app/Http/routes.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/notification/email.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/layouts/admin.blade.php",
+		"/E/NextBrainTech/snap-web/composer.json",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Reports.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/reports/search_keywords/list.blade.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Blog.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/CommonNotification.php",
+		"/E/NextBrainTech/snap-web/resources/views/layouts/vendors.blade.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/CommonMigration.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/Account.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Store.php",
+		"/E/NextBrainTech/snap-web/resources/lang/en/messages.php",
+		"/E/NextBrainTech/snap-web/app/Http/api.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Orders.php",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base/images/1.jpg",
+		"/E/NextBrainTech/snap-web/app/Model/products.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/SearchController.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/CategoryController.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/Ordercheckout.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Template.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/User.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/Offers.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/ProductController.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/VendorsController.php",
+		"/E/NextBrainTech/snap-web/database/migrations/2020_09_28_160232_common_migration.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/CartController.php",
+		"/E/NextBrainTech/snap-web/config/app.php",
+		"/E/NextBrainTech/snap-web/app/Http/Helpers/helpers.php",
+		"/E/NextBrainTech/snap-web/config/constants.php",
+		"/E/NextBrainTech/snap-web/storage/logs/.gitignore",
+		"/E/NextBrainTech/snap-web/.gitignore",
+		"/E/NextBrainTech/snap-web/storage/logs/laravel.log",
+		"/E/NextBrainTech/snap-web/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migration.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/ProductSeriesController.php",
+		"/E/NextBrainTech/snap-web/app/Model/coupons.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Product.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/settings/product_varient_parameter/create.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/settings/product_varient_parameter/edit.blade.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Roles.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Colorscreen.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/settings/product_varient_parameter/list.blade.php",
+		"/E/NextBrainTech/snap-web/app/Model/product_varient_parameters.php",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base/js/jquery-migrate-1.2.1.min.js",
+		"/E/NextBrainTech/snap-web/resources/views/includes/front/snap/head.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/products/create.blade.php",
+		"/E/NextBrainTech/snap-web/vendor/zendframework/zend-validator/bin/update_hostname_validator.php",
+		"/E/NextBrainTech/snap-web/app/Model/products_infos.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/products/edit.blade.php",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base/plugins/jquery-easyui/jquery.easyui.min.js",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base/images/products/detail/list/1.php",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base/images/products/detail/thumb/1.php",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base/images/products/zoom/list/1.php",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base/images/products/zoom/thumb/1.php",
+		"/E/NextBrainTech/snap-web/public/assets/admin/base/plugins/autocomplete/jquery.autocomplete.js",
+		"/E/NextBrainTech/snap-web/app/Model/outlets.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/OutletController.php",
+		"/E/NextBrainTech/snap-web/app/Model/orders.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/VendorReports.php",
+		"/E/NextBrainTech/snap-web/api-docs/Order Apis",
+		"/E/NextBrainTech/snap-web/resources/views/vendors/reports/products/list.blade.php",
+		"/E/NextBrainTech/snap-web/app/Http/Helpers/ApiResponseHelper.php",
+		"/E/NextBrainTech/snap-web/resources/views/includes/vendors/sidebar.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/vendors/reports/coupons/list.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/vendors/reports/returns/returns.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/vendors/reports/orders/list.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/vendors/reports/users/list.blade.php",
+		"/E/NextBrainTech/snap-web/vendor/phpunit/php-token-stream/tests/Token/IncludeTest.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/products/list.blade.php",
+		"/E/NextBrainTech/snap-web/app/Model/ProductSeries.php",
+		"/E/NextBrainTech/snap-web/api-docs/Drivers",
+		"/E/NextBrainTech/snap-web/api-docs/Customer Address",
+		"/E/NextBrainTech/snap-web/api-docs/Cart",
+		"/E/NextBrainTech/snap-web/resources/views/category/list.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/product-series/list.blade.php",
+		"/E/NextBrainTech/snap-web/app/Http/Helpers/CustomHelper.php",
+		"/E/NextBrainTech/snap-web/config/api.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Api/Ordercheckout1.php",
+		"/E/NextBrainTech/snap-web/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php",
+		"/E/NextBrainTech/snap-web/app/Model/Comparison.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Manager.php",
+		"/E/NextBrainTech/snap-web/api-docs/Brand View",
+		"/E/NextBrainTech/snap-web/api-docs/Outlet Apis",
+		"/E/NextBrainTech/snap-web/api-docs/_Mom-1",
+		"/E/NextBrainTech/snap-web/api-docs/_Requirements_",
+		"/E/NextBrainTech/snap-web/api-docs/Product Comparison",
+		"/E/NextBrainTech/snap-web/api-docs/Products",
+		"/E/NextBrainTech/snap-web/api-docs/_installation_",
+		"/E/NextBrainTech/snap-web/api-docs/Mom-1",
+		"/E/NextBrainTech/snap-web/resources/views/vendors/login.blade.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Vendor.php",
+		"/E/NextBrainTech/snap-web/config/auth.php",
+		"/E/NextBrainTech/snap-web/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php",
+		"/E/NextBrainTech/snap-web/app/Http/Middleware/UrlAccessMiddleware.php",
+		"/E/NextBrainTech/snap-web/api-docs/Notifications",
+		"/E/NextBrainTech/snap-web/api-docs/App Initiation",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Brand.php",
+		"/E/NextBrainTech/snap-web/api-docs/_AppFlow_",
+		"/E/NextBrainTech/snap-web/api-docs/AppFlow",
+		"/E/NextBrainTech/snap-web/config/services.php",
+		"/E/NextBrainTech/snap-web/app/Jobs/SendEmailNotification.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/checkout.php",
+		"/E/NextBrainTech/snap-web/config/queue.php",
+		"/E/NextBrainTech/snap-web/vendor/laravel/framework/src/Illuminate/Mail/Mailer.php",
+		"/E/NextBrainTech/snap-web/resources/views/vendors/reports/search_keywords/view.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/vendors/reports/search_keywords/list.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/vendors/products/list.blade.php",
+		"/E/NextBrainTech/snap-web/storage/framework/views/0e157a8aa002304dc80eb0e1e711752640ca95f2.php",
+		"/E/NextBrainTech/snap-web/resources/views/cms/show.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/reports/search_keywords/view.blade.php",
+		"/E/NextBrainTech/snap-web/resources/views/cms.blade.php",
+		"/E/NextBrainTech/snap-web/vendor/laravel/framework/src/Illuminate/Routing/Router.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Cron.php",
+		"/E/NextBrainTech/snap-web/app/Resources/SearchResource.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/reports/products/list.blade.php",
+		"/E/NextBrainTech/snap-web/resources/lang/ar/messages.php",
+		"/E/NextBrainTech/snap-web/resources/views/admin/reports/orders/list.blade.php",
+		"/E/NextBrainTech/snap-web/app/Model/SearchKeyword.php",
+		"/E/NextBrainTech/snap-web/app/Http/Controllers/Admin.php",
+		"/E/NextBrainTech/snap-web/database/migrations/old/2020_09_26_165224_common_migration.php",
+		"/E/NextBrainTech/snap-web/database/migrations/2020_09_26_165224_common_migration.php"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 160.0,
+		"where_history":
+		[
+			"",
+			"E:/NextBrainTech/snap-web/vendor",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"brands",
+			"getProductBrandCategory",
+			"sunil",
+			"LengthAwarePaginator",
+			"search_keywords",
+			"anyAjaxReportSearchKeywordList",
+			"admin/reports/search_keywords",
+			"listblogajax.data",
+			"email_notificaition",
+			"email_notification",
+			"admin/email-notifications",
+			"Image",
+			"vendor_name",
+			"vendor",
+			"users",
+			"product_varient_parameters",
+			"first_name",
+			"index",
+			"admin/orders/index",
+			"check_vendor_acceptance_status",
+			"check",
+			"The value field is required.",
+			"express_payment_accepted",
+			"categoryView",
+			"category-view",
+			"searchAutocomplete",
+			"search",
+			"categoryView",
+			"category-view",
+			"add_cart",
+			"add_to_cart",
+			"getCurrentLang",
+			"whereRaw",
+			"outlets",
+			"language_id",
+			"outlet_infos",
+			"whereRaw",
+			"whereRaow",
+			"express_initiate_order",
+			"express",
+			"getApp",
+			"language",
+			"orders_info",
+			"outlets_info",
+			"products_info",
+			"outlet",
+			"products_info",
+			",",
+			"order_id",
+			"check_vendor_acceptance_status",
+			"product_update_status",
+			"express_initiate_order",
+			"vendors/products/update-status",
+			"Schema",
+			"product_varient_parameters",
+			"product_store",
+			"product_edit",
+			"vendors_product_list",
+			"admin_products",
+			"vendor_category_outlets",
+			"productView",
+			"product_view",
+			"product_view ",
+			"getoffer",
+			"getoffers_list",
+			"product_store",
+			"product_utility",
+			"product_store",
+			"getHomeScreen",
+			"specialDeal",
+			"getSpecialDealProducts",
+			"getAllBrands",
+			"subject_store",
+			"edit",
+			"admin/templates/edit",
+			"group_index",
+			"api_account",
+			"order_detail",
+			"sote",
+			"check_vendor_acceptance_status",
+			"setting",
+			"product",
+			"product_varient",
+			"product_varient_parameter",
+			"product_varient_parameters",
+			"categories",
+			"sub_category_id",
+			"Product",
+			"variant",
+			"varient",
+			"$id",
+			"status",
+			"old('",
+			"$screensize",
+			"edit_product_varient_parameter",
+			"admin/screensize/edit",
+			"product_varient_parameters_list_view",
+			"$product_varient_parameters",
+			"$screensize",
+			"screensize",
+			"_name",
+			"ajaxNotificationList",
+			"vertical_length",
+			"horizontal_length",
+			"inch",
+			"screensizeTable",
+			"$language",
+			"product_varient_parameters_list_view",
+			"error_list",
+			"_token",
+			"product_varient_parameters_list_view",
+			"product_varient_parameters",
+			"update",
+			"vertical_length",
+			"Parameter Name",
+			"product_varient_parameters",
+			"Inch",
+			"Product Varient Parameters",
+			"product_varient_parameters_list_view",
+			"Product Series key",
+			"settings",
+			"product_varient_parameters",
+			",",
+			"search_keywords",
+			"screensize_index",
+			"admin/screensize_settings",
+			"category_id",
+			"head_category"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"}}",
+			"{{"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 7,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/E/NextBrainTech/snap-web/app/Model/Users/addresstype.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 223,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/E/NextBrainTech/snap-web/app/Model/Users/address.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 219,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/E/NextBrainTech/snap-web/app/Model/cities.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1258,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/E/NextBrainTech/snap-web/app/Model/categories.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6009,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/E/NextBrainTech/snap-web/api-docs/Products",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 786,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/E/NextBrainTech/snap-web/api-docs/_installation_",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3955,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1250,
+								1251
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/E/NextBrainTech/snap-web/resources/views/admin/brands/list.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2920,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								763,
+								763
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/E/NextBrainTech/snap-web/app/Http/routes.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 51636,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								16080,
+								16066
+							],
+							[
+								16122,
+								16122
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3870.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 31.0
+	},
+	"input":
+	{
+		"height": 68.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SQLExec":
+	{
+		"height": 118.0
+	},
+	"output.SQLExec.errors":
+	{
+		"height": 118.0
+	},
+	"output.composer":
+	{
+		"height": 96.0
+	},
+	"output.doc":
+	{
+		"height": 0.0
+	},
+	"output.exec":
+	{
+		"height": 155.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 100.0
+	},
+	"pinned_build_system": "",
+	"project": "SNAP.sublime-project",
+	"replace":
+	{
+		"height": 78.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"admin/reports/search_keywords/list",
+				"resources\\views\\admin\\reports\\search_keywords\\list.blade.php"
+			],
+			[
+				"Reports",
+				"app\\Http\\Controllers\\Reports.php"
+			],
+			[
+				"admin/notification/email",
+				"resources\\views\\admin\\notification\\email.blade.php"
+			],
+			[
+				"CommonNotification",
+				"app\\Http\\Controllers\\CommonNotification.php"
+			],
+			[
+				"compo",
+				"composer.json"
+			],
+			[
+				".env",
+				".env"
+			],
+			[
+				"rout",
+				"app\\Http\\routes.php"
+			],
+			[
+				"Accou",
+				"app\\Http\\Controllers\\Api\\Account.php"
+			],
+			[
+				"Store",
+				"app\\Http\\Controllers\\Store.php"
+			],
+			[
+				"route",
+				"app\\Http\\routes.php"
+			],
+			[
+				"Orders",
+				"app\\Http\\Controllers\\Orders.php"
+			],
+			[
+				"Account",
+				"app\\Http\\Controllers\\Api\\Account.php"
+			],
+			[
+				"api",
+				"app\\Http\\api.php"
+			],
+			[
+				"messa",
+				"resources\\lang\\en\\messages.php"
+			],
+			[
+				"side",
+				"resources\\views\\includes\\admin\\sidebar.blade.php"
+			],
+			[
+				"Ordercheckout",
+				"app\\Http\\Controllers\\Api\\Ordercheckout.php"
+			],
+			[
+				"CategoryController",
+				"app\\Http\\Controllers\\Api\\CategoryController.php"
+			],
+			[
+				"SearchController",
+				"app\\Http\\Controllers\\Api\\SearchController.php"
+			],
+			[
+				"api.",
+				"app\\Http\\api.php"
+			],
+			[
+				"ProductController",
+				"app\\Http\\Controllers\\Api\\ProductController.php"
+			],
+			[
+				"ap",
+				"config\\app.php"
+			],
+			[
+				"CartController",
+				"app\\Http\\Controllers\\Api\\CartController.php"
+			],
+			[
+				"constants.ph",
+				"config\\constants.php"
+			],
+			[
+				"help",
+				"app\\Http\\Helpers\\helpers.php"
+			],
+			[
+				"Comm",
+				"app\\Http\\Controllers\\CommonNotification.php"
+			],
+			[
+				".e",
+				".env"
+			],
+			[
+				"roue",
+				"app\\Http\\routes.php"
+			],
+			[
+				"VendorsController",
+				"app\\Http\\Controllers\\Api\\VendorsController.php"
+			],
+			[
+				"ProductSeriesController",
+				"app\\Http\\Controllers\\ProductSeriesController.php"
+			],
+			[
+				"Offers",
+				"app\\Http\\Controllers\\Api\\Offers.php"
+			],
+			[
+				"Template",
+				"app\\Http\\Controllers\\Template.php"
+			],
+			[
+				"User",
+				"app\\Http\\Controllers\\User.php"
+			],
+			[
+				"messages",
+				"resources\\lang\\en\\messages.php"
+			],
+			[
+				"rou",
+				"app\\Http\\routes.php"
+			],
+			[
+				"P",
+				"app\\Http\\Controllers\\Product.php"
+			],
+			[
+				"cmig",
+				"database\\migrations\\2020_09_28_160232_common_migration.php"
+			],
+			[
+				"",
+				"resources\\lang\\en\\messages.php"
+			],
+			[
+				"prvai",
+				"app\\Model\\product_varient_parameters.php"
+			],
+			[
+				"includes\\front\\snap\\head.blade.php",
+				"resources\\views\\includes\\front\\snap\\head.blade.php"
+			],
+			[
+				"larav",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"Pro",
+				"app\\Http\\Controllers\\Product.php"
+			],
+			[
+				"Common",
+				"app\\Http\\Controllers\\CommonNotification.php"
+			],
+			[
+				"update",
+				"vendor\\zendframework\\zend-validator\\bin\\update_hostname_validator.php"
+			],
+			[
+				"Product.php",
+				"app\\Http\\Controllers\\Product.php"
+			],
+			[
+				"comm_mi",
+				"database\\migrations\\2020_09_28_160232_common_migration.php"
+			],
+			[
+				"produc_va",
+				"app\\Model\\product_varient_parameters.php"
+			],
+			[
+				"product/",
+				"resources\\views\\admin\\products\\create.blade.php"
+			],
+			[
+				"admin/settings/product_varient_parameter/create",
+				"resources\\views\\admin\\settings\\product_varient_parameter\\create.blade.php"
+			],
+			[
+				"admin/settings/product_varient_parameter/list",
+				"resources\\views\\admin\\settings\\product_varient_parameter\\list.blade.php"
+			],
+			[
+				"mess",
+				"resources\\lang\\en\\messages.php"
+			],
+			[
+				"Colorscreen",
+				"app\\Http\\Controllers\\Colorscreen.php"
+			],
+			[
+				"product/create",
+				"resources\\views\\admin\\products\\create.blade.php"
+			],
+			[
+				"Api/",
+				"app\\Http\\Controllers\\Api\\Account.php"
+			],
+			[
+				"hel",
+				"app\\Http\\Helpers\\helpers.php"
+			],
+			[
+				"admin/products/edit",
+				"resources\\views\\admin\\products\\edit.blade.php"
+			],
+			[
+				"Produ.php",
+				"app\\Http\\Controllers\\Product.php"
+			],
+			[
+				"Product.p",
+				"app\\Http\\Controllers\\Product.php"
+			],
+			[
+				"Product",
+				"app\\Http\\Controllers\\ProductSeriesController.php"
+			],
+			[
+				"api.ph",
+				"app\\Http\\api.php"
+			],
+			[
+				".ev",
+				".env"
+			],
+			[
+				"ProductSerr",
+				"app\\Http\\Controllers\\ProductSeriesController.php"
+			],
+			[
+				"OutletController",
+				"app\\Http\\Controllers\\Api\\OutletController.php"
+			],
+			[
+				"vendors/reports/products/list",
+				"resources\\views\\vendors\\reports\\products\\list.blade.php"
+			],
+			[
+				"vendors/reports/coupons/list",
+				"resources\\views\\vendors\\reports\\coupons\\list.blade.php"
+			],
+			[
+				"vendors/reports/users/list",
+				"resources\\views\\vendors\\reports\\users\\list.blade.php"
+			],
+			[
+				"Cont/Vendors",
+				"app\\Http\\Controllers\\Api\\VendorsController.php"
+			],
+			[
+				"vendors/reports/orders/list",
+				"resources\\views\\vendors\\reports\\orders\\list.blade.php"
+			],
+			[
+				"vendors/reports/returns/returns",
+				"resources\\views\\vendors\\reports\\returns\\returns.blade.php"
+			],
+			[
+				"VendorReports",
+				"app\\Http\\Controllers\\VendorReports.php"
+			],
+			[
+				"routes.php",
+				"app\\Http\\routes.php"
+			],
+			[
+				"include/vned",
+				"resources\\views\\includes\\vendors\\sidebar.blade.php"
+			],
+			[
+				"incude",
+				"vendor\\phpunit\\php-token-stream\\tests\\Token\\IncludeTest.php"
+			],
+			[
+				"admin/products/list",
+				"resources\\views\\admin\\products\\list.blade.php"
+			],
+			[
+				"repo",
+				"app\\Http\\Controllers\\Reports.php"
+			],
+			[
+				"ProductSer",
+				"app\\Model\\ProductSeries.php"
+			],
+			[
+				"Category",
+				"app\\Http\\Controllers\\Category.php"
+			],
+			[
+				"product-series/list",
+				"resources\\views\\admin\\product-series\\list.blade.php"
+			],
+			[
+				"category/list",
+				"resources\\views\\category\\list.blade.php"
+			],
+			[
+				"api.pp",
+				"app\\Http\\api.php"
+			],
+			[
+				"API.P",
+				"config\\api.php"
+			],
+			[
+				"OrderC",
+				"app\\Http\\Controllers\\Api\\Ordercheckout.php"
+			],
+			[
+				"CatC",
+				"app\\Http\\Controllers\\Api\\CategoryController.php"
+			],
+			[
+				"OrderCh",
+				"app\\Http\\Controllers\\Api\\Ordercheckout.php"
+			],
+			[
+				"middle\\",
+				"app\\Http\\Middleware\\UrlAccessMiddleware.php"
+			],
+			[
+				"vendors/login",
+				"resources\\views\\vendors\\login.blade.php"
+			],
+			[
+				"cate",
+				"app\\Http\\Controllers\\Category.php"
+			],
+			[
+				"ROUTE",
+				"app\\Http\\routes.php"
+			],
+			[
+				"Vend",
+				"app\\Http\\Controllers\\Vendor.php"
+			],
+			[
+				"auth",
+				"config\\auth.php"
+			],
+			[
+				"orderChe",
+				"app\\Http\\Controllers\\Api\\Ordercheckout.php"
+			],
+			[
+				"Check",
+				"app\\Http\\Controllers\\checkout.php"
+			],
+			[
+				"que",
+				"config\\queue.php"
+			],
+			[
+				"Comnot",
+				"app\\Http\\Controllers\\CommonNotification.php"
+			],
+			[
+				"comp",
+				"composer.json"
+			],
+			[
+				"Mail",
+				"vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php"
+			],
+			[
+				"config/ser",
+				"config\\services.php"
+			],
+			[
+				"common",
+				"app\\Http\\Controllers\\CommonNotification.php"
+			],
+			[
+				"sear/list",
+				"resources\\views\\admin\\reports\\search_keywords\\list.blade.php"
+			],
+			[
+				"search_keywords/list",
+				"resources\\views\\vendors\\reports\\search_keywords\\list.blade.php"
+			],
+			[
+				"0e157a8aa002304dc80eb0e1e711752640ca95f2",
+				"storage\\framework\\views\\0e157a8aa002304dc80eb0e1e711752640ca95f2.php"
+			],
+			[
+				"lara",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"search_keywords/view",
+				"resources\\views\\vendors\\reports\\search_keywords\\view.blade.php"
+			],
+			[
+				"vendor.php",
+				"app\\Http\\Controllers\\Vendor.php"
+			],
+			[
+				"view/cms",
+				"resources\\views\\cms\\show.blade.php"
+			],
+			[
+				"cms",
+				"resources\\views\\cms.blade.php"
+			],
+			[
+				"view",
+				"resources\\views\\admin\\reports\\search_keywords\\view.blade.php"
+			],
+			[
+				"he",
+				"app\\Http\\Helpers\\helpers.php"
+			],
+			[
+				"orderch",
+				"app\\Http\\Controllers\\Api\\Ordercheckout.php"
+			],
+			[
+				"api.php",
+				"app\\Http\\api.php"
+			],
+			[
+				"co",
+				"composer.json"
+			],
+			[
+				"app",
+				"config\\app.php"
+			],
+			[
+				"app.ph",
+				"config\\app.php"
+			],
+			[
+				".en",
+				".env"
+			],
+			[
+				"app.p",
+				"config\\app.php"
+			],
+			[
+				"c",
+				"composer.json"
+			],
+			[
+				"app.php",
+				"config\\app.php"
+			],
+			[
+				"helper",
+				"app\\Http\\Helpers\\helpers.php"
+			],
+			[
+				"larave",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"web",
+				"routes\\web.php"
+			],
+			[
+				"laravel",
+				"storage\\logs\\laravel-2020-01-08.log"
+			],
+			[
+				"storlog",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"apic",
+				"app\\Http\\Controllers\\ApiController.php"
+			],
+			[
+				"valid",
+				"app\\Traits\\ValidatesRequests.php"
+			],
+			[
+				"wel",
+				"resources\\views\\cb\\welcome.blade.php"
+			],
+			[
+				"app.ba",
+				"resources\\views\\cb\\layouts\\app.blade.php"
+			],
+			[
+				"app.bl",
+				"resources\\views\\cb\\layouts\\app.blade.php"
+			],
+			[
+				"app.b",
+				"resources\\views\\cb\\layouts\\app.blade.php"
+			],
+			[
+				"Gues",
+				"app\\Http\\Controllers\\GuestController.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 625.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"E:\\SublimeProjects\\fitnescore-web.sublime-project"
+			],
+			[
+				"tio",
+				"E:\\SublimeProjects\\Tio-Guides.sublime-project"
+			],
+			[
+				"cbm",
+				"E:\\SublimeProjects\\cblms.sublime-project"
+			],
+			[
+				"laravel",
+				"E:\\SublimeProjects\\laravelApp.sublime-project"
+			],
+			[
+				"larvel",
+				"E:\\SublimeProjects\\laravelApp.sublime-project"
+			],
+			[
+				"lara",
+				"E:\\SublimeProjects\\laravelApp.sublime-project"
+			],
+			[
+				"pha",
+				"E:\\SublimeProjects\\pharma.sublime-project"
+			],
+			[
+				"phpa",
+				"E:\\SublimeProjects\\phpApp.sublime-project"
+			],
+			[
+				"pharm",
+				"E:\\SublimeProjects\\pharma.sublime-project"
+			],
+			[
+				"la",
+				"E:\\SublimeProjects\\laravelApp.sublime-project"
+			],
+			[
+				"e",
+				"E:\\SublimeProjects\\excel_store.sublime-project"
+			],
+			[
+				"exce",
+				"E:\\SublimeProjects\\excel_store.sublime-project"
+			],
+			[
+				"lexc",
+				"E:\\SublimeProjects\\excel_store.sublime-project"
+			],
+			[
+				"ex",
+				"E:\\SublimeProjects\\excel_store.sublime-project"
+			],
+			[
+				"me",
+				"E:\\SublimeProjects\\me.sublime-project"
+			],
+			[
+				"Suni",
+				"E:\\SublimeProjects\\sunilkumar.sublime-project"
+			],
+			[
+				"sunil",
+				"E:\\SublimeProjects\\sunilkumar.sublime-project"
+			],
+			[
+				"c",
+				"E:\\SublimeProjects\\contact-forms.sublime-project"
+			],
+			[
+				"angu",
+				"E:\\SublimeProjects\\cornea-angular.sublime-project"
+			],
+			[
+				"fle",
+				"E:\\SublimeProjects\\Flexiple.sublime-project"
+			],
+			[
+				"web",
+				"E:\\SublimeProjects\\websoket-dome.sublime-project"
+			],
+			[
+				"clou",
+				"E:\\SublimeProjects\\cloud.sublime-project"
+			],
+			[
+				"tiot",
+				"E:\\SublimeProjects\\Tio-Guides.sublime-project"
+			],
+			[
+				"n",
+				"E:\\SublimeProjects\\Notes.sublime-project"
+			],
+			[
+				"App",
+				"E:\\SublimeProjects\\ApplicationForm.sublime-project"
+			],
+			[
+				"fl",
+				"E:\\SublimeProjects\\Flexiple.sublime-project"
+			],
+			[
+				"con",
+				"E:\\SublimeProjects\\contact-forms.sublime-project"
+			],
+			[
+				"w",
+				"E:\\GitHub\\laravelApp\\routes\\WebScrap.sublime-project"
+			],
+			[
+				"app",
+				"E:\\SublimeProjects\\ApplicationForm.sublime-project"
+			],
+			[
+				"No",
+				"E:\\SublimeProjects\\Notes.sublime-project"
+			],
+			[
+				"flex",
+				"E:\\SublimeProjects\\Flexiple.sublime-project"
+			],
+			[
+				"f",
+				"E:\\SublimeProjects\\Flexiple.sublime-project"
+			],
+			[
+				"not",
+				"E:\\SublimeProjects\\Notes.sublime-project"
+			],
+			[
+				"loan",
+				"E:\\SublimeProjects\\loan_account_book.sublime-project"
+			],
+			[
+				"lo",
+				"E:\\SublimeProjects\\loan_account_book.sublime-project"
+			],
+			[
+				"lar",
+				"E:\\SublimeProjects\\laravelApp.sublime-project"
+			],
+			[
+				"cor",
+				"E:\\SublimeProjects\\cornea-angular.sublime-project"
+			],
+			[
+				"cdn",
+				"E:\\SublimeProjects\\cdn.sublime-project"
+			],
+			[
+				"ho",
+				"E:\\SublimeProjects\\honeyweb.sublime-project"
+			],
+			[
+				"dns",
+				"E:\\SublimeProjects\\cdn.sublime-project"
+			],
+			[
+				"cd",
+				"E:\\SublimeProjects\\cdn.sublime-project"
+			],
+			[
+				"ren",
+				"E:\\SublimeProjects\\RentRee.sublime-project"
+			],
+			[
+				"vba",
+				"E:\\SublimeProjects\\vba-obfuscator.sublime-project"
+			],
+			[
+				"s",
+				"E:\\SublimeProjects\\sql-queries.sublime-project"
+			],
+			[
+				"clo",
+				"E:\\SublimeProjects\\cloud.sublime-project"
+			],
+			[
+				"cl",
+				"E:\\SublimeProjects\\cloud.sublime-project"
+			],
+			[
+				"sq",
+				"E:\\SublimeProjects\\sql-queries.sublime-project"
+			],
+			[
+				"cb",
+				"E:\\SublimeProjects\\cblms.sublime-project"
+			],
+			[
+				"clu",
+				"E:\\SublimeProjects\\cloud.sublime-project"
+			],
+			[
+				"lu",
+				"E:\\SublimeProjects\\lumenApp.sublime-project"
+			],
+			[
+				"l",
+				"E:\\SublimeProjects\\lumenApp.sublime-project"
+			],
+			[
+				"lum",
+				"E:\\SublimeProjects\\lumenApp.sublime-project"
+			],
+			[
+				"lume",
+				"E:\\SublimeProjects\\lumenApp.sublime-project"
+			],
+			[
+				"re",
+				"E:\\SublimeProjects\\RentRee.sublime-project"
+			],
+			[
+				"r",
+				"E:\\SublimeProjects\\RentRee.sublime-project"
+			],
+			[
+				"rent",
+				"E:\\SublimeProjects\\RentRee.sublime-project"
+			],
+			[
+				"m",
+				"E:\\SublimeProjects\\me.sublime-project"
+			],
+			[
+				"my",
+				"E:\\SublimeProjects\\my-app.sublime-project"
+			],
+			[
+				"sql",
+				"E:\\SublimeProjects\\sql-queries.sublime-project"
+			],
+			[
+				"su",
+				"E:\\SublimeProjects\\sunilkumar.sublime-project"
+			],
+			[
+				"sun",
+				"E:\\SublimeProjects\\sunilkumar.sublime-project"
+			],
+			[
+				"suni",
+				"E:\\SublimeProjects\\sunilkumar.sublime-project"
+			],
+			[
+				"un",
+				"E:\\SublimeProjects\\sunilkumar.sublime-project"
+			],
+			[
+				"cbl",
+				"E:\\SublimeProjects\\cblms.sublime-project"
+			],
+			[
+				"vue",
+				"E:\\SublimeProjects\\vue-app.sublime-project"
+			],
+			[
+				"pic",
+				"E:\\SublimeProjects\\Pick-Fix-GO-laravel-.sublime-project"
+			],
+			[
+				"we",
+				"E:\\SublimeProjects\\websoket-dome.sublime-project"
+			],
+			[
+				"user",
+				"D:\\SublimeProjects\\user_servicesuite.sublime-project"
+			],
+			[
+				"d",
+				"D:\\SublimeProjects\\database-admin.sublime-project"
+			],
+			[
+				"pi",
+				"D:\\SublimeProjects\\PickFixGo-LARAVEL.sublime-project"
+			],
+			[
+				"co",
+				"D:\\SublimeProjects\\cornea-angular.sublime-project"
+			],
+			[
+				"pth",
+				"D:\\SublimeWorkSpaces\\php-crud-operations.sublime-workspace"
+			],
+			[
+				"cornea",
+				"D:\\SublimeWorkSpaces\\cornea-angular-old.sublime-workspace"
+			]
+		],
+		"width": 475.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "QrCode",
+		"selected_items":
+		[
+			[
+				"QrCode",
+				"qrCode"
+			],
+			[
+				"getNonHiddenFields",
+				"getNonHiddenFields"
+			],
+			[
+				"viewProfile",
+				"viewProfile"
+			],
+			[
+				"newEmployee",
+				"NewEmployee"
+			],
+			[
+				"onApproved",
+				"onApproved"
+			],
+			[
+				"boqs",
+				"getBoqList"
+			]
+		],
+		"width": 785.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 545.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

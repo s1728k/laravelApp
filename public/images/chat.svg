@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="grey" viewBox="0 0 410 220">
+       <path stroke="grey" d="M150 10 l0 210 Z"/>
+       <path stroke="grey" d="M150 80 l260 0 Z"/>
+       <path stroke="grey" d="M150 150 l260 0 Z"/>
+       <path stroke="grey" d="M50 85 l5 -10 l-10 0 l5 10 l0 -40 Z"/>
+       <path stroke="grey" d="M50 45 l200 0 l-10 5 l0 -10 l10 5 Z"/>
+       <path stroke="grey" d="M50 145 l-5 10 l10 0 l-5 -10 l0 40 Z"/>
+       <path stroke="grey" d="M50 185 l200 0 l-10 5 l0 -10 l10 5 Z"/>
+       <path stroke="grey" d="M80 115 l10 5 l0 -10 l-10 5 l170 0 l-10 5 l0 -10 l10 5 Z"/>
+       <text x="55" y="40" fill="grey" style="font-size: 10px;">Chat Message Flow</text>
+       <text x="55" y="180" fill="grey" style="font-size: 10px;">Chat Message Flow</text>
+       <text x="100" y="110" fill="grey" style="font-size: 10px;">Chat Message Flow</text>
+       <text x="10" y="20" fill="grey" style="font-size: 10px;">HoneyWeb.Org</text>
+       <circle cx="50" cy="115" r="30" stroke="grey" />
+       <text x="15" y="145" fill="grey" transform="rotate(-90 15,145)" style="font-size: 10px;">Chat Server</text>
+       <path stroke="grey" d="M255 30 l50 0 q5 0 5 5 l0 20 q0 5 -5 5 l-35 0 l-10 10 l0 -10 l-5 0 q-5 0 -5 -5 l0 -20 q0 -5 5 -5 Z"/>
+       <text x="180" y="20" fill="grey" style="font-size: 10px;">Client 1 (We provide you embed in your website)</text>
+       <path stroke="grey" d="M255 100 l50 0 q5 0 5 5 l0 20 q0 5 -5 5 l-35 0 l-10 10 l0 -10 l-5 0 q-5 0 -5 -5 l0 -20 q0 -5 5 -5 Z"/>
+       <text x="180" y="90" fill="grey" style="font-size: 10px;">Client 2 (We provide you embed in your website)</text>
+       <path stroke="grey" d="M255 170 l50 0 q5 0 5 5 l0 20 q0 5 -5 5 l-35 0 l-10 10 l0 -10 l-5 0 q-5 0 -5 -5 l0 -20 q0 -5 5 -5 Z"/>
+       <text x="180" y="160" fill="grey" style="font-size: 10px;">Customer Care (We provide you use it)</text>
+</svg>

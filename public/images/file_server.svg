@@ -1,0 +1,28 @@
+<svg fill="grey" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 410 220">
+  <text x="60" y="30" fill="grey" style="font-size: 10px;">HoneyWeb.Org</text>
+  <path d="M20 50 l0 150 l140 0 l0 -150 l-140 0"/>
+  <path fill="#EEEEEE" d="M25 55 l0 140 l130 0 l0 -140 l-130 0"/>
+  <path stroke="grey" d="M35 80 l0 100 l70 0 l0 -70 l-30 -30  Z"/>
+  <path stroke="#EEEEEE" d="M45 70 l0 100 l70 0 l0 -70 l-30 -30 l0 30 l30 0 l-30 -30  Z"/>
+  <text x="45" y="190" fill="grey" style="font-size: 10px;">File Server</text>
+  <text x="100" y="80" style="font-size: 10px;">Application</text>
+  <path stroke="grey" d="M290 110 l-175 0 l10 5 l0 -10 l-10 5 Z"/>
+  <path stroke="grey" d="M115 130 l175 0 l-10 -5 l0 10 l10 -5 Z"/>
+  <path stroke="grey" d="M115 160 l175 0 l-10 -5 l0 10 l10 -5 Z"/>
+  <text x="165" y="106" style="font-size: 10px;">file upload</text>
+  <text x="165" y="126" style="font-size: 10px;">get unique file url</text>
+  <text x="161" y="156" style="font-size: 10px;">unique file url to serve file</text>
+  <path stroke="grey" d="M250 10 L250 210"/>
+  <text x="270" y="30" style="font-size: 10px;">Your Front End Appplication</text>
+  <path d="M300 60 l0 50 q0 10 10 10 l10 0 q10 0 10 -10 l0 -50 q0 -10 -10 -10 l-10 0 q-10 0 -10 10"/>
+  <path fill="#EEEEEE" d="M305 60 l0 50 l20 0 l0 -50 l-20 0"/>
+  <path fill="#EEEEEE" d="M310 55 q-1 1 0 2 l10 0 q1 -1 0 -2 l-10 0"/>
+  <circle fill="#EEEEEE" cx="315" cy="115" r="2" />
+  <path d="M300 150 l0 30 q0 10 10 10 l50 0 q10 0 10 -10 l0 -30 q0 -10 -10 -10 l-50 0 q-10 0 -10 10"/>
+  <path fill="#EEEEEE" d="M305 145 l0 35 l60 0 l0 -35 l-60 0"/>
+  <path d="M323 186 l-3 10 l30 0 l-3 -10 l-30 0"/>
+  <path d="M340 60 l0 50 q0 10 10 10 l30 0 q10 0 10 -10 l0 -50 q0 -10 -10 -10 l-30 0 q-10 0 -10 10"/>
+  <path fill="#EEEEEE" d="M345 60 l0 50 l40 0 l0 -50 l-40 0"/>
+  <path fill="#EEEEEE" d="M360 55 q-1 1 0 2 l10 0 q1 -1 0 -2 l-10 0"/>
+  <circle fill="#EEEEEE" cx="365" cy="115" r="2" />
+</svg>

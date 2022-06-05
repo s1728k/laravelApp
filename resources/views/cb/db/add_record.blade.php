@@ -57,7 +57,7 @@
 									<label for="confirm_password">confirm_password:</label>
 								</div>
 								<div class="col-md-6">
-									<input id="confirm_password" type="{{$inpTyp[$v->Type]}}" class="form-control" name="confirm_password" value="{{ old($v->Field) }}" placeholder="confirm_password" >
+									<input id="confirm_password" type="{{$inpTyp[$v->Type]}}" class="form-control" name="password_confirmation" value="{{ old($v->Field) }}" placeholder="confirm_password" >
 								</div>			
 							</div>
 							@endif

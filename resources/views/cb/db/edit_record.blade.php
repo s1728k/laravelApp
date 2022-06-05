@@ -57,6 +57,17 @@
 									<p style="color:red">{{$errors->first($v->Field)}}</p> @endif
 						</div>			
 					</div>
+					@if($v->Field == 'password')
+					<div class="form-group row">
+						<div class="col-md-1"></div>
+						<div class="col-md-4">
+							<label for="confirm_password">confirm_password:</label>
+						</div>
+						<div class="col-md-6">
+							<input id="confirm_password" type="{{$inpTyp[$v->Type]}}" class="form-control" name="password_confirmation" value="{{ old($v->Field) }}" placeholder="confirm_password" >
+						</div>			
+					</div>
+					@endif
 					@endif
 				@endforeach
 		        <div class="form-group row">

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 410 220">
+  <text x="8" y="198" fill="grey" transform="rotate(-90 10,200)" style="font-size: 10px;">HoneyWeb.Org Managed Databases</text>
+  <ellipse cx="30" cy="40" rx="20" ry="10" style="fill:grey;stroke:purple;stroke-width:0" />
+  <path  fill="grey" stroke="grey" d="M10 46 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
+  <path  fill="grey" stroke="grey" d="M10 58 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
+  <path  fill="grey" stroke="grey" d="M10 70 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
+  <polyline points="50,63 75,63 75,93 100,93"  style="fill:none;stroke:grey;stroke-width:1" />
+  <ellipse cx="30" cy="100" rx="20" ry="10" style="fill:grey;stroke:purple;stroke-width:0" />
+  <path  fill="grey" stroke="grey" d="M10 106 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
+  <path  fill="grey" stroke="grey" d="M10 118 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
+  <path  fill="grey" stroke="grey" d="M10 130 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
+  <polyline points="50,123 100,123"  style="fill:none;stroke:grey;stroke-width:1" />
+  <ellipse cx="30" cy="160" rx="20" ry="10" style="fill:grey;stroke:purple;stroke-width:0" />
+  <path  fill="grey" stroke="grey" d="M10 166 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
+  <path  fill="grey" stroke="grey" d="M10 178 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
+  <path  fill="grey" stroke="grey" d="M10 190 l0 10 q20 12 40 0 l0 -10 q-20 12 -40 0"/>
+  <polyline points="50,183 75,183 75,153 100,153"  style="fill:none;stroke:grey;stroke-width:1" />
+  <text x="100" y="30" fill="grey" style="font-size: 10px;">HoneyWeb.Org</text>
+  <path  fill="grey" d="M100 50 l0 140 l80 0 l0 -140 l-80 0"/>
+  <path  fill="#EEEEEE" d="M105 55 l0 130 l70 0 l0 -130 l-70 0"/>
+  <text x="114" y="80" fill="grey" style="font-size: 10px;">Application</text>
+  <path stroke="grey" d="M170 100 L290 100"/>
+  <text x="190" y="96" fill="grey" style="font-size: 10px;">https</text>
+  <text x="190" y="110" fill="grey" style="font-size: 10px;">json data</text>
+  <path stroke="grey" d="M250 10 L250 210"/>
+  <text x="270" y="30" fill="grey" style="font-size: 10px;">Your Front End Appplication</text>
+  <path  fill="grey" d="M300 60 l0 50 q0 10 10 10 l10 0 q10 0 10 -10 l0 -50 q0 -10 -10 -10 l-10 0 q-10 0 -10 10"/>
+  <path  fill="#EEEEEE" d="M305 60 l0 50 l20 0 l0 -50 l-20 0"/>
+  <path  fill="#EEEEEE" d="M310 55 q-1 1 0 2 l10 0 q1 -1 0 -2 l-10 0"/>
+  <circle cx="315" fill="#EEEEEE" cy="115" r="2" />
+  <path  fill="grey" d="M300 150 l0 30 q0 10 10 10 l50 0 q10 0 10 -10 l0 -30 q0 -10 -10 -10 l-50 0 q-10 0 -10 10"/>
+  <path  fill="#EEEEEE" d="M305 145 l0 35 l60 0 l0 -35 l-60 0"/>
+  <path  fill="grey" d="M323 186 l-3 10 l30 0 l-3 -10 l-30 0"/>
+  <path  fill="grey" d="M340 60 l0 50 q0 10 10 10 l30 0 q10 0 10 -10 l0 -50 q0 -10 -10 -10 l-30 0 q-10 0 -10 10"/>
+  <path  fill="#EEEEEE" d="M345 60 l0 50 l40 0 l0 -50 l-40 0"/>
+  <path  fill="#EEEEEE" d="M360 55 q-1 1 0 2 l10 0 q1 -1 0 -2 l-10 0"/>
+  <circle cx="365" fill="#EEEEEE" cy="115" r="2" />
+</svg>

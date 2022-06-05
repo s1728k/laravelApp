@@ -1,5 +1,8 @@
 <?php
-
+// \Log::info("fsd");
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Methods: GET, POST');
+// header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
